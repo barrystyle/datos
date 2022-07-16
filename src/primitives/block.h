@@ -189,6 +189,9 @@ public:
     // network and disk
     std::vector<CTransactionRef> vtx;
 
+    // block signature
+    std::vector<unsigned char> vchBlockSig;
+
     // memory only
     mutable bool fChecked;
 
@@ -207,6 +210,7 @@ public:
     {
         READWRITEAS(CBlockHeader, obj);
         READWRITE(obj.vtx);
+        READWRITE(obj.vchBlockSig);
     }
 
     void SetNull()
@@ -214,6 +218,7 @@ public:
         CBlockHeader::SetNull();
         vtx.clear();
         fChecked = false;
+        vchBlockSig.clear();
     }
 
     CBlockHeader GetBlockHeader() const
@@ -228,6 +233,17 @@ public:
         return block;
     }
 
+    bool IsProofOfStake() const
+    {
+        return (vtx.size() > 1 && vtx[1]->IsCoinStake());
+    }
+
+    bool IsProofOfWork() const
+    {
+        return !IsProofOfStake();
+    }
+
+    unsigned int GetStakeEntropyBit() const;
     std::string ToString() const;
 };
 
