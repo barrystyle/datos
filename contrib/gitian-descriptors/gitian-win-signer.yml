@@ -1,18 +1,18 @@
 ---
-name: "dash-win-signer"
+name: "pacprotocol-win-signer"
 distro: "ubuntu"
 suites:
 - "focal"
 architectures:
 - "amd64"
 packages:
-- "libssl-dev" # do not merge bitcoin#13782, see https://github.com/dashpay/dash/pull/3894
+- "libssl-dev" # do not merge bitcoin#13782, see https://github.com/pacprotocol/pacprotocol/pull/3894
 - "autoconf"
 - "automake"
 - "libtool"
 - "pkg-config"
 remotes:
-- "url": "https://github.com/dashpay/dash-detached-sigs.git"
+- "url": "https://github.com/pacprotocol/pacprotocol-detached-sigs.git"
   "dir": "signature"
 files:
 - "osslsigncode-2.0.tar.gz"

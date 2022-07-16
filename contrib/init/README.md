@@ -1,11 +1,11 @@
 Sample configuration files for:
 ```
-SystemD: dashd.service
-Upstart: dashd.conf
-OpenRC:  dashd.openrc
-         dashd.openrcconf
-CentOS:  dashd.init
-macOS:   org.dash.dashd.plist
+SystemD: pacprotocol.service
+Upstart: pacprotocol.conf
+OpenRC:  pacprotocol.openrc
+         pacprotocol.openrcconf
+CentOS:  pacprotocol.init
+macOS:   org.pacprotocol.pacprotocol.plist
 ```
 have been made available to assist packagers in creating node packages here.
 

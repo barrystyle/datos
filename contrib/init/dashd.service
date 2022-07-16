@@ -1,48 +1,48 @@
 # It is not recommended to modify this file in-place, because it will
 # be overwritten during package upgrades. If you want to add further
 # options or overwrite existing ones then use
-# $ systemctl edit dashd.service
+# $ systemctl edit pacprotocol.service
 # See "man systemd.service" for details.
 
 # Note that almost all daemon options could be specified in
-# /etc/dash/dash.conf, except for those explicitly specified as arguments
+# /etc/pacprotocol/pacprotocol.conf, except for those explicitly specified as arguments
 # in ExecStart=
 
 [Unit]
-Description=Dash daemon
+Description=pacprotocol daemon
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/dashd -daemon \
-                                                            -pid=/run/dashd/dashd.pid \
-                                                            -conf=/etc/dash/dash.conf  \
-                                                            -datadir=/var/lib/dashd
+ExecStart=/usr/bin/pacprotocold -daemon \
+                                                            -pid=/run/pacprotocol/pacprotocol.pid \
+                                                            -conf=/etc/pacprotocol/pacprotocol.conf  \
+                                                            -datadir=/var/lib/pacprotocol
 
 # Process management
 ####################
 
 Type=forking
-PIDFile=/run/dashd/dashd.pid
+PIDFile=/run/pacprotocol/pacprotocol.pid
 Restart=on-failure
 TimeoutStopSec=600
 
 # Directory creation and permissions
 ####################################
 
-# Run as dash:dash
+# Run as pacprotocol:pacprotocol
 User=dashcore
 Group=dashcore
 
-# /run/dashd
-RuntimeDirectory=dashd
+# /run/pacprotocol
+RuntimeDirectory=pacprotocol
 RuntimeDirectoryMode=0710
 
-# /etc/dash
-ConfigurationDirectory=dash
+# /etc/pacprotocol
+ConfigurationDirectory=pacprotocol
 ConfigurationDirectoryMode=0710
 
-# /var/lib/dashd
-StateDirectory=dashd
+# /var/lib/pacprotocol
+StateDirectory=pacprotocol
 StateDirectoryMode=0710
 
 # Hardening measures

@@ -1,5 +1,5 @@
 ---
-name: "dash-dmg-signer"
+name: "pacprotocol-dmg-signer"
 distro: "ubuntu"
 suites:
 - "focal"
@@ -9,7 +9,7 @@ packages:
 - "faketime"
 - "xorriso"
 remotes:
-- "url": "https://github.com/dashpay/dash-detached-sigs.git"
+- "url": "https://github.com/pacprotocol/pacprotocol-detached-sigs.git"
   "dir": "signature"
 files:
 - "dashcore-osx-unsigned.tar.gz"
