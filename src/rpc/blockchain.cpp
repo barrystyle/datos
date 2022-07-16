@@ -436,7 +436,7 @@ static UniValue getdifficulty(const JSONRPCRequest& request)
 static std::string EntryDescriptionString()
 {
     return "    \"vsize\" : n,                (numeric) virtual transaction size. This can be different from actual serialized size for high-sigop transactions.\n"
-           "    \"size\" : n,                 (numeric) (DEPRECATED) same as vsize. Only returned if dashd is started with -deprecatedrpc=size\n"
+           "    \"size\" : n,                 (numeric) (DEPRECATED) same as vsize. Only returned if pacprotocold is started with -deprecatedrpc=size\n"
            "                                  size will be completely removed in v0.20.\n"
            "    \"fee\" : n,                  (numeric) transaction fee in " + CURRENCY_UNIT + " (DEPRECATED)\n"
            "    \"modifiedfee\" : n,          (numeric) transaction fee with fee deltas used for mining priority (DEPRECATED)\n"
@@ -1295,8 +1295,8 @@ static UniValue gettxout(const JSONRPCRequest& request)
             "     \"hex\" : \"hex\",        (string) \n"
             "     \"reqSigs\" : n,          (numeric) Number of required signatures\n"
             "     \"type\" : \"pubkeyhash\", (string) The type, eg pubkeyhash\n"
-            "     \"addresses\" : [          (array of string) array of dash addresses\n"
-            "        \"address\"     (string) dash address\n"
+            "     \"addresses\" : [          (array of string) array of pacprotocol addresses\n"
+            "        \"address\"     (string) pacprotocol address\n"
             "        ,...\n"
             "     ]\n"
             "  },\n"

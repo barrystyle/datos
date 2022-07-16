@@ -218,7 +218,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         }
         else
 #endif
-        {   // User-entered dash address / amount:
+        {   // User-entered pacprotocol address / amount:
             if(!validateAddress(rcp.address))
             {
                 return InvalidAddress;
@@ -303,7 +303,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
             }
             else
 #endif
-            if (!rcp.message.isEmpty()) // Message from normal dash:URI (dash:XyZ...?message=example)
+            if (!rcp.message.isEmpty()) // Message from normal pac:URI (pac:XyZ...?message=example)
                 vOrderForm.emplace_back("Message", rcp.message.toStdString());
         }
 

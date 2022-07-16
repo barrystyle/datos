@@ -148,7 +148,7 @@ bool BerkeleyEnvironment::Open(bilingual_str& err)
     fs::path pathIn = strPath;
     TryCreateDirectories(pathIn);
     if (!LockDirectory(pathIn, ".walletlock")) {
-        LogPrintf("Cannot obtain a lock on wallet directory %s. Another instance of Dash Core may be using it.\n", strPath);
+        LogPrintf("Cannot obtain a lock on wallet directory %s. Another instance of pacprotocol may be using it.\n", strPath);
         err = strprintf(_("Error initializing wallet database environment %s!"), Directory());
         return false;
     }
@@ -296,7 +296,7 @@ bool BerkeleyDatabase::Verify(bilingual_str& errorStr)
     if (fs::exists(file_path))
     {
         if (!env->Verify(strFile)) {
-            errorStr = strprintf(_("%s corrupt. Try using the wallet tool dash-wallet to salvage or restoring a backup."), file_path);
+            errorStr = strprintf(_("%s corrupt. Try using the wallet tool pacprotocol-wallet to salvage or restoring a backup."), file_path);
             return false;
         }
     }
