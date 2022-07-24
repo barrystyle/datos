@@ -447,7 +447,7 @@ static void UpdateMempoolForReorg(DisconnectedBlockTransactions &disconnectpool,
     while (it != disconnectpool.queuedTx.get<insertion_order>().rend()) {
         // ignore validation errors in resurrected transactions
         CValidationState stateDummy;
-        if (!fAddToMempool || (*it)->IsCoinBase() ||
+        if (!fAddToMempool || (*it)->IsCoinBase() || (*it)->IsCoinStake() ||
             !AcceptToMemoryPool(mempool, stateDummy, *it, nullptr /* pfMissingInputs */,
                                 true /* bypass_limits */, 0 /* nAbsurdFee */)) {
             // If the transaction doesn't make it in to the mempool, remove any
@@ -487,7 +487,7 @@ static bool CheckInputsFromMempoolAndCache(const CTransaction& tx, CValidationSt
     // and when we actually call through to CheckInputs
     LOCK(pool.cs);
 
-    assert(!tx.IsCoinBase());
+    assert(!tx.IsCoinBase() && !tx.IsCoinStake());
     for (const CTxIn& txin : tx.vin) {
         const Coin& coin = view.AccessCoin(txin.prevout);
 
@@ -546,6 +546,10 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
     // Coinbase is only valid in a block, not as a loose transaction
     if (tx.IsCoinBase())
         return state.DoS(100, false, REJECT_INVALID, "coinbase");
+
+    // Coinstake is also only valid in a block, not as a loose transaction
+    if (tx.IsCoinStake())
+        return state.DoS(100, false, REJECT_INVALID, "coinstake");
 
     // Rather not work on nonstandard transactions (unless -testnet/-regtest)
     std::string reason;
@@ -667,7 +671,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         bool fSpendsCoinbase = false;
         for (const CTxIn &txin : tx.vin) {
             const Coin &coin = view.AccessCoin(txin.prevout);
-            if (coin.IsCoinBase()) {
+            if (coin.IsCoinBase() || coin.IsCoinStake()) {
                 fSpendsCoinbase = true;
                 break;
             }
@@ -980,7 +984,7 @@ bool ReadBlockFromDisk(CBlock& block, const FlatFilePos& pos, const Consensus::P
     }
 
     // Check the header
-    if (!CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
+    if (block.IsProofOfWork() && !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
         return error("ReadBlockFromDisk: Errors in block header at %s", pos.ToString());
 
     return true;
@@ -2014,6 +2018,18 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         }
         return error("%s: Consensus::CheckBlock: %s", __func__, FormatStateMessage(state));
     }
+
+    bool fProofOfWork = block.IsProofOfWork();
+    bool fProofOfStake = block.IsProofOfStake();
+
+    if (!fProofOfWork && !fProofOfStake) {
+        return state.DoS(10, error("ConnectBlock() : Block is neither PoW or PoS"), REJECT_INVALID, "bad-block");
+    }
+
+    // TODO: requires the appropriate fields be defined in params
+    // if (fProofOfWork && (pindex->nHeight > chainparams.GetConsensus().nLastPoWBlock)) {
+    //    return state.DoS(10, error("ConnectBlock() : PoW period ended"), REJECT_INVALID, "pow-ended");
+    // }
 
     if (pindex->pprev && pindex->phashBlock && llmq::chainLocksHandler->HasConflictingChainLock(pindex->nHeight, pindex->GetBlockHash())) {
         return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
@@ -3710,6 +3726,23 @@ static bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state,
     if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
         return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "proof of work failed");
 
+    // Check if we have the previous header
+    const CBlockIndex* hashPrevPtr = nullptr;
+    const uint256& hashPrevBlock = block.hashPrevBlock;
+    {
+        LOCK(cs_main);
+        hashPrevPtr = LookupBlockIndex(hashPrevBlock);
+    }
+
+    if (!hashPrevPtr) {
+        const uint256& blockHash = block.GetHash();
+        //! allow for genesis which has no parent
+        if (blockHash == consensusParams.hashGenesisBlock) {
+            return true;
+        }
+        return state.DoS(50, false, REJECT_INVALID, "no-prevblk", false, "header has no parent");
+    }
+
     // Check DevNet
     if (!consensusParams.hashDevnetGenesisBlock.IsNull() &&
             block.hashPrevBlock == consensusParams.hashGenesisBlock &&
@@ -3732,7 +3765,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
 
     // Check that the header is valid (particularly PoW).  This is mostly
     // redundant with the call in AcceptBlockHeader.
-    if (!CheckBlockHeader(block, state, consensusParams, fCheckPOW))
+    if (!CheckBlockHeader(block, state, consensusParams, fCheckPOW && !block.IsProofOfStake()))
         return false;
 
     // Check the merkle root.
@@ -3760,9 +3793,19 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
     // First transaction must be coinbase, the rest must not be
     if (block.vtx.empty() || !block.vtx[0]->IsCoinBase())
         return state.DoS(100, false, REJECT_INVALID, "bad-cb-missing", false, "first tx is not coinbase");
+
     for (unsigned int i = 1; i < block.vtx.size(); i++)
         if (block.vtx[i]->IsCoinBase())
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-multiple", false, "more than one coinbase");
+
+    // Only the second transaction can be the optional coinstake
+    for (unsigned int i = 2; i < block.vtx.size(); i++)
+        if (block.vtx[i]->IsCoinStake())
+            return state.DoS(100, false, REJECT_INVALID, "bad-cs-missing", "coinstake in wrong position");
+
+    // First coinbase output should be empty if proof-of-stake block
+    if (block.IsProofOfStake() && !block.vtx[0]->vout[0].IsEmpty())
+        return state.DoS(100, false, REJECT_INVALID, "bad-cb-notempty", "coinbase output not empty in PoS block");
 
     // Check transactions
     // Must check for duplicate inputs (see CVE-2018-17144)
