@@ -2158,6 +2158,8 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     std::vector<int> prevheights;
     CAmount nFees = 0;
+    CAmount nValueIn = 0;
+    CAmount nValueOut = 0;
     int nInputs = 0;
     unsigned int nSigOps = 0;
     blockundo.vtxundo.reserve(block.vtx.size() - 1);
@@ -2176,6 +2178,11 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     int64_t nTime2_1 = GetTimeMicros(); nTimeProcessSpecial += nTime2_1 - nTime2;
     LogPrint(BCLog::BENCHMARK, "      - ProcessSpecialTxsInBlock: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime2_1 - nTime2), nTimeProcessSpecial * MICRO, nTimeProcessSpecial * MILLI / nBlocksTotal);
 
+    CAmount stakeValueIn = 0;
+    if (block.IsProofOfStake()) {
+        stakeValueIn = view.GetValueIn(*(block.vtx[1]));
+    }
+
     for (unsigned int i = 0; i < block.vtx.size(); i++)
     {
         const CTransaction &tx = *(block.vtx[i]);
@@ -2183,13 +2190,18 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
         nInputs += tx.vin.size();
 
-        if (!tx.IsCoinBase())
+        if (tx.IsCoinBase())
+            nValueOut += tx.GetValueOut();
+        else
         {
             CAmount txfee = 0;
             if (!Consensus::CheckTxInputs(tx, state, view, pindex->nHeight, txfee)) {
                 return error("%s: Consensus::CheckTxInputs: %s, %s", __func__, tx.GetHash().ToString(), FormatStateMessage(state));
             }
-            nFees += txfee;
+            nValueIn += view.GetValueIn(tx);
+            nValueOut += tx.GetValueOut();
+            if (!tx.IsCoinStake())
+                nFees += txfee;
             if (!MoneyRange(nFees)) {
                 return state.DoS(100, error("%s: accumulated fee in the block out of range.", __func__),
                                  REJECT_INVALID, "bad-txns-accumulated-fee-outofrange");
@@ -2260,7 +2272,6 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
         if (!tx.IsCoinBase())
         {
-
             std::vector<CScriptCheck> vChecks;
             bool fCacheResults = fJustCheck; /* Don't cache results if we're actually connecting blocks (still consult the cache, though) */
             if (fScriptChecks && !CheckInputs(tx, state, view, fScriptChecks, flags, fCacheResults, fCacheResults, txsdata[i], g_parallel_script_checks ? &vChecks : nullptr)) {
@@ -2360,14 +2371,16 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     int64_t nTime5_2 = GetTimeMicros(); nTimeSubsidy += nTime5_2 - nTime5_1;
     LogPrint(BCLog::BENCHMARK, "      - GetBlockSubsidy: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5_2 - nTime5_1), nTimeSubsidy * MICRO, nTimeSubsidy * MILLI / nBlocksTotal);
 
-    if (!IsBlockValueValid(block, pindex->nHeight, blockReward, strError)) {
+    // TODO: modify for stakeValueIn and superblock
+    if (!IsBlockValueValid(block, pindex->nHeight, blockReward, /*stakeValueIn,*/ strError)) {
         return state.DoS(0, error("ConnectBlock(DASH): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
     int64_t nTime5_3 = GetTimeMicros(); nTimeValueValid += nTime5_3 - nTime5_2;
     LogPrint(BCLog::BENCHMARK, "      - IsBlockValueValid: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5_3 - nTime5_2), nTimeValueValid * MICRO, nTimeValueValid * MILLI / nBlocksTotal);
 
-    if (!IsBlockPayeeValid(*block.vtx[0], pindex->nHeight, blockReward)) {
+    // TODO: test positioning of payment vout
+    if (!IsBlockPayeeValid(*block.vtx[fProofOfStake], pindex->nHeight, blockReward)) {
         return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
                                 REJECT_INVALID, "bad-cb-payee");
     }
@@ -2382,6 +2395,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     if (fJustCheck)
         return true;
+
+    // track money supply and mint amount info
+    pindex->nMint = nValueOut - nValueIn + nFees;
+    pindex->nMoneySupply = (pindex->pprev ? pindex->pprev->nMoneySupply : 0) + nValueOut - nValueIn;
 
     if (!WriteUndoDataForBlock(blockundo, state, pindex, chainparams))
         return false;
