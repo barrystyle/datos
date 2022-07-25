@@ -243,7 +243,6 @@ public:
         return !IsProofOfStake();
     }
 
-    unsigned int GetStakeEntropyBit() const;
     std::string ToString() const;
 };
 
