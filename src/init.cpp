@@ -38,6 +38,7 @@
 #include <policy/fees.h>
 #include <policy/policy.h>
 #include <policy/settings.h>
+#include <pos/minter.h>
 #include <rpc/blockchain.h>
 #include <rpc/register.h>
 #include <rpc/server.h>
@@ -224,6 +225,7 @@ void PrepareShutdown(InitInterfaces& interfaces)
     StopREST();
     StopRPC();
     StopHTTPServer();
+    StopThreadStakeMiner();
     llmq::StopLLMQSystem();
 
     // fRPCInWarmup should be `false` if we completed the loading sequence
@@ -2496,6 +2498,8 @@ bool AppInitMain(InitInterfaces& interfaces)
     scheduler.scheduleEvery([]{
         g_banman->DumpBanlist();
     }, DUMP_BANS_INTERVAL * 1000);
+
+    StartThreadStakeMiner();
 
     return true;
 }

@@ -253,6 +253,10 @@ BITCOIN_CORE_H = \
   policy/fees.h \
   policy/policy.h \
   policy/settings.h \
+  pos/minter.h \
+  pos/kernel.h \
+  pos/stakeseen.h \
+  pos/stakegen.h \
   pos/signature.h \
   pow.h \
   protocol.h \
@@ -429,6 +433,10 @@ libdash_server_a_SOURCES = \
   policy/fees.cpp \
   policy/policy.cpp \
   policy/settings.cpp \
+  pos/minter.cpp \
+  pos/kernel.cpp \
+  pos/stakegen.cpp \
+  pos/stakeseen.cpp \
   pos/signature.cpp \
   pow.cpp \
   rest.cpp \

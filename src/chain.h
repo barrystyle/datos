@@ -189,7 +189,8 @@ public:
     //! Fields relating to current chain state.
     CAmount nMint{0};
     CAmount nMoneySupply{0};
-    uint64_t nStakeModifier{0};
+    uint256 nStakeModifier{};
+    COutPoint prevoutStake{};
     uint256 hashProof{};
 
     CBlockIndex()
@@ -255,6 +256,11 @@ public:
         return (int64_t)nTime;
     }
 
+    int64_t GetPastTimeLimit() const
+    {
+        return GetBlockTime();
+    }
+
     int64_t GetBlockTimeMax() const
     {
         return (int64_t)nTimeMax;
@@ -288,12 +294,13 @@ public:
 
     std::string ToString() const
     {
-        return strprintf("CBlockIndex(nprev=%08x, nFile=%d, nHeight=%d, nMint=%s, nMoneySupply=%s, nFlags=%s, nStakeModifier=%016llx, hashProof=%s, merkleRoot=%s, hashBlock=%s)",
+        return strprintf("CBlockIndex(nprev=%08x, nFile=%d, nHeight=%d, nMint=%s, nMoneySupply=%s, nFlags=%s, nStakeModifier=%s, hashProof=%s, prevoutStake=%s, merkleRoot=%s, hashBlock=%s)",
             pprev, nFile, nHeight,
             FormatMoney(nMint), FormatMoney(nMoneySupply),
             IsProofOfStake() ? "PoS" : "PoW",
-            nStakeModifier,
+            nStakeModifier.ToString(),
             hashProof.ToString(),
+            prevoutStake.ToString(),
             hashMerkleRoot.ToString(),
             GetBlockHash().ToString());
     }
@@ -381,6 +388,7 @@ public:
         READWRITE(obj.nMoneySupply);
         READWRITE(obj.nStakeModifier);
         READWRITE(obj.hashProof);
+        READWRITE(obj.prevoutStake);
     }
 
     uint256 GetBlockHash() const

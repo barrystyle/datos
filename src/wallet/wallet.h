@@ -105,6 +105,16 @@ enum class FeeEstimateMode;
 
 extern CCriticalSection cs_main;
 
+enum {
+    NOT_STAKING = 0,
+    IS_STAKING = 1,
+    NOT_STAKING_BALANCE = -1,
+    NOT_STAKING_DEPTH = -2,
+    NOT_STAKING_LOCKED = -3,
+    NOT_STAKING_LIMITED = -4,
+    NOT_STAKING_DISABLED = -5,
+};
+
 /** (client) version numbers for particular wallet features */
 enum WalletFeature
 {
@@ -503,6 +513,7 @@ public:
 
     const uint256& GetHash() const { return tx->GetHash(); }
     bool IsCoinBase() const { return tx->IsCoinBase(); }
+    bool IsCoinStake() const { return tx->IsCoinStake(); }
     bool IsImmatureCoinBase(interfaces::Chain::Lock& locked_chain) const;
 };
 
@@ -1189,6 +1200,22 @@ public:
 
     /* Initializes the wallet, returns a new CWallet instance or a null pointer in case of an error */
     static std::shared_ptr<CWallet> CreateWalletFromFile(interfaces::Chain& chain, const WalletLocation& location, bilingual_str& error, std::vector<bilingual_str>& warnings, uint64_t wallet_creation_flags = 0);
+
+    /**
+       Proof of stake wallet
+       instance variables
+     */
+    size_t nStakeThread{0};
+    size_t nMaxStakeCombine{3};
+    CAmount nReserveBalance{0};
+    CAmount nStakeCombineThreshold{1000};
+    CAmount nStakeSplitThreshold = 2 * nStakeCombineThreshold;
+    int64_t nLastCoinStakeSearchTime{0};
+    std::atomic<bool> fStakingEnabled{true};
+    std::atomic<int> m_is_staking{NOT_STAKING};
+    mutable std::atomic_bool m_have_cached_stakeable_coins{false};
+    mutable std::vector<COutput> m_cached_stakeable_coins;
+    mutable int m_greatest_txn_depth = 0;
 
     /**
      * Wallet post-init setup

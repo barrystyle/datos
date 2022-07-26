@@ -210,7 +210,10 @@ public:
     {
         READWRITEAS(CBlockHeader, obj);
         READWRITE(obj.vtx);
-        READWRITE(obj.vchBlockSig);
+        if (obj.vtx.size() > 1 && obj.vtx[1]->IsCoinStake())
+        {
+            READWRITE(obj.vchBlockSig);
+        }
     }
 
     void SetNull()

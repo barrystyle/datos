@@ -23,6 +23,7 @@
 #include <logging/timer.h>
 #include <policy/fees.h>
 #include <policy/policy.h>
+#include <pos/kernel.h>
 #include <pos/signature.h>
 #include <pow.h>
 #include <primitives/block.h>
@@ -1143,6 +1144,11 @@ CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int nReallocActiva
     return static_cast<CAmount>(blockValue * vecPeriods[nCurrentPeriod] / 1000);
 }
 
+CAmount GetProofOfStakeReward(CBlockIndex* pindexPrev, CAmount nFees)
+{
+    return 100 * COIN;
+}
+
 CoinsViews::CoinsViews(
     std::string ldb_name,
     size_t cache_size_bytes,
@@ -2027,13 +2033,26 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return state.DoS(10, error("ConnectBlock() : Block is neither PoW or PoS"), REJECT_INVALID, "bad-block");
     }
 
-    // TODO: requires the appropriate fields be defined in params
-    // if (fProofOfWork && (pindex->nHeight > chainparams.GetConsensus().nLastPoWBlock)) {
-    //    return state.DoS(10, error("ConnectBlock() : PoW period ended"), REJECT_INVALID, "pow-ended");
-    // }
+    if (fProofOfStake && (pindex->nHeight <= chainparams.GetConsensus().nLastPoWBlock)) {
+       return state.DoS(10, error("ConnectBlock() : PoS period early"), REJECT_INVALID, "pos-early");
+    }
+
+    if (fProofOfWork && (pindex->nHeight > chainparams.GetConsensus().nLastPoWBlock)) {
+       return state.DoS(10, error("ConnectBlock() : PoW period ended"), REJECT_INVALID, "pow-ended");
+    }
 
     if (pindex->pprev && pindex->phashBlock && llmq::chainLocksHandler->HasConflictingChainLock(pindex->nHeight, pindex->GetBlockHash())) {
         return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
+    }
+
+    if (fProofOfStake) {
+        pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
+        setDirtyBlockIndex.insert(pindex);
+        uint256 hashProof, targetProofOfStake;
+        if (!CheckProofOfStake(state, pindex->pprev, *block.vtx[1], block.nTime, block.nBits, hashProof, targetProofOfStake)) {
+            return error("%s: Check proof of stake failed.", __func__);
+        }
+        pindex->hashProof = hashProof;
     }
 
     // verify that the view's current state corresponds to the previous block
@@ -2695,8 +2714,8 @@ void static UpdateTip(const CBlockIndex *pindexNew, const CChainParams& chainPar
         if (nUpgraded > 0)
             AppendWarning(warningMessages, strprintf(_("%d of last 100 blocks have unexpected version").translated, nUpgraded));
     }
-    LogPrintf("%s: new best=%s height=%d version=0x%08x log2_work=%.8g tx=%lu date='%s' progress=%f cache=%.1fMiB(%utxo) evodb_cache=%.1fMiB%s\n", __func__,
-      pindexNew->GetBlockHash().ToString(), pindexNew->nHeight, pindexNew->nVersion,
+    LogPrintf("%s: new best=%s height=%d type=%s version=0x%08x log2_work=%.8g tx=%lu date='%s' progress=%f cache=%.1fMiB(%utxo) evodb_cache=%.1fMiB%s\n", __func__,
+      pindexNew->GetBlockHash().ToString(), pindexNew->nHeight, pindexNew->IsProofOfStake() ? "PoS" : "PoW", pindexNew->nVersion,
       log(pindexNew->nChainWork.getdouble())/log(2.0), (unsigned long)pindexNew->nChainTx,
       FormatISO8601DateTime(pindexNew->GetBlockTime()),
       GuessVerificationProgress(chainParams.TxData(), pindexNew), ::ChainstateActive().CoinsTip().DynamicMemoryUsage() * (1.0 / (1<<20)), ::ChainstateActive().CoinsTip().GetCacheSize(),
@@ -4019,8 +4038,9 @@ bool BlockManager::AcceptBlockHeader(const CBlockHeader& block, CValidationState
             return true;
         }
 
-        if (!CheckBlockHeader(block, state, chainparams.GetConsensus()))
-            return error("%s: Consensus::CheckBlockHeader: %s, %s", __func__, hash.ToString(), FormatStateMessage(state));
+        // Redundant as it is called in CheckBlock
+        // if (!CheckBlockHeader(block, state, chainparams.GetConsensus()))
+        //    return error("%s: Consensus::CheckBlockHeader: %s, %s", __func__, hash.ToString(), FormatStateMessage(state));
 
         // Get prev block index
         CBlockIndex* pindexPrev = nullptr;
@@ -4202,6 +4222,12 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
             setDirtyBlockIndex.insert(pindex);
         }
         return error("%s: %s", __func__, FormatStateMessage(state));
+    }
+
+    if (block.IsProofOfStake()) {
+        pindex->prevoutStake = pblock->vtx[1]->vin[1].prevout;
+        pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
+        setDirtyBlockIndex.insert(pindex);
     }
 
     // Header is valid/has work, merkle tree is good...RELAY NOW
