@@ -515,6 +515,7 @@ public:
     bool IsCoinBase() const { return tx->IsCoinBase(); }
     bool IsCoinStake() const { return tx->IsCoinStake(); }
     bool IsImmatureCoinBase(interfaces::Chain::Lock& locked_chain) const;
+    bool IsImmatureCoinStake(interfaces::Chain::Lock& locked_chain) const;
 };
 
 struct WalletTxHasher
@@ -993,7 +994,7 @@ public:
         CAmount m_denominated_untrusted_pending{0};
     };
     Balance GetBalance(int min_depth = 0, const bool fAddLocked = false, const CCoinControl* coinControl = nullptr) const;
-
+    CAmount GetStakeBalance() const;
     CAmount GetAnonymizableBalance(bool fSkipDenominated = false, bool fSkipUnconfirmed = true) const;
     float GetAverageAnonymizedRounds() const;
     CAmount GetNormalizedAnonymizedBalance() const;

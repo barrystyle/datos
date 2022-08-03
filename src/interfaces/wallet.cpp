@@ -63,6 +63,7 @@ WalletTx MakeWalletTx(interfaces::Chain::Lock& locked_chain, CWallet& wallet, co
     result.time = wtx.GetTxTime();
     result.value_map = wtx.mapValue;
     result.is_coinbase = wtx.IsCoinBase();
+    result.is_coinstake = wtx.IsCoinStake();
     // The determination of is_denominate is based on simplified checks here because in this part of the code
     // we only want to know about mixing transactions belonging to this specific wallet.
     result.is_denominate = wtx.tx->vin.size() == wtx.tx->vout.size() && // Number of inputs is same as number of outputs
@@ -84,6 +85,7 @@ WalletTxStatus MakeWalletTxStatus(interfaces::Chain::Lock& locked_chain, const C
     result.is_trusted = wtx.IsTrusted(locked_chain);
     result.is_abandoned = wtx.isAbandoned();
     result.is_coinbase = wtx.IsCoinBase();
+    result.is_coinstake = wtx.IsCoinStake();
     result.is_in_main_chain = wtx.IsInMainChain(locked_chain);
     result.is_chainlocked = wtx.IsChainLocked();
     result.is_islocked = wtx.IsLockedByInstantSend();
@@ -385,7 +387,7 @@ public:
         WalletBalances result;
         result.balance = bal.m_mine_trusted;
         result.unconfirmed_balance = bal.m_mine_untrusted_pending;
-        result.immature_balance = bal.m_mine_immature;
+        result.immature_balance = bal.m_mine_immature + m_wallet->GetStakeBalance();
         result.anonymized_balance = bal.m_anonymized;
         result.have_watch_only = m_wallet->HaveWatchOnly();
         if (result.have_watch_only) {
