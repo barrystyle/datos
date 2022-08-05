@@ -129,6 +129,42 @@ bool CStakeWallet::SelectCoinsForStaking(CAmount nTargetValue, int64_t nTime, in
     return true;
 }
 
+uint64_t CStakeWallet::GetStakeWeight(interfaces::Chain::Lock& locked_chain) const
+{
+    if (!ready) {
+        return 0;
+    }
+
+    // Choose coins to use
+    CAmount nBalance = wallet->GetBalance().m_mine_trusted;
+
+    if (nBalance <= wallet->nReserveBalance) {
+        return 0;
+    }
+
+    CAmount nValueIn = 0;
+    std::vector<const CWalletTx*> vwtxPrev;
+    std::set<std::pair<const CWalletTx*,unsigned int> > setCoins;
+
+    CAmount nTargetValue = nBalance - wallet->nReserveBalance;
+    if (!SelectCoinsForStaking(nTargetValue, 0, 0, setCoins, nValueIn)) {
+        return 0;
+    }
+
+    if (setCoins.empty()) {
+        return 0;
+    }
+
+    uint64_t nWeight = 0;
+    for(std::pair<const CWalletTx*,unsigned int> pcoin : setCoins) {
+        if (pcoin.first->GetDepthInMainChain(locked_chain) >= COINBASE_MATURITY) {
+            nWeight += pcoin.first->tx->vout[pcoin.second].nValue;
+        }
+    }
+
+    return nWeight;
+}
+
 bool CStakeWallet::CreateCoinStake(CBlockIndex* pindexPrev, unsigned int nBits, int64_t nTime, int nBlockHeight, int64_t nFees, CMutableTransaction& txNew, CKey& key)
 {
     if (!ready) {
@@ -391,4 +427,13 @@ bool CStakeWallet::SignBlock(CBlockTemplate* pblocktemplate, int nHeight, int64_
     wallet->nLastCoinStakeSearchTime = nSearchTime;
 
     return false;
+}
+
+CWallet* CStakeWallet::GetStakingWallet()
+{
+    if (!ready) {
+        return nullptr;
+    }
+
+    return wallet;
 }

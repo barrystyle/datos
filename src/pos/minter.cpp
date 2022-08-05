@@ -25,6 +25,7 @@
 
 #include <stdint.h>
 
+CStakeWallet wallet;
 std::vector<StakeThread*> vStakeThreads;
 
 void StakeThread::condWaitFor(int ms)
@@ -165,7 +166,6 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
     int min_nodes = params.NetworkIDString() == "regtest" ? 0 : 3;
 
     // initialize stakewallet instance
-    CStakeWallet wallet;
     wallet.AttachWallet(pwallet);
 
     if (!gArgs.GetBoolArg("-staking", true)) {

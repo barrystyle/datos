@@ -19,9 +19,51 @@
 #include <txmempool.h>
 #include <util/system.h>
 
+double GetDifficulty(const CBlockIndex* blockindex);
+
 uint32_t GetStakeTimestampMask(int nHeight)
 {
     return nStakeTimestampMask;
+}
+
+/**
+ * Calculate PoS kernel weight for an interval of prior blocks:
+ * Returns the sum of difficulty of a series of blocks over an interval
+ * divided by the total time taken between blocks in the interval.
+ */
+double GetPoSKernelPS(CBlockIndex *pindex)
+{
+    LOCK(cs_main);
+
+    CBlockIndex *pindexPrevStake = nullptr;
+
+    int nBestHeight = pindex->nHeight;
+
+    int nPoSInterval = 72; // blocks sampled
+    double dStakeKernelsTriedAvg = 0;
+    int nStakesHandled = 0, nStakesTime = 0;
+
+    while (pindex && nStakesHandled < nPoSInterval) {
+        if (pindex->IsProofOfStake()) {
+            if (pindexPrevStake) {
+                dStakeKernelsTriedAvg += GetDifficulty(pindexPrevStake) * 4294967296.0;
+                nStakesTime += pindexPrevStake->nTime - pindex->nTime;
+                nStakesHandled++;
+            }
+            pindexPrevStake = pindex;
+        }
+        pindex = pindex->pprev;
+    }
+
+    double result = 0;
+
+    if (nStakesTime)  {
+        result = dStakeKernelsTriedAvg / nStakesTime;
+    }
+
+    result *= GetStakeTimestampMask(nBestHeight) + 1;
+
+    return result;
 }
 
 /**

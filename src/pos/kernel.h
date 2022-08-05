@@ -14,6 +14,11 @@ static const uint32_t nStakeTimestampMask = (1 << 4) - 1;
 uint32_t GetStakeTimestampMask(int nHeight);
 
 /**
+ * Calculate PoS kernel weight for an interval of prior blocks
+ */
+double GetPoSKernelPS(CBlockIndex *pindex);
+
+/**
  * Compute the hash modifier for proof-of-stake
  */
 uint256 ComputeStakeModifier(const CBlockIndex *pindexPrev, const uint256 &kernel);

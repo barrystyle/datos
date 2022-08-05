@@ -13,6 +13,8 @@
 
 class CWallet;
 class CBlock;
+class CStakeWallet;
+extern CStakeWallet wallet;
 
 class StakeThread
 {

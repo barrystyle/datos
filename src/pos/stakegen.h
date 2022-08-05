@@ -52,8 +52,10 @@ class CStakeWallet
 
         void AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t nTime, int nHeight, CAmount minAmount) const;
         bool SelectCoinsForStaking(CAmount nTargetValue, int64_t nTime, int nHeight, std::set<std::pair<const CWalletTx*, unsigned int>>& setCoinsRet, CAmount& nValueRet) const;
+        uint64_t GetStakeWeight(interfaces::Chain::Lock& locked_chain) const;
         bool CreateCoinStake(CBlockIndex* pindexPrev, unsigned int nBits, int64_t nTime, int nBlockHeight, int64_t nFees, CMutableTransaction& txNew, CKey& key);
         bool SignBlock(CBlockTemplate* pblocktemplate, int nHeight, int64_t nSearchTime);
+        CWallet* GetStakingWallet();
 };
 
 #endif // POS_STAKEGEN_H
