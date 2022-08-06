@@ -1,0 +1,54 @@
+// Copyright (c) 2022 pacprotocol
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+#include <pos/stakeman.h>
+
+bool fStakerRunning{false};
+bool fStakerRequestStart{false};
+bool fStakerRequestStop{false};
+
+// signal stake thread start
+void stakeman_request_start() {
+    fStakerRequestStart = true;
+}
+
+// signal stake thread stop
+void stakeman_request_stop() {
+    fStakerRequestStop = true;
+}
+
+// stake thread handler
+void stakeman_handler()
+{
+    while (!ShutdownRequested())
+    {
+        while (fStakerRunning)
+        {
+            fStakerRequestStart = false;
+            if (fStakerRequestStop)
+            {
+                StopThreadStakeMiner();
+                fStakerRunning = false;
+                fStakerRequestStop = false;
+                LogPrint(BCLog::POS, "Stopped staking thread\n");
+            }
+            UninterruptibleSleep(std::chrono::milliseconds{250});
+        }
+
+        while (!fStakerRunning)
+        {
+            fStakerRequestStop = false;
+            if (fStakerRequestStart)
+            {
+                StartThreadStakeMiner();
+                fStakerRunning = true;
+                fStakerRequestStart = false;
+                LogPrint(BCLog::POS, "Started staking thread\n");
+            }
+            UninterruptibleSleep(std::chrono::milliseconds{250});
+        }
+
+        UninterruptibleSleep(std::chrono::milliseconds{250});
+    }
+}

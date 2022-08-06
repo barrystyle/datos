@@ -168,11 +168,6 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
     // initialize stakewallet instance
     wallet.AttachWallet(pwallet);
 
-    if (!gArgs.GetBoolArg("-staking", true)) {
-        LogPrint(BCLog::POS, "%s: -staking is false.\n", __func__);
-        return;
-    }
-
     CScript coinbaseScript;
     while (!fStopMinerProc)
     {
