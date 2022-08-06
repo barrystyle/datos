@@ -25,6 +25,7 @@
 #include <policy/policy.h>
 #include <pos/kernel.h>
 #include <pos/signature.h>
+#include <pos/stakeseen.h>
 #include <pow.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>
@@ -3835,6 +3836,11 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
         if (block.vtx[i]->IsCoinBase())
             return state.DoS(100, false, REJECT_INVALID, "bad-cb-multiple", false, "more than one coinbase");
 
+    // if proof of stake, ensure block is unique
+    if (block.IsProofOfStake())
+        if (!CheckStakeUnique(block, false))
+            return state.DoS(100, false, REJECT_INVALID, "bad-cs-duplicate", false, "coinstake is duplicate");
+
     // Only the second transaction can be the optional coinstake
     for (unsigned int i = 2; i < block.vtx.size(); i++)
         if (block.vtx[i]->IsCoinStake())
@@ -3994,6 +4000,11 @@ static bool ContextualCheckBlock(const CBlock& block, CValidationState& state, c
     // Check sigops
     if (nSigOps > MaxBlockSigOps(fDIP0001Active_context))
         return state.DoS(100, false, REJECT_INVALID, "bad-blk-sigops", false, "out-of-bounds SigOpCount");
+
+    // Check coinstake timestamp
+    if (block.IsProofOfStake() && !CheckCoinStakeTimestamp(nHeight, block.GetBlockTime())) {
+        return state.DoS(50, false, REJECT_INVALID, "bad-coinstake-time", true, strprintf("%s: coinstake timestamp violation nTimeBlock=%d", __func__, block.GetBlockTime()));
+    }
 
     // Enforce rule that the coinbase starts with serialized block height
     // After DIP3/DIP4 activation, we don't enforce the height in the input script anymore.
