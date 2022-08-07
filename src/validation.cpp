@@ -2385,22 +2385,23 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     // DASH : MODIFIED TO CHECK MASTERNODE PAYMENTS AND SUPERBLOCKS
 
-    // TODO: resync data (both ways?) and try to reprocess this block later.
-    CAmount blockReward = nFees + GetBlockSubsidy(pindex->pprev->nBits, pindex->pprev->nHeight, chainparams.GetConsensus());
+    CAmount blockReward;
+    if (fProofOfWork)
+        blockReward = nFees + GetBlockSubsidy(pindex->pprev->nBits, pindex->pprev->nHeight, chainparams.GetConsensus());
+    else
+        blockReward = GetProofOfStakeReward(pindex->pprev, nFees);
     std::string strError = "";
 
     int64_t nTime5_2 = GetTimeMicros(); nTimeSubsidy += nTime5_2 - nTime5_1;
     LogPrint(BCLog::BENCHMARK, "      - GetBlockSubsidy: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5_2 - nTime5_1), nTimeSubsidy * MICRO, nTimeSubsidy * MILLI / nBlocksTotal);
 
-    // TODO: modify for stakeValueIn and superblock
-    if (!IsBlockValueValid(block, pindex->nHeight, blockReward, /*stakeValueIn,*/ strError)) {
+    if (!IsBlockValueValid(block, pindex->nHeight, blockReward, stakeValueIn, strError)) {
         return state.DoS(0, error("ConnectBlock(DASH): %s", strError), REJECT_INVALID, "bad-cb-amount");
     }
 
     int64_t nTime5_3 = GetTimeMicros(); nTimeValueValid += nTime5_3 - nTime5_2;
     LogPrint(BCLog::BENCHMARK, "      - IsBlockValueValid: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5_3 - nTime5_2), nTimeValueValid * MICRO, nTimeValueValid * MILLI / nBlocksTotal);
 
-    // TODO: test positioning of payment vout
     if (!IsBlockPayeeValid(*block.vtx[fProofOfStake], pindex->nHeight, blockReward)) {
         return state.DoS(0, error("ConnectBlock(DASH): couldn't find masternode or superblock payments"),
                                 REJECT_INVALID, "bad-cb-payee");
