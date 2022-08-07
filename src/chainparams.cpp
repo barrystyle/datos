@@ -251,14 +251,12 @@ public:
 
         // pacprotocol consensus parameters
         consensus.nLastPoWBlock = 1000;
-        consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
         consensus.nStakeMinValue = 0 * COIN;
         consensus.nStakeMaxValue = MAX_MONEY;
         consensus.nStakeMinAge = 10 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
-        consensus.nModifierInterval = 60;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000549cd3ccb81a55892330"); // 1450000
@@ -485,14 +483,12 @@ public:
 
         // pacprotocol consensus parameters
         consensus.nLastPoWBlock = 1000;
-        consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
         consensus.nStakeMinValue = 0 * COIN;
         consensus.nStakeMaxValue = MAX_MONEY;
         consensus.nStakeMinAge = 10 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
-        consensus.nModifierInterval = 60;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000022f14ac5d56b5ef"); // 470000
@@ -690,14 +686,12 @@ public:
 
         // pacprotocol consensus parameters
         consensus.nLastPoWBlock = 1000;
-        consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
         consensus.nStakeMinValue = 0 * COIN;
         consensus.nStakeMaxValue = MAX_MONEY;
         consensus.nStakeMinAge = 10 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
-        consensus.nModifierInterval = 60;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000000000000000000");
@@ -940,14 +934,12 @@ public:
 
         // pacprotocol consensus parameters
         consensus.nLastPoWBlock = 1000;
-        consensus.posLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
         consensus.nStakeMinValue = 0 * COIN;
         consensus.nStakeMaxValue = MAX_MONEY;
         consensus.nStakeMinAge = 10 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
-        consensus.nModifierInterval = 60;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00");

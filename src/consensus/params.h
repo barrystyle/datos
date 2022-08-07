@@ -114,14 +114,12 @@ struct Params {
 
     /** pacprotocol consensus parameters */
     int nLastPoWBlock{0};
-    uint256 posLimit{};
     int64_t nPosTargetSpacing{0};
     int64_t nPosTargetTimespan{0};
     CAmount nStakeMinValue{0};
     CAmount nStakeMaxValue{0};
     int nStakeMinAge{0};
     int nStakeMaxAge{0};
-    int64_t nModifierInterval{0};
 
     /** these parameters are only used on devnet and can be configured from the outside */
     int nMinimumDifficultyBlocks{0};

@@ -17,7 +17,7 @@
 #include <pow.h>
 #include <wallet/coincontrol.h>
 
-void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t nTime, int nHeight, CAmount minAmount) const
+void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t nTime, int nHeight) const
 {
     vCoins.clear();
     wallet->m_greatest_txn_depth = 0;
@@ -25,6 +25,7 @@ void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_
     {
         LOCK(wallet->cs_wallet);
 
+        int nowTime = GetTime();
         int nHeight = ::ChainActive().Height();
         int min_stake_confirmations = COINBASE_MATURITY;
         int nRequiredDepth = std::min(min_stake_confirmations-1, (int)(nHeight / 2));
@@ -54,7 +55,12 @@ void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_
             for (size_t i = 0; i < tx->vout.size(); ++i)
             {
                 const auto &txout = tx->vout[i];
-                if (txout.nValue < minAmount) {
+                if (txout.nValue < params.nStakeMinValue || txout.nValue > params.nStakeMaxValue) {
+                    continue;
+                }
+
+                int input_age = nowTime - wtx->GetTxTime();
+                if (input_age < params.nStakeMinAge || input_age > params.nStakeMaxAge) {
                     continue;
                 }
 
@@ -94,7 +100,7 @@ bool CStakeWallet::SelectCoinsForStaking(CAmount nTargetValue, int64_t nTime, in
     }
 
     std::vector<COutput> vCoins;
-    AvailableCoinsForStaking(vCoins, nTime, nHeight, 0);
+    AvailableCoinsForStaking(vCoins, nTime, nHeight);
 
     setCoinsRet.clear();
     nValueRet = 0;

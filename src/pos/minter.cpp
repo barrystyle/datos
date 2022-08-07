@@ -49,6 +49,7 @@ bool CheckStake(CBlock *pblock)
 {
     uint256 proofHash, hashTarget;
     uint256 hashBlock = pblock->GetHash();
+    const Consensus::Params& params = Params().GetConsensus();
 
     if (!pblock->IsProofOfStake()) {
         return error("%s: %s is not a proof-of-stake block.", __func__, hashBlock.GetHex());
@@ -69,7 +70,7 @@ bool CheckStake(CBlock *pblock)
         }
 
         CValidationState state;
-        if (!CheckProofOfStake(state, mi->second, *pblock->vtx[1], pblock->nTime, pblock->nBits, proofHash, hashTarget)) {
+        if (!CheckProofOfStake(state, mi->second, *pblock->vtx[1], pblock->nTime, pblock->nBits, proofHash, hashTarget, params)) {
             return error("%s: proof-of-stake checking failed.", __func__);
         }
 
@@ -166,6 +167,7 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
     int min_nodes = params.NetworkIDString() == "regtest" ? 0 : 3;
 
     // initialize stakewallet instance
+    wallet.SetParams();
     wallet.AttachWallet(pwallet);
 
     CScript coinbaseScript;

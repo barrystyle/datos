@@ -5,6 +5,7 @@
 #ifndef POS_STAKEGEN_H
 #define POS_STAKEGEN_H
 
+#include <chainparams.h>
 #include <consensus/tx_verify.h>
 #include <index/disktxpos.h>
 #include <index/txindex.h>
@@ -27,6 +28,7 @@ class CStakeWallet
     private:
         bool ready;
         CWallet* wallet;
+        Consensus::Params params;
 
     public:
         CStakeWallet()
@@ -39,6 +41,8 @@ class CStakeWallet
         void SetReady() { ready = true; }
         void UnsetReady() { ready = false; }
 
+        void SetParams() { params = Params().GetConsensus(); }
+
         void AttachWallet(CWallet* pwallet) {
             if (!pwallet) return;
             wallet = pwallet;
@@ -50,7 +54,7 @@ class CStakeWallet
             UnsetReady();
         }
 
-        void AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t nTime, int nHeight, CAmount minAmount) const;
+        void AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t nTime, int nHeight) const;
         bool SelectCoinsForStaking(CAmount nTargetValue, int64_t nTime, int nHeight, std::set<std::pair<const CWalletTx*, unsigned int>>& setCoinsRet, CAmount& nValueRet) const;
         uint64_t GetStakeWeight(interfaces::Chain::Lock& locked_chain) const;
         bool CreateCoinStake(CBlockIndex* pindexPrev, unsigned int nBits, int64_t nTime, int nBlockHeight, int64_t nFees, CMutableTransaction& txNew, CKey& key);

@@ -2050,7 +2050,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
         setDirtyBlockIndex.insert(pindex);
         uint256 hashProof, targetProofOfStake;
-        if (!CheckProofOfStake(state, pindex->pprev, *block.vtx[1], block.nTime, block.nBits, hashProof, targetProofOfStake)) {
+        if (!CheckProofOfStake(state, pindex->pprev, *block.vtx[1], block.nTime, block.nBits, hashProof, targetProofOfStake, chainparams.GetConsensus())) {
             return error("%s: Check proof of stake failed.", __func__);
         }
         pindex->hashProof = hashProof;

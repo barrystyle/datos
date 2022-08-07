@@ -205,7 +205,7 @@ bool GetKernelInfo(const CBlockIndex* blockindex, const CTransaction& tx, uint25
     return true;
 };
 
-bool CheckProofOfStake(CValidationState& state, const CBlockIndex* pindexPrev, const CTransaction& tx, int64_t nTime, unsigned int nBits, uint256& hashProofOfStake, uint256& targetProofOfStake)
+bool CheckProofOfStake(CValidationState& state, const CBlockIndex* pindexPrev, const CTransaction& tx, int64_t nTime, unsigned int nBits, uint256& hashProofOfStake, uint256& targetProofOfStake, const Consensus::Params& params)
 {
     // pindexPrev is the current tip, the block the new block will connect on to
     // nTime is the time of the new/next block
@@ -213,8 +213,6 @@ bool CheckProofOfStake(CValidationState& state, const CBlockIndex* pindexPrev, c
     if (!tx.IsCoinStake() || tx.vin.size() < 1) {
         return false;
     }
-
-    CTransactionRef txPrev;
 
     // Kernel (input 0) must match the stake hash target per coin age (nBits)
     const CTxIn& txin = tx.vin[0];
@@ -247,7 +245,17 @@ bool CheckProofOfStake(CValidationState& state, const CBlockIndex* pindexPrev, c
     const CScript& scriptSig = txin.scriptSig;
     ScriptError serror = SCRIPT_ERR_OK;
 
-    // Redundant: all inputs are checked later during CheckInputs
+    if (amount < params.nStakeMinValue || amount > params.nStakeMaxValue) {
+        LogPrint(BCLog::POS, "ERROR: %s: input coin amount is out of range (amount: %d, min: %d, max: %d)\n", __func__, amount, params.nStakeMinValue, params.nStakeMaxValue);
+        return state.DoS(100, "input-value-out-of-range");
+    }
+
+    int inputAge = pindexPrev->GetBlockTime() - nBlockFromTime;
+    if (inputAge < params.nStakeMinAge || inputAge > params.nStakeMaxAge) {
+        LogPrint(BCLog::POS, "ERROR: %s: input age is out of range (amount: %d, min: %d, max: %d)\n", __func__, inputAge, params.nStakeMinAge, params.nStakeMaxAge);
+        return state.DoS(100, "input-age-out-of-range");
+    }
+
     if (!VerifyScript(scriptSig, kernelPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&tx, 0, amount), &serror)) {
         LogPrint(BCLog::POS, "ERROR: %s: verify-script-failed, txn %s, reason %s\n", __func__, tx.GetHash().ToString(), ScriptErrorString(serror));
         return state.DoS(100,  "verify-cs-script-failed");
