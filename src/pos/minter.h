@@ -32,6 +32,7 @@ public:
 extern std::vector<StakeThread*> vStakeThreads;
 
 extern std::atomic<bool> fIsStaking;
+extern std::atomic<bool> fTryToSync;
 
 extern int nMinStakeInterval;
 extern int nMinerSleep;
