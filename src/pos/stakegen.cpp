@@ -384,6 +384,26 @@ bool CStakeWallet::CreateCoinStake(CBlockIndex* pindexPrev, unsigned int nBits, 
     return true;
 }
 
+void CStakeWallet::AbandonOrphanedCoinstakes() const
+{
+    if (!ready) {
+        return;
+    }
+
+    auto locked_chain = wallet->chain().lock();
+    for (std::pair<const uint256, CWalletTx>& item : wallet->mapWallet) {
+        const uint256& wtxid = item.first;
+        CWalletTx& wtx = item.second;
+        assert(wtx.GetHash() == wtxid);
+        if (wtx.GetDepthInMainChain(*locked_chain) == 0 && !wtx.isAbandoned() && wtx.IsCoinStake()) {
+            LogPrint(BCLog::POS, "Abandoning coinstake wtx %s\n", wtx.GetHash().ToString());
+            if (!wallet->AbandonTransaction(*locked_chain, wtxid)) {
+                LogPrint(BCLog::POS, "Failed to abandon coinstake tx %s\n", wtx.GetHash().ToString());
+            }
+        }
+    }
+}
+
 bool CStakeWallet::SignBlock(CBlockTemplate* pblocktemplate, int nHeight, int64_t nSearchTime)
 {
     if (!ready) {
@@ -391,6 +411,8 @@ bool CStakeWallet::SignBlock(CBlockTemplate* pblocktemplate, int nHeight, int64_
     }
 
     LogPrint(BCLog::POS, "%s, Height %d\n", __func__, nHeight);
+
+    AbandonOrphanedCoinstakes();
 
     assert(pblocktemplate);
     CBlock* pblock = &pblocktemplate->block;

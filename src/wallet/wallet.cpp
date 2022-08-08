@@ -2511,8 +2511,13 @@ void CWallet::ReacceptWalletTransactions(interfaces::Chain::Lock& locked_chain)
 
         int nDepth = wtx.GetDepthInMainChain(locked_chain);
 
-        if (!wtx.IsCoinBase() && (nDepth == 0 && !wtx.IsLockedByInstantSend() && !wtx.isAbandoned())) {
-            mapSorted.insert(std::make_pair(wtx.nOrderPos, &wtx));
+        if (nDepth == 0 && !wtx.IsLockedByInstantSend() && !wtx.isAbandoned()) {
+            if (wtx.IsCoinBase() || wtx.IsCoinStake()) {
+                LogPrintf("Abandoning wtx %s\n", wtx.GetHash().ToString());
+                AbandonTransaction(locked_chain, wtxid);
+            } else {
+                mapSorted.insert(std::make_pair(wtx.nOrderPos, &wtx));
+            }
         }
     }
 
