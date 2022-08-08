@@ -113,6 +113,7 @@ struct Params {
     uint256 defaultAssumeValid;
 
     /** pacprotocol consensus parameters */
+    uint256 posLimit;
     int nLastPoWBlock{0};
     int64_t nPosTargetSpacing{0};
     int64_t nPosTargetTimespan{0};
