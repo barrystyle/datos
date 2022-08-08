@@ -2511,8 +2511,13 @@ void CWallet::ReacceptWalletTransactions(interfaces::Chain::Lock& locked_chain)
 
         int nDepth = wtx.GetDepthInMainChain(locked_chain);
 
-        if (!wtx.IsCoinBase() && (nDepth == 0 && !wtx.IsLockedByInstantSend() && !wtx.isAbandoned())) {
-            mapSorted.insert(std::make_pair(wtx.nOrderPos, &wtx));
+        if (nDepth == 0 && !wtx.IsLockedByInstantSend() && !wtx.isAbandoned()) {
+            if (wtx.IsCoinBase() || wtx.IsCoinStake()) {
+                LogPrintf("Abandoning wtx %s\n", wtx.GetHash().ToString());
+                AbandonTransaction(locked_chain, wtxid);
+            } else {
+                mapSorted.insert(std::make_pair(wtx.nOrderPos, &wtx));
+            }
         }
     }
 
@@ -3153,6 +3158,20 @@ const CTxOut& CWallet::FindNonChangeParentOutput(const CTransaction& tx, int out
         n = prevout.n;
     }
     return ptx->vout[n];
+}
+
+CAmount CWallet::GetStakeBalance() const
+{
+    CAmount nTotal = 0;
+    auto locked_chain = chain().lock();
+    LOCK(cs_wallet);
+    for (std::map<uint256, CWalletTx>::const_iterator it = mapWallet.begin(); it != mapWallet.end(); ++it)
+    {
+        const CWalletTx* pcoin = &(*it).second;
+        if (pcoin->IsImmatureCoinStake(*locked_chain) && pcoin->GetDepthInMainChain(*locked_chain) > 0)
+            nTotal += CWallet::GetCredit(*(pcoin->tx), ISMINE_SPENDABLE);
+    }
+    return nTotal;
 }
 
 void CWallet::InitCoinJoinSalt()
@@ -5690,7 +5709,7 @@ bool CWalletTx::IsChainLocked() const
 
 int CWalletTx::GetBlocksToMaturity(interfaces::Chain::Lock& locked_chain) const
 {
-    if (!IsCoinBase())
+    if (!IsCoinBase() && !IsCoinStake())
         return 0;
     int chain_depth = GetDepthInMainChain(locked_chain);
     assert(chain_depth >= 0); // coinbase tx should not be conflicted
@@ -5700,7 +5719,13 @@ int CWalletTx::GetBlocksToMaturity(interfaces::Chain::Lock& locked_chain) const
 bool CWalletTx::IsImmatureCoinBase(interfaces::Chain::Lock& locked_chain) const
 {
     // note GetBlocksToMaturity is 0 for non-coinbase tx
-    return GetBlocksToMaturity(locked_chain) > 0;
+    return IsCoinBase() && GetBlocksToMaturity(locked_chain) > 0;
+}
+
+bool CWalletTx::IsImmatureCoinStake(interfaces::Chain::Lock& locked_chain) const
+{
+    // GetBlocksToMaturity is 0 for non-coinbase tx
+    return IsCoinStake() && GetBlocksToMaturity(locked_chain) > 0;
 }
 
 std::vector<OutputGroup> CWallet::GroupOutputs(const std::vector<COutput>& outputs, bool single_coin) const {

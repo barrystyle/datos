@@ -387,7 +387,8 @@ QString TransactionTableModel::formatTxType(const TransactionRecord *wtx) const
         return tr("Payment to yourself");
     case TransactionRecord::Generated:
         return tr("Mined");
-
+    case TransactionRecord::Staked:
+        return tr("Staked");
     case TransactionRecord::CoinJoinMixing:
         return tr("%1 Mixing").arg(QString::fromStdString(gCoinJoinName));
     case TransactionRecord::CoinJoinCollateralPayment:
@@ -428,6 +429,7 @@ QString TransactionTableModel::formatTxToAddress(const TransactionRecord *wtx, b
     case TransactionRecord::RecvWithCoinJoin:
     case TransactionRecord::SendToAddress:
     case TransactionRecord::Generated:
+    case TransactionRecord::Staked:
     case TransactionRecord::CoinJoinSend:
         return formatAddressLabel(wtx->strAddress, wtx->label, tooltip) + watchAddress;
     case TransactionRecord::SendToOther:
@@ -445,6 +447,7 @@ QVariant TransactionTableModel::addressColor(const TransactionRecord *wtx) const
     {
     case TransactionRecord::RecvWithAddress:
     case TransactionRecord::SendToAddress:
+    case TransactionRecord::Staked:
     case TransactionRecord::Generated:
     case TransactionRecord::CoinJoinSend:
     case TransactionRecord::RecvWithCoinJoin:
@@ -481,6 +484,7 @@ QString TransactionTableModel::formatTxAmount(const TransactionRecord *wtx, bool
 QVariant TransactionTableModel::amountColor(const TransactionRecord *rec) const
 {
     switch (rec->type) {
+    case TransactionRecord::Staked:
     case TransactionRecord::Generated:
     case TransactionRecord::RecvWithCoinJoin:
     case TransactionRecord::RecvWithAddress:

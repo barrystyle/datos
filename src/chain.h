@@ -13,13 +13,15 @@
 #include <tinyformat.h>
 #include <uint256.h>
 
+#include <util/moneystr.h>
+
 #include <vector>
 
 /**
  * Maximum amount of time that a block timestamp is allowed to exceed the
  * current network-adjusted time before the block will be accepted.
  */
-static constexpr int64_t MAX_FUTURE_BLOCK_TIME = 2 * 60 * 60;
+static constexpr int64_t MAX_FUTURE_BLOCK_TIME = 3 * 60;
 
 /**
  * Timestamp window used as a grace period by code that compares external
@@ -184,6 +186,13 @@ public:
     //! (memory only) Maximum nTime in the chain up to and including this block.
     unsigned int nTimeMax{0};
 
+    //! Fields relating to current chain state.
+    CAmount nMint{0};
+    CAmount nMoneySupply{0};
+    uint256 nStakeModifier{};
+    COutPoint prevoutStake{};
+    uint256 hashProof{};
+
     CBlockIndex()
     {
     }
@@ -247,6 +256,11 @@ public:
         return (int64_t)nTime;
     }
 
+    int64_t GetPastTimeLimit() const
+    {
+        return GetBlockTime();
+    }
+
     int64_t GetBlockTimeMax() const
     {
         return (int64_t)nTimeMax;
@@ -268,10 +282,25 @@ public:
         return pbegin[(pend - pbegin)/2];
     }
 
+    bool IsProofOfWork() const
+    {
+        return !IsProofOfStake();
+    }
+
+    bool IsProofOfStake() const
+    {
+        return !hashProof.IsNull();
+    }
+
     std::string ToString() const
     {
-        return strprintf("CBlockIndex(pprev=%p, nHeight=%d, merkle=%s, hashBlock=%s)",
-            pprev, nHeight,
+        return strprintf("CBlockIndex(nprev=%08x, nFile=%d, nHeight=%d, nMint=%s, nMoneySupply=%s, nFlags=%s, nStakeModifier=%s, hashProof=%s, prevoutStake=%s, merkleRoot=%s, hashBlock=%s)",
+            pprev, nFile, nHeight,
+            FormatMoney(nMint), FormatMoney(nMoneySupply),
+            IsProofOfStake() ? "PoS" : "PoW",
+            nStakeModifier.ToString(),
+            hashProof.ToString(),
+            prevoutStake.ToString(),
             hashMerkleRoot.ToString(),
             GetBlockHash().ToString());
     }
@@ -345,6 +374,7 @@ public:
 
         // block hash
         READWRITE(obj.hash);
+
         // block header
         READWRITE(obj.nVersion);
         READWRITE(obj.hashPrev);
@@ -352,6 +382,13 @@ public:
         READWRITE(obj.nTime);
         READWRITE(obj.nBits);
         READWRITE(obj.nNonce);
+
+        // chain state
+        READWRITE(obj.nMint);
+        READWRITE(obj.nMoneySupply);
+        READWRITE(obj.nStakeModifier);
+        READWRITE(obj.hashProof);
+        READWRITE(obj.prevoutStake);
     }
 
     uint256 GetBlockHash() const

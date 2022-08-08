@@ -10,6 +10,7 @@
 #include <httpserver.h>
 #include <key_io.h>
 #include <net.h>
+#include <pos/stakeman.h>
 #include <rpc/blockchain.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
@@ -1288,6 +1289,26 @@ static UniValue echo(const JSONRPCRequest& request)
     return request.params;
 }
 
+UniValue setstaking(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error(
+            "staking\n"
+            "Returns an object that can be toggled to enable or disable staking.\n"
+            "}\n"
+            "\nExamples:\n"
+            + HelpExampleCli("setstaking", "true"));
+
+    UniValue obj(UniValue::VOBJ);
+    std::string actionMode = request.params[0].isNull() ? "false" : request.params[0].get_str();
+    if (actionMode == "true")
+        stakeman_request_start();
+    else
+        stakeman_request_stop();
+    obj.pushKV("staking status", actionMode);
+    return obj;
+}
+
 // clang-format off
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         argNames
@@ -1313,6 +1334,7 @@ static const CRPCCommand commands[] =
     /* pacprotocol features */
     { "pacprotocol",               "mnsync",                 &mnsync,                 {} },
     { "pacprotocol",               "spork",                  &spork,                  {"arg0","value"} },
+    { "pacprotocol",               "setstaking",             &setstaking,             {} },
 
     /* Not shown in help */
     { "hidden",             "setmocktime",            &setmocktime,            {"timestamp"}},

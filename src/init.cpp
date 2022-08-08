@@ -38,6 +38,8 @@
 #include <policy/fees.h>
 #include <policy/policy.h>
 #include <policy/settings.h>
+#include <pos/minter.h>
+#include <pos/stakeman.h>
 #include <rpc/blockchain.h>
 #include <rpc/register.h>
 #include <rpc/server.h>
@@ -113,6 +115,8 @@ static bool fFeeEstimatesInitialized = false;
 static const bool DEFAULT_PROXYRANDOMIZE = true;
 static const bool DEFAULT_REST_ENABLE = false;
 static const bool DEFAULT_STOPAFTERBLOCKIMPORT = false;
+
+std::thread stakeman;
 
 // Dump addresses to banlist.dat every 15 minutes (900s)
 static constexpr int DUMP_BANS_INTERVAL = 60 * 15;
@@ -224,6 +228,7 @@ void PrepareShutdown(InitInterfaces& interfaces)
     StopREST();
     StopRPC();
     StopHTTPServer();
+    StopThreadStakeMiner();
     llmq::StopLLMQSystem();
 
     // fRPCInWarmup should be `false` if we completed the loading sequence
@@ -2496,6 +2501,10 @@ bool AppInitMain(InitInterfaces& interfaces)
     scheduler.scheduleEvery([]{
         g_banman->DumpBanlist();
     }, DUMP_BANS_INTERVAL * 1000);
+
+    // stakeman thread
+    stakeman = std::thread(std::bind(&TraceThread<void (*)()>, "stakeman", &stakeman_handler));
+    stakeman.detach();
 
     return true;
 }

@@ -19,6 +19,9 @@
 #include <node/coinstats.h>
 #include <policy/feerate.h>
 #include <policy/policy.h>
+#include <pos/kernel.h>
+#include <pos/minter.h>
+#include <pos/stakegen.h>
 #include <primitives/transaction.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
@@ -114,6 +117,7 @@ UniValue blockheaderToJSON(const CBlockIndex* tip, const CBlockIndex* blockindex
     result.pushKV("difficulty", GetDifficulty(blockindex));
     result.pushKV("chainwork", blockindex->nChainWork.GetHex());
     result.pushKV("nTx", (uint64_t)blockindex->nTx);
+    result.pushKV("moneysupply", ValueFromAmount(blockindex->nMoneySupply));
 
     if (blockindex->pprev)
         result.pushKV("previousblockhash", blockindex->pprev->GetBlockHash().GetHex());
@@ -174,6 +178,10 @@ UniValue blockToJSON(const CBlock& block, const CBlockIndex* tip, const CBlockIn
         result.pushKV("previousblockhash", blockindex->pprev->GetBlockHash().GetHex());
     if (pnext)
         result.pushKV("nextblockhash", pnext->GetBlockHash().GetHex());
+    result.pushKV("flags", strprintf("%s", blockindex->IsProofOfStake()? "proof-of-stake" : "proof-of-work"));
+    result.pushKV("proofhash", blockindex->IsProofOfStake() ? blockindex->hashProof.GetHex() : blockindex->GetBlockHash().GetHex());
+    result.pushKV("modifier", strprintf("%s", blockindex->nStakeModifier.ToString()));
+    result.pushKV("blocksignature", HexStr(block.vchBlockSig));
 
     result.pushKV("chainlock", chainLock);
 
@@ -842,6 +850,7 @@ static UniValue getblockheader(const JSONRPCRequest& request)
             "  \"difficulty\" : x.xxx,  (numeric) The difficulty\n"
             "  \"chainwork\" : \"0000...1f3\"     (string) Expected number of hashes required to produce the current chain (in hex)\n"
             "  \"nTx\" : n,             (numeric) The number of transactions in the block.\n"
+            "  \"moneysupply\": xxxxxxx,        (numeric) the total amount of pacprotocol in the chain at this block\n"
             "  \"previousblockhash\" : \"hash\",  (string) The hash of the previous block\n"
             "  \"nextblockhash\" : \"hash\",      (string) The hash of the next block\n"
             "}\n"
@@ -1121,6 +1130,7 @@ static UniValue getblock(const JSONRPCRequest& request)
             "  \"nTx\" : n,             (numeric) The number of transactions in the block.\n"
             "  \"previousblockhash\" : \"hash\",  (string) The hash of the previous block\n"
             "  \"nextblockhash\" : \"hash\"       (string) The hash of the next block\n"
+            "  \"blocksig\" : \"xxxx\",           (string) The block signature\n"
             "}\n"
                     },
                     RPCResult{"for verbosity = 2",
@@ -1526,6 +1536,7 @@ UniValue getblockchaininfo(const JSONRPCRequest& request)
     obj.pushKV("blocks",                (int)::ChainActive().Height());
     obj.pushKV("headers",               pindexBestHeader ? pindexBestHeader->nHeight : -1);
     obj.pushKV("bestblockhash",         tip->GetBlockHash().GetHex());
+    obj.pushKV("moneysupply",           ValueFromAmount(tip->nMoneySupply));
     obj.pushKV("difficulty",            (double)GetDifficulty(tip));
     obj.pushKV("mediantime",            (int64_t)tip->GetMedianTimePast());
     obj.pushKV("verificationprogress",  GuessVerificationProgress(Params().TxData(), tip));
@@ -2720,6 +2731,70 @@ static UniValue getblockfilter(const JSONRPCRequest& request)
     return ret;
 }
 
+static UniValue getstakinginfo(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 0) {
+        throw std::runtime_error(
+            RPCHelpMan{"getstakinginfo",
+                "\nReturns an object containing staking-related information.",
+                {},
+                RPCResult{
+                           "{\n"
+                           "  \"staking\": xxx,             (bool) 'true' if wallet is currently staking\n"
+                           "  \"errors\": nnn,              (string) \n"
+                           "  \"pooledtx\": n               (numeric) The size of the mempool\n"
+                           "  \"difficulty\": xxx.xxxxx     (numeric) The current difficulty\n"
+                           "  \"search-interval\": nnn,     (numeric) \n"
+                           "  \"weight\": \"xxxx\",         (numeric) \n"
+                           "  \"netstakeweight\": \"...\"   (numeric) \n"
+                           "  \"expectedtime\": \"...\"     (numeric) Expected time to earn reward\n"
+                           "}\n"
+                       },
+                RPCExamples{
+                    HelpExampleCli("getstakinginfo", "")
+            + HelpExampleRpc("getstakinginfo", "")
+                },
+            }.ToString());
+    }
+
+    CBlockIndex* pindex;
+
+    uint64_t nWeight;
+    uint64_t lastCoinStakeSearchInterval;
+
+    CWallet* pwallet = wallet.GetStakingWallet();
+    if (!pwallet) {
+        return NullUniValue;
+    }
+
+    {
+        LOCK(cs_main);
+        auto locked_chain = pwallet->chain().lock();
+        nWeight = wallet.GetStakeWeight(*locked_chain);
+        lastCoinStakeSearchInterval = pwallet->nLastCoinStakeSearchTime;
+        pindex = ::ChainActive().Tip();
+    }
+
+    bool staking = pwallet->fStakingEnabled;
+    const Consensus::Params& consensusParams = Params().GetConsensus();
+    uint64_t nNetworkWeight = GetPoSKernelPS(pindex);
+    int64_t nTargetSpacing = consensusParams.nPosTargetSpacing;
+    uint64_t nExpectedTime = nTargetSpacing * nNetworkWeight / nWeight;
+
+    UniValue obj(UniValue::VOBJ);
+
+    obj.pushKV("staking", staking);
+    obj.pushKV("errors", GetWarnings("statusbar"));
+    obj.pushKV("pooledtx", (uint64_t)mempool.size());
+    obj.pushKV("difficulty", GetDifficulty(pindexBestHeader));
+    obj.pushKV("search-interval", (int)lastCoinStakeSearchInterval);
+    obj.pushKV("weight", (uint64_t)nWeight);
+    obj.pushKV("netstakeweight", (uint64_t)nNetworkWeight);
+    obj.pushKV("expectedtime", nExpectedTime);
+
+    return obj;
+}
+
 // clang-format off
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)         argNames
@@ -2753,6 +2828,8 @@ static const CRPCCommand commands[] =
     { "blockchain",         "preciousblock",          &preciousblock,          {"blockhash"} },
     { "blockchain",         "scantxoutset",           &scantxoutset,           {"action", "scanobjects"} },
     { "blockchain",         "getblockfilter",         &getblockfilter,         {"blockhash", "filtertype"} },
+
+    { "blockchain",         "getstakinginfo",         &getstakinginfo,         {} },
 
     /* Not shown in help */
     { "hidden",             "invalidateblock",        &invalidateblock,        {"blockhash"} },
