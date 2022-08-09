@@ -151,6 +151,11 @@ bool CheckStakeKernelHash(const CBlockIndex* pindexPrev,
             hashProofOfStake.ToString());
     }
 
+    // Catch empty hashproof from bad stake
+    if (hashProofOfStake == uint256()) {
+        return false;
+    }
+
     // Now check if proof-of-stake hash meets target protocol
     if (UintToArith256(hashProofOfStake) > bnTarget) {
         return false;
