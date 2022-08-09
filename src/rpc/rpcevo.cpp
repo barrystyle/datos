@@ -433,6 +433,8 @@ static void protx_register_submit_help(const JSONRPCRequest& request)
 // handles register, register_prepare and register_fund in one method
 static UniValue protx_register(const JSONRPCRequest& request)
 {
+    const Consensus::Params& params = Params().GetConsensus();
+
     bool isExternalRegister = request.params[0].get_str() == "register";
     bool isFundRegister = request.params[0].get_str() == "register_fund";
     bool isPrepareRegister = request.params[0].get_str() == "register_prepare";
@@ -455,7 +457,7 @@ static UniValue protx_register(const JSONRPCRequest& request)
 
     size_t paramIdx = 1;
 
-    CAmount collateralAmount = 1000 * COIN;
+    CAmount collateralAmount = params.mnCollateral;
 
     CMutableTransaction tx;
     tx.nVersion = 3;

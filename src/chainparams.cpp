@@ -249,6 +249,7 @@ public:
 
         // pacprotocol consensus parameters
         consensus.nLastPoWBlock = 1000;
+        consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
@@ -454,6 +455,7 @@ public:
 
         // pacprotocol consensus parameters
         consensus.nLastPoWBlock = 1000;
+        consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
@@ -650,6 +652,7 @@ public:
 
         // pacprotocol consensus parameters
         consensus.nLastPoWBlock = 1000;
+        consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
@@ -896,6 +899,7 @@ public:
 
         // pacprotocol consensus parameters
         consensus.nLastPoWBlock = 1000;
+        consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;

@@ -645,6 +645,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
     AssertLockHeld(cs);
 
     int nHeight = pindexPrev->nHeight + 1;
+    const Consensus::Params& params = Params().GetConsensus();
 
     CDeterministicMNList oldList = GetListForBlock(pindexPrev);
     CDeterministicMNList newList = oldList;
@@ -699,7 +700,7 @@ bool CDeterministicMNManager::BuildNewListFromBlock(const CBlock& block, const C
             }
 
             Coin coin;
-            if (!proTx.collateralOutpoint.hash.IsNull() && (!view.GetCoin(dmn->collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != 1000 * COIN)) {
+            if (!proTx.collateralOutpoint.hash.IsNull() && (!view.GetCoin(dmn->collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != params.mnCollateral)) {
                 // should actually never get to this point as CheckProRegTx should have handled this case.
                 // We do this additional check nevertheless to be 100% sure
                 return _state.DoS(100, false, REJECT_INVALID, "bad-protx-collateral");
@@ -992,6 +993,7 @@ CDeterministicMNList CDeterministicMNManager::GetListAtChainTip()
 
 bool CDeterministicMNManager::IsProTxWithCollateral(const CTransactionRef& tx, uint32_t n)
 {
+    const Consensus::Params& params = Params().GetConsensus();
     if (tx->nVersion != 3 || tx->nType != TRANSACTION_PROVIDER_REGISTER) {
         return false;
     }
@@ -1006,7 +1008,7 @@ bool CDeterministicMNManager::IsProTxWithCollateral(const CTransactionRef& tx, u
     if (proTx.collateralOutpoint.n >= tx->vout.size() || proTx.collateralOutpoint.n != n) {
         return false;
     }
-    if (tx->vout[n].nValue != 1000 * COIN) {
+    if (tx->vout[n].nValue != params.mnCollateral) {
         return false;
     }
     return true;
@@ -1240,6 +1242,8 @@ static bool CheckHashSig(const ProTx& proTx, const CBLSPublicKey& pubKey, CValid
 
 bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValidationState& state, const CCoinsViewCache& view, bool check_sigs)
 {
+    const Consensus::Params& params = Params().GetConsensus();
+
     if (tx.nType != TRANSACTION_PROVIDER_REGISTER) {
         return state.DoS(100, false, REJECT_INVALID, "bad-protx-type");
     }
@@ -1266,7 +1270,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
 
     if (!ptx.collateralOutpoint.hash.IsNull()) {
         Coin coin;
-        if (!view.GetCoin(ptx.collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != 1000 * COIN) {
+        if (!view.GetCoin(ptx.collateralOutpoint, coin) || coin.IsSpent() || coin.out.nValue != params.mnCollateral) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
         }
 
@@ -1286,7 +1290,7 @@ bool CheckProRegTx(const CTransaction& tx, const CBlockIndex* pindexPrev, CValid
         if (ptx.collateralOutpoint.n >= tx.vout.size()) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral-index");
         }
-        if (tx.vout[ptx.collateralOutpoint.n].nValue != 1000 * COIN) {
+        if (tx.vout[ptx.collateralOutpoint.n].nValue != params.mnCollateral) {
             return state.DoS(10, false, REJECT_INVALID, "bad-protx-collateral");
         }
 
