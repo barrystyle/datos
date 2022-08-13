@@ -10,6 +10,7 @@
 #include <uint256.h>
 #include <llmq/params.h>
 
+#include <limits>
 #include <map>
 
 namespace Consensus {
@@ -46,6 +47,12 @@ struct BIP9Deployment {
     int64_t nThresholdMin{0};
     /** A coefficient which adjusts the speed a required number of signaling blocks is decreasing from nThresholdStart to nThresholdMin at with each period. */
     int64_t nFalloffCoeff{0};
+    static constexpr int64_t NO_TIMEOUT = std::numeric_limits<int64_t>::max();
+    /** Special value for nStartTime indicating that the deployment is always active.
+     *  This is useful for testing, as it means tests don't need to deal with the activation
+     *  process (which takes at least 3 BIP9 intervals). Only tests that specifically test the
+     *  behaviour during activation cannot use this. */
+    static constexpr int64_t ALWAYS_ACTIVE = -1;
 };
 
 /**
