@@ -255,7 +255,7 @@ bool CheckProofOfStake(CValidationState& state, const CBlockIndex* pindexPrev, c
         return state.DoS(100, "input-value-out-of-range");
     }
 
-    int inputAge = pindexPrev->GetBlockTime() - nBlockFromTime;
+    int inputAge = nTime - nBlockFromTime;
     if (inputAge < params.nStakeMinAge || inputAge > params.nStakeMaxAge) {
         LogPrint(BCLog::POS, "ERROR: %s: input age is out of range (amount: %d, min: %d, max: %d)\n", __func__, inputAge, params.nStakeMinAge, params.nStakeMaxAge);
         return state.DoS(100, "input-age-out-of-range");
