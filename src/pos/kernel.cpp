@@ -252,23 +252,23 @@ bool CheckProofOfStake(CValidationState& state, const CBlockIndex* pindexPrev, c
 
     if (amount < params.nStakeMinValue || amount > params.nStakeMaxValue) {
         LogPrint(BCLog::POS, "ERROR: %s: input coin amount is out of range (amount: %d, min: %d, max: %d)\n", __func__, amount, params.nStakeMinValue, params.nStakeMaxValue);
-        return state.DoS(100, "input-value-out-of-range");
+        return false;
     }
 
     int inputAge = nTime - nBlockFromTime;
     if (inputAge < params.nStakeMinAge || inputAge > params.nStakeMaxAge) {
         LogPrint(BCLog::POS, "ERROR: %s: input age is out of range (amount: %d, min: %d, max: %d)\n", __func__, inputAge, params.nStakeMinAge, params.nStakeMaxAge);
-        return state.DoS(100, "input-age-out-of-range");
+        return false;
     }
 
     if (!VerifyScript(scriptSig, kernelPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&tx, 0, amount), &serror)) {
         LogPrint(BCLog::POS, "ERROR: %s: verify-script-failed, txn %s, reason %s\n", __func__, tx.GetHash().ToString(), ScriptErrorString(serror));
-        return state.DoS(100,  "verify-cs-script-failed");
+        return false;
     }
 
     if (!CheckStakeKernelHash(pindexPrev, nBits, nBlockFromTime, amount, txin.prevout, nTime, hashProofOfStake, targetProofOfStake, LogAcceptCategory(BCLog::POS))) {
         LogPrint(BCLog::POS, "WARNING: %s: Check kernel failed on coinstake %s, hashProof=%s\n", __func__, tx.GetHash().ToString(), hashProofOfStake.ToString());
-        return state.DoS(100, "check-kernel-failed");
+        return false;
     }
 
     return true;
