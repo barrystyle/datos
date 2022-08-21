@@ -1955,9 +1955,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     }
 
     if (fProofOfStake) {
-        pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
         setDirtyBlockIndex.insert(pindex);
         uint256 hashProof, targetProofOfStake;
+        pindex->prevoutStake = pindex->pprev->IsProofOfWork() ? COutPoint() : block.vtx[1]->vin[0].prevout;
+        pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
         if (!CheckProofOfStake(state, pindex->pprev, *block.vtx[1], block.nTime, block.nBits, hashProof, targetProofOfStake, chainparams.GetConsensus())) {
             return error("%s: Check proof of stake failed.", __func__);
         }
@@ -4131,12 +4132,6 @@ bool CChainState::AcceptBlock(const std::shared_ptr<const CBlock>& pblock, CVali
             setDirtyBlockIndex.insert(pindex);
         }
         return error("%s: %s", __func__, FormatStateMessage(state));
-    }
-
-    if (block.IsProofOfStake()) {
-        pindex->prevoutStake = pblock->vtx[1]->vin[1].prevout;
-        pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
-        setDirtyBlockIndex.insert(pindex);
     }
 
     // Header is valid/has work, merkle tree is good...RELAY NOW
