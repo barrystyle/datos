@@ -198,10 +198,12 @@ bool CStakeWallet::CreateCoinStake(CBlockIndex* pindexPrev, unsigned int nBits, 
     std::vector<const CWalletTx*> vwtxPrev;
     std::set<std::pair<const CWalletTx*, unsigned int>> setCoins;
     if (!SelectCoinsForStaking(nBalance - wallet->nReserveBalance, nTime, nBlockHeight, setCoins, nValueIn)) {
+        UninterruptibleSleep(std::chrono::milliseconds{150});
         return false;
     }
 
     if (setCoins.empty()) {
+        UninterruptibleSleep(std::chrono::milliseconds{150});
         return false;
     }
 

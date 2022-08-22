@@ -78,8 +78,10 @@ uint256 ComputeStakeModifier(const CBlockIndex* pindexPrev, const uint256& kerne
     if (!pindexPrev)
         return uint256(); // genesis block's modifier is 0
 
+    const uint256 stakeModifier = pindexPrev->IsProofOfStake() ? pindexPrev->nStakeModifier : pindexPrev->GetBlockHash();
+
     CDataStream ss(SER_GETHASH, 0);
-    ss << kernel << pindexPrev->nStakeModifier;
+    ss << kernel << stakeModifier;
     return Hash(ss.begin(), ss.end());
 }
 
@@ -149,6 +151,11 @@ bool CheckStakeKernelHash(const CBlockIndex* pindexPrev,
             __func__, nStakeModifier.ToString(),
             nBlockFromTime, prevout.n, nTime,
             hashProofOfStake.ToString());
+    }
+
+    // Catch empty hashproof from bad stake
+    if (hashProofOfStake == uint256()) {
+        return false;
     }
 
     // Now check if proof-of-stake hash meets target protocol
@@ -247,23 +254,23 @@ bool CheckProofOfStake(CValidationState& state, const CBlockIndex* pindexPrev, c
 
     if (amount < params.nStakeMinValue || amount > params.nStakeMaxValue) {
         LogPrint(BCLog::POS, "ERROR: %s: input coin amount is out of range (amount: %d, min: %d, max: %d)\n", __func__, amount, params.nStakeMinValue, params.nStakeMaxValue);
-        return state.DoS(100, "input-value-out-of-range");
+        return false;
     }
 
-    int inputAge = pindexPrev->GetBlockTime() - nBlockFromTime;
+    int inputAge = nTime - nBlockFromTime;
     if (inputAge < params.nStakeMinAge || inputAge > params.nStakeMaxAge) {
         LogPrint(BCLog::POS, "ERROR: %s: input age is out of range (amount: %d, min: %d, max: %d)\n", __func__, inputAge, params.nStakeMinAge, params.nStakeMaxAge);
-        return state.DoS(100, "input-age-out-of-range");
+        return false;
     }
 
     if (!VerifyScript(scriptSig, kernelPubKey, STANDARD_SCRIPT_VERIFY_FLAGS, TransactionSignatureChecker(&tx, 0, amount), &serror)) {
         LogPrint(BCLog::POS, "ERROR: %s: verify-script-failed, txn %s, reason %s\n", __func__, tx.GetHash().ToString(), ScriptErrorString(serror));
-        return state.DoS(100,  "verify-cs-script-failed");
+        return false;
     }
 
     if (!CheckStakeKernelHash(pindexPrev, nBits, nBlockFromTime, amount, txin.prevout, nTime, hashProofOfStake, targetProofOfStake, LogAcceptCategory(BCLog::POS))) {
         LogPrint(BCLog::POS, "WARNING: %s: Check kernel failed on coinstake %s, hashProof=%s\n", __func__, tx.GetHash().ToString(), hashProofOfStake.ToString());
-        return state.DoS(100, "check-kernel-failed");
+        return false;
     }
 
     return true;

@@ -111,6 +111,8 @@ void StopThreadStakeMiner()
     }
     LogPrint(BCLog::POS, "StopThreadStakeMiner\n");
     fStopMinerProc = true;
+    fIsStaking = false;
+    fTryToSync = false;
 
     for (auto t : vStakeThreads) {
         {
@@ -173,6 +175,8 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
     CScript coinbaseScript;
     while (!fStopMinerProc)
     {
+        UninterruptibleSleep(std::chrono::milliseconds{150});
+
         int num_nodes;
         {
             LOCK(cs_main);

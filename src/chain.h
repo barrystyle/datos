@@ -289,7 +289,7 @@ public:
 
     bool IsProofOfStake() const
     {
-        return !hashProof.IsNull();
+        return (nNonce == 0);
     }
 
     std::string ToString() const

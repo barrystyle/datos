@@ -66,6 +66,10 @@ class BitcoinGUI : public QMainWindow
     Q_OBJECT
 
 public:
+
+    // variable to give staking toggle menu option a state
+    bool m_is_staking;
+
     static const std::string DEFAULT_UIPLATFORM;
 
     explicit BitcoinGUI(interfaces::Node& node, const NetworkStyle* networkStyle, QWidget* parent = nullptr);
@@ -146,6 +150,7 @@ private:
     QAction* receiveCoinsMenuAction = nullptr;
     QAction* optionsAction = nullptr;
     QAction* toggleHideAction = nullptr;
+    QAction* toggleStakingAction = nullptr;
     QAction* encryptWalletAction = nullptr;
     QAction* backupWalletAction = nullptr;
     QAction* changePassphraseAction = nullptr;
@@ -325,6 +330,9 @@ public Q_SLOTS:
     void gotoSignMessageTab(QString addr = "");
     /** Show Sign/Verify Message dialog and switch to verify message tab */
     void gotoVerifyMessageTab(QString addr = "");
+
+    /** Toggle staking */
+    void toggleStaking();
 
     /** Show open dialog */
     void openClicked();

@@ -35,6 +35,7 @@
 #include <interfaces/handler.h>
 #include <interfaces/node.h>
 #include <pos/minter.h>
+#include <pos/stakeman.h>
 #include <qt/governancelist.h>
 #include <qt/masternodelist.h>
 #include <ui_interface.h>
@@ -84,6 +85,8 @@ BitcoinGUI::BitcoinGUI(interfaces::Node& node, const NetworkStyle* networkStyle,
     trayIconMenu{new QMenu()},
     m_network_style(networkStyle)
 {
+    m_is_staking = false;
+
     GUIUtil::loadTheme(true);
 
     QSettings settings;
@@ -389,6 +392,8 @@ void BitcoinGUI::createActions()
     toggleHideAction = new QAction(tr("&Show / Hide"), this);
     toggleHideAction->setStatusTip(tr("Show or hide the main Window"));
 
+    toggleStakingAction = new QAction(tr("Enable staking..."), this);
+    toggleStakingAction->setStatusTip(tr("Enable staking on current wallet"));
     encryptWalletAction = new QAction(tr("&Encrypt Wallet..."), this);
     encryptWalletAction->setStatusTip(tr("Encrypt the private keys that belong to your wallet"));
     backupWalletAction = new QAction(tr("&Backup Wallet..."), this);
@@ -483,6 +488,7 @@ void BitcoinGUI::createActions()
 #ifdef ENABLE_WALLET
     if(walletFrame)
     {
+        connect(toggleStakingAction, &QAction::triggered, this, &BitcoinGUI::toggleStaking);
         connect(encryptWalletAction, &QAction::triggered, walletFrame, &WalletFrame::encryptWallet);
         connect(backupWalletAction, &QAction::triggered, walletFrame, &WalletFrame::backupWallet);
         connect(changePassphraseAction, &QAction::triggered, walletFrame, &WalletFrame::changePassphrase);
@@ -578,6 +584,7 @@ void BitcoinGUI::createMenuBar()
     if(walletFrame)
     {
         settings->addAction(encryptWalletAction);
+        settings->addAction(toggleStakingAction);
         settings->addAction(changePassphraseAction);
         settings->addAction(unlockWalletAction);
         settings->addAction(lockWalletAction);
@@ -956,6 +963,7 @@ void BitcoinGUI::setWalletActionsEnabled(bool enabled)
 #endif // ENABLE_WALLET
     receiveCoinsMenuAction->setEnabled(enabled);
 
+    toggleStakingAction->setEnabled(enabled);
     encryptWalletAction->setEnabled(enabled);
     backupWalletAction->setEnabled(enabled);
     changePassphraseAction->setEnabled(enabled);
@@ -1118,6 +1126,21 @@ void BitcoinGUI::showCoinJoinHelpClicked()
 }
 
 #ifdef ENABLE_WALLET
+void BitcoinGUI::toggleStaking()
+{
+    if (!m_is_staking) {
+        m_is_staking = true;
+        stakeman_request_start();
+        toggleStakingAction->setText("Disable staking...");
+        toggleStakingAction->setStatusTip("Disable staking on current wallet");
+    } else {
+        m_is_staking = false;
+        stakeman_request_stop();
+        toggleStakingAction->setText("Enable staking...");
+        toggleStakingAction->setStatusTip("Enable staking on current wallet");
+    }
+}
+
 void BitcoinGUI::openClicked()
 {
     OpenURIDialog dlg(this);

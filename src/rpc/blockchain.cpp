@@ -2775,7 +2775,7 @@ static UniValue getstakinginfo(const JSONRPCRequest& request)
         pindex = ::ChainActive().Tip();
     }
 
-    bool staking = pwallet->fStakingEnabled;
+    bool staking = fIsStaking;
     const Consensus::Params& consensusParams = Params().GetConsensus();
     uint64_t nNetworkWeight = GetPoSKernelPS(pindex);
     int64_t nTargetSpacing = consensusParams.nPosTargetSpacing;
