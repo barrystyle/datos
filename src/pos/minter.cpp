@@ -111,6 +111,8 @@ void StopThreadStakeMiner()
     }
     LogPrint(BCLog::POS, "StopThreadStakeMiner\n");
     fStopMinerProc = true;
+    fIsStaking = false;
+    fTryToSync = false;
 
     for (auto t : vStakeThreads) {
         {
