@@ -1954,11 +1954,13 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
     }
 
+    // calculate modifier for both pow/pos to prevent precomputing on pos phase-in
+    pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
+
     if (fProofOfStake) {
         setDirtyBlockIndex.insert(pindex);
         uint256 hashProof, targetProofOfStake;
         pindex->prevoutStake = pindex->pprev->IsProofOfWork() ? COutPoint() : block.vtx[1]->vin[0].prevout;
-        pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
         if (!CheckProofOfStake(state, pindex->pprev, *block.vtx[1], block.nTime, block.nBits, hashProof, targetProofOfStake, chainparams.GetConsensus())) {
             return error("%s: Check proof of stake failed.", __func__);
         }

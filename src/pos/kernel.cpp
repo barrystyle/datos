@@ -78,8 +78,10 @@ uint256 ComputeStakeModifier(const CBlockIndex* pindexPrev, const uint256& kerne
     if (!pindexPrev)
         return uint256(); // genesis block's modifier is 0
 
+    const uint256 stakeModifier = pindexPrev->IsProofOfStake() ? pindexPrev->nStakeModifier : pindexPrev->GetBlockHash();
+
     CDataStream ss(SER_GETHASH, 0);
-    ss << kernel << pindexPrev->nStakeModifier;
+    ss << kernel << stakeModifier;
     return Hash(ss.begin(), ss.end());
 }
 
