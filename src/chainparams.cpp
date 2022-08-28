@@ -850,7 +850,7 @@ public:
         consensus.DIP0008Height = std::numeric_limits<int>::max();
         consensus.BRRHeight = std::numeric_limits<int>::max();
         consensus.MinBIP9WarningHeight = 5000;
-        consensus.powLimit = uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 16
+        consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 16
         consensus.nPowTargetTimespan = 24 * 60 * 60; // Dash: 1 day
         consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
@@ -953,9 +953,9 @@ public:
         UpdateDIP8ParametersFromArgs(args);
         UpdateBudgetParametersFromArgs(args);
 
-        genesis = CreateGenesisBlock(1659283203, 44131, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1659283203, 1, 0x207fffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000397ccd4ef2a57566230bfb36850b8082ec219f11786e18dfa233f7c79acd"));
+        assert(consensus.hashGenesisBlock == uint256S("0x6d6d2f2e08d83744359cbed961b941528fd85761faf501abbcdf11ff025fc0cc"));
         assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.

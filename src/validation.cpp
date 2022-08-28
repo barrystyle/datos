@@ -3670,27 +3670,30 @@ static bool FindUndoPos(CValidationState &state, int nFile, FlatFilePos &pos, un
     return true;
 }
 
-static bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true)
+static bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW = true, bool fCheckPrevHeader = true)
 {
     // Check proof of work matches claimed amount
     if (fCheckPOW && !CheckProofOfWork(block.GetHash(), block.nBits, consensusParams))
         return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "proof of work failed");
 
     // Check if we have the previous header
-    const CBlockIndex* hashPrevPtr = nullptr;
-    const uint256& hashPrevBlock = block.hashPrevBlock;
+    if (fCheckPrevHeader)
     {
-        LOCK(cs_main);
-        hashPrevPtr = LookupBlockIndex(hashPrevBlock);
-    }
-
-    if (!hashPrevPtr) {
-        const uint256& blockHash = block.GetHash();
-        //! allow for genesis which has no parent
-        if (blockHash == consensusParams.hashGenesisBlock) {
-            return true;
+        const CBlockIndex* hashPrevPtr = nullptr;
+        const uint256& hashPrevBlock = block.hashPrevBlock;
+        {
+            LOCK(cs_main);
+            hashPrevPtr = LookupBlockIndex(hashPrevBlock);
         }
-        return state.DoS(50, false, REJECT_INVALID, "no-prevblk", false, "header has no parent");
+
+        if (!hashPrevPtr) {
+            const uint256& blockHash = block.GetHash();
+            //! allow for genesis which has no parent
+            if (blockHash == consensusParams.hashGenesisBlock) {
+                return true;
+            }
+            return state.DoS(50, false, REJECT_INVALID, "no-prevblk", false, "header has no parent");
+        }
     }
 
     // Check DevNet
@@ -3704,7 +3707,7 @@ static bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state,
     return true;
 }
 
-bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSignature)
+bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::Params& consensusParams, bool fCheckPOW, bool fCheckMerkleRoot, bool fCheckSignature, bool fCheckPrevHeader)
 {
     // These are checks that are independent of context.
 
@@ -3715,7 +3718,7 @@ bool CheckBlock(const CBlock& block, CValidationState& state, const Consensus::P
 
     // Check that the header is valid (particularly PoW).  This is mostly
     // redundant with the call in AcceptBlockHeader.
-    if (!CheckBlockHeader(block, state, consensusParams, fCheckPOW && !block.IsProofOfStake()))
+    if (!CheckBlockHeader(block, state, consensusParams, fCheckPOW && !block.IsProofOfStake(), fCheckPrevHeader))
         return false;
 
     // Check the merkle root.
