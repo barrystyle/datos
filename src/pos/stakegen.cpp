@@ -17,7 +17,7 @@
 #include <pow.h>
 #include <wallet/coincontrol.h>
 
-void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_t nTime, int nHeight) const
+void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins) const
 {
     vCoins.clear();
     wallet->m_greatest_txn_depth = 0;
@@ -94,14 +94,14 @@ void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_
     return;
 }
 
-bool CStakeWallet::SelectCoinsForStaking(CAmount nTargetValue, int64_t nTime, int nHeight, std::set<std::pair<const CWalletTx*, unsigned int>>& setCoinsRet, CAmount& nValueRet) const
+bool CStakeWallet::SelectCoinsForStaking(CAmount nTargetValue, std::set<std::pair<const CWalletTx*, unsigned int>>& setCoinsRet, CAmount& nValueRet) const
 {
     if (!ready) {
         return false;
     }
 
     std::vector<COutput> vCoins;
-    AvailableCoinsForStaking(vCoins, nTime, nHeight);
+    AvailableCoinsForStaking(vCoins);
 
     setCoinsRet.clear();
     nValueRet = 0;
@@ -154,7 +154,7 @@ uint64_t CStakeWallet::GetStakeWeight(interfaces::Chain::Lock& locked_chain) con
     std::set<std::pair<const CWalletTx*,unsigned int> > setCoins;
 
     CAmount nTargetValue = nBalance - wallet->nReserveBalance;
-    if (!SelectCoinsForStaking(nTargetValue, 0, 0, setCoins, nValueIn)) {
+    if (!SelectCoinsForStaking(nTargetValue, setCoins, nValueIn)) {
         return 0;
     }
 
@@ -198,7 +198,7 @@ bool CStakeWallet::CreateCoinStake(CBlockIndex* pindexPrev, unsigned int nBits, 
     CAmount nValueIn = 0;
     std::vector<const CWalletTx*> vwtxPrev;
     std::set<std::pair<const CWalletTx*, unsigned int>> setCoins;
-    if (!SelectCoinsForStaking(nBalance - wallet->nReserveBalance, nTime, nBlockHeight, setCoins, nValueIn)) {
+    if (!SelectCoinsForStaking(nBalance - wallet->nReserveBalance, setCoins, nValueIn)) {
         UninterruptibleSleep(std::chrono::milliseconds{150});
         return false;
     }
