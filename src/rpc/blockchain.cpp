@@ -2760,6 +2760,7 @@ static UniValue getstakinginfo(const JSONRPCRequest& request)
     CBlockIndex* pindex;
 
     uint64_t nWeight;
+    uint64_t nExpectedTime;
     uint64_t lastCoinStakeSearchInterval;
 
     CWallet* pwallet = wallet.GetStakingWallet();
@@ -2779,7 +2780,9 @@ static UniValue getstakinginfo(const JSONRPCRequest& request)
     const Consensus::Params& consensusParams = Params().GetConsensus();
     uint64_t nNetworkWeight = GetPoSKernelPS(pindex);
     int64_t nTargetSpacing = consensusParams.nPosTargetSpacing;
-    uint64_t nExpectedTime = nTargetSpacing * nNetworkWeight / nWeight;
+    if (nWeight > 0) {
+        nExpectedTime = nTargetSpacing * nNetworkWeight / nWeight;
+    }
 
     UniValue obj(UniValue::VOBJ);
 
@@ -2790,7 +2793,9 @@ static UniValue getstakinginfo(const JSONRPCRequest& request)
     obj.pushKV("search-interval", (int)lastCoinStakeSearchInterval);
     obj.pushKV("weight", (uint64_t)nWeight);
     obj.pushKV("netstakeweight", (uint64_t)nNetworkWeight);
-    obj.pushKV("expectedtime", nExpectedTime);
+    if (nWeight > 0) {
+        obj.pushKV("expectedtime", nExpectedTime);
+    }
 
     return obj;
 }
