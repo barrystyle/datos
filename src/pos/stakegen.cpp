@@ -23,8 +23,6 @@ void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_
     wallet->m_greatest_txn_depth = 0;
 
     {
-        LOCK(wallet->cs_wallet);
-
         int nowTime = GetTime();
         int nHeight = ::ChainActive().Height();
         int min_stake_confirmations = COINBASE_MATURITY;
@@ -71,8 +69,11 @@ void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins, int64_
                     continue;
                 }
 
-                if (!CheckStakeUnused(kernel) || wallet->IsSpent(*locked_chain, wtxid, i) || wallet->IsLockedCoin(wtxid, i)) {
-                    continue;
+                {
+                        LOCK(wallet->cs_wallet);
+                        if (!CheckStakeUnused(kernel) || wallet->IsSpent(*locked_chain, wtxid, i) || wallet->IsLockedCoin(wtxid, i)) {
+                            continue;
+                        }
                 }
 
                 isminetype mine = wallet->IsMine(txout);
