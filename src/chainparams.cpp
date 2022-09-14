@@ -506,16 +506,17 @@ public:
         nExtCoinType = 8192;
 
         // long living quorum params
+        AddLLMQ(Consensus::LLMQType::LLMQ_TEST);
         AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
         AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_85);
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
-        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_50_60;
-        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_50_60;
+        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_TEST;
+        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_TEST;
         consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
         consensus.llmqTypePlatform = Consensus::LLMQType::LLMQ_100_67;
-        consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_50_60;
+        consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_TEST;
 
         fDefaultConsistencyChecks = false;
         fRequireStandard = false;
