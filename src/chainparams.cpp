@@ -362,10 +362,10 @@ public:
         consensus.nMasternodePaymentsIncreasePeriod = std::numeric_limits<int>::max();
         consensus.nInstantSendConfirmationsRequired = 6;
         consensus.nInstantSendKeepLock = 24;
-        consensus.nBudgetPaymentsStartBlock = 2560;
+        consensus.nBudgetPaymentsStartBlock = 1540;
         consensus.nBudgetPaymentsCycleBlocks = 50;
         consensus.nBudgetPaymentsWindowBlocks = 10;
-        consensus.nSuperblockStartBlock = 2660; // NOTE: Should satisfy nSuperblockStartBlock > nBudgetPeymentsStartBlock
+        consensus.nSuperblockStartBlock = 1550;
         consensus.nSuperblockStartHash = uint256(); // do not check this on testnet
         consensus.nSuperblockCycle = 24; // Superblocks can be issued hourly on testnet
         consensus.nGovernanceMinQuorum = 1;
@@ -377,7 +377,7 @@ public:
         consensus.BIP66Height = 0;
         consensus.DIP0001Height = 0;
         consensus.DIP0003Height = 1000;
-        consensus.DIP0003EnforcementHeight = 2650;
+        consensus.DIP0003EnforcementHeight = 1500;
         consensus.DIP0003EnforcementHash = uint256();
         consensus.DIP0008Height = std::numeric_limits<int>::max();
         consensus.BRRHeight = std::numeric_limits<int>::max();
@@ -387,8 +387,8 @@ public:
         consensus.nPowTargetSpacing = 2.5 * 60; // Dash: 2.5 minutes
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
-        consensus.nRuleChangeActivationThreshold = 512; // 75% for testchains
-        consensus.nMinerConfirmationWindow = 768; // nPowTargetTimespan / nPowTargetSpacing
+        consensus.nRuleChangeActivationThreshold = 256; // 75% for testchains
+        consensus.nMinerConfirmationWindow = 384; // nPowTargetTimespan / nPowTargetSpacing
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
@@ -456,13 +456,13 @@ public:
         // pacprotocol consensus parameters
         consensus.nLastPoWBlock = 1000;
         consensus.mnCollateral = 500000 * COIN;
-        consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
+        consensus.posLimit = uint256S("000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 28
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
         consensus.nStakeMinValue = 0 * COIN;
         consensus.nStakeMaxValue = MAX_MONEY;
         consensus.nStakeMinAge = 10 * 60;
-        consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
+        consensus.nStakeMaxAge = 60 * 60 * 24 * 90;
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256();
@@ -479,17 +479,14 @@ public:
         m_assumed_blockchain_size = 3;
         m_assumed_chain_state_size = 1;
 
-        genesis = CreateGenesisBlock(1659283201, 49594, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1659283201, 113827, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000f98fc51c2feaca125a19f683e429eb1c7a3caf732c66cc4355f4fb900fc6"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000019420d5245057742e9fc3a2115f675720440d129b1aa67a60dcd12c704a3"));
         assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
-
         vSeeds.clear();
-        // nodes with support for servicebits filtering should be at the top
-        vSeeds.emplace_back("testnet-seed.dashdot.io"); // Just a static list of stable node(s), only supports x9
 
         // pacprotocol addresses start with 'P'
         base58Prefixes[PUBKEY_ADDRESS] = {0x37};
