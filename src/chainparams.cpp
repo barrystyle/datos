@@ -437,8 +437,8 @@ public:
 
         // Deployment of DIP0020, DIP0021 and LLMQ_100_67 quorums
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].bit = 6;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nStartTime = 1625097600; // July 1st, 2021
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nTimeout = 1656633600; // July 1st, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nStartTime = std::numeric_limits<int>::max();
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nTimeout = std::numeric_limits<int>::max();
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nThresholdMin = 2420; // 60% of 4032
