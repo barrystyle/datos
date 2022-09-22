@@ -1300,12 +1300,15 @@ UniValue setstaking(const JSONRPCRequest& request)
             + HelpExampleCli("setstaking", "true"));
 
     UniValue obj(UniValue::VOBJ);
-    std::string actionMode = request.params[0].isNull() ? "false" : request.params[0].get_str();
-    if (actionMode == "true")
+
+    bool action = request.params[0].isNull() ? false : request.params[0].get_bool();
+    if (action) {
         stakeman_request_start();
-    else
+    } else {
         stakeman_request_stop();
-    obj.pushKV("staking status", actionMode);
+    }
+    obj.pushKV("staking status", action);
+
     return obj;
 }
 
@@ -1334,7 +1337,7 @@ static const CRPCCommand commands[] =
     /* pacprotocol features */
     { "pacprotocol",               "mnsync",                 &mnsync,                 {} },
     { "pacprotocol",               "spork",                  &spork,                  {"arg0","value"} },
-    { "pacprotocol",               "setstaking",             &setstaking,             {} },
+    { "pacprotocol",               "setstaking",             &setstaking,             {"mode"} },
 
     /* Not shown in help */
     { "hidden",             "setmocktime",            &setmocktime,            {"timestamp"}},
