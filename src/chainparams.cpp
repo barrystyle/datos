@@ -240,8 +240,8 @@ public:
 
         // Deployment of Quorum Rotation DIP and decreased proposal fee (Values to be determined)
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].bit = 7;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 999999999999ULL; // TODO ENABLE BEFORE FINAL RELEASE
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 999999999999ULL;   // TODO ENABLE BEFORE FINAL RELEASE
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 1660521600; // Tuesday, August 15, 2022 12:00:00 AM
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 1692057600;   // Tuesday, August 15, 2023 12:00:00 AM
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
@@ -275,7 +275,7 @@ public:
         pchMessageStart[3] = 0xe4;
         nDefaultPort = 8880;
         nPruneAfterHeight = 100000;
-        m_assumed_blockchain_size = 35;
+        m_assumed_blockchain_size = 45;
         m_assumed_chain_state_size = 1;
 
         genesis = CreateGenesisBlock(1659283200, 130758, 0x1f00ffff, 1, 0 * COIN);
@@ -341,10 +341,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            1617874573, // * UNIX timestamp of last known number of transactions (Block 1450962)
-            34709765,   // * total number of transactions between genesis and that timestamp
+            1660074878, // * UNIX timestamp of last known number of transactions (Block 1718597)
+            43702293,   // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the ChainStateFlushed debug.log lines)
-            0.3         // * estimated number of transactions per second after that timestamp
+            0.175       // * estimated number of transactions per second after that timestamp
         };
     }
 };
@@ -476,7 +476,7 @@ public:
         pchMessageStart[3] = 0xa0;
         nDefaultPort = 8890;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 3;
+        m_assumed_blockchain_size = 4;
         m_assumed_chain_state_size = 1;
 
         genesis = CreateGenesisBlock(1659283201, 113827, 0x1f00ffff, 1, 0 * COIN);
@@ -538,10 +538,10 @@ public:
         };
 
         chainTxData = ChainTxData{
-            1617874832, // * UNIX timestamp of last known number of transactions (Block 477483)
-            4926985,    // * total number of transactions between genesis and that timestamp
+            1659215338, // * UNIX timestamp of last known number of transactions (Block 771537)
+            5579961,    // * total number of transactions between genesis and that timestamp
                         //   (the tx=... number in the ChainStateFlushed debug.log lines)
-            0.01        // * estimated number of transactions per second after that timestamp
+            0.018       // * estimated number of transactions per second after that timestamp
         };
     }
 };

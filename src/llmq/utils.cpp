@@ -30,16 +30,16 @@ namespace llmq
 CCriticalSection cs_llmq_vbc;
 VersionBitsCache llmq_versionbitscache;
 
-void CLLMQUtils::PreComputeQuorumMembers(const CBlockIndex* pQuorumBaseBlockIndex)
+void CLLMQUtils::PreComputeQuorumMembers(const CBlockIndex* pQuorumBaseBlockIndex, bool reset_cache)
 {
     for (const Consensus::LLMQParams& params : CLLMQUtils::GetEnabledQuorumParams(pQuorumBaseBlockIndex->pprev)) {
         if (llmq::CLLMQUtils::IsQuorumRotationEnabled(params.type, pQuorumBaseBlockIndex) && (pQuorumBaseBlockIndex->nHeight % params.dkgInterval == 0)) {
-            CLLMQUtils::GetAllQuorumMembers(params.type, pQuorumBaseBlockIndex);
+            CLLMQUtils::GetAllQuorumMembers(params.type, pQuorumBaseBlockIndex, reset_cache);
         }
     }
 }
 
-std::vector<CDeterministicMNCPtr> CLLMQUtils::GetAllQuorumMembers(Consensus::LLMQType llmqType, const CBlockIndex* pQuorumBaseBlockIndex)
+std::vector<CDeterministicMNCPtr> CLLMQUtils::GetAllQuorumMembers(Consensus::LLMQType llmqType, const CBlockIndex* pQuorumBaseBlockIndex, bool reset_cache)
 {
     static CCriticalSection cs_members;
     static std::map<Consensus::LLMQType, unordered_lru_cache<uint256, std::vector<CDeterministicMNCPtr>, StaticSaltedHasher>> mapQuorumMembers GUARDED_BY(cs_members);
@@ -54,7 +54,9 @@ std::vector<CDeterministicMNCPtr> CLLMQUtils::GetAllQuorumMembers(Consensus::LLM
         if (mapQuorumMembers.empty()) {
             InitQuorumsCache(mapQuorumMembers);
         }
-        if (mapQuorumMembers[llmqType].get(pQuorumBaseBlockIndex->GetBlockHash(), quorumMembers)) {
+        if (reset_cache) {
+            mapQuorumMembers[llmqType].clear();
+        } else if (mapQuorumMembers[llmqType].get(pQuorumBaseBlockIndex->GetBlockHash(), quorumMembers)) {
             return quorumMembers;
         }
     }
@@ -84,11 +86,14 @@ std::vector<CDeterministicMNCPtr> CLLMQUtils::GetAllQuorumMembers(Consensus::LLM
          * Since mapQuorumMembers stores Quorum members per block hash, and we don't know yet the block hashes of blocks for all quorumIndexes (since these blocks are not created yet)
          * We store them in a second cache mapIndexedQuorumMembers which stores them by {CycleQuorumBaseBlockHash, quorumIndex}
          */
-            if (LOCK(cs_indexed_members); mapIndexedQuorumMembers[llmqType].get(std::pair(pCycleQuorumBaseBlockIndex->GetBlockHash(), quorumIndex), quorumMembers)) {
-                LOCK(cs_members);
-                mapQuorumMembers[llmqType].insert(pQuorumBaseBlockIndex->GetBlockHash(), quorumMembers);
-                return quorumMembers;
-            }
+        if (reset_cache) {
+            LOCK(cs_indexed_members);
+            mapIndexedQuorumMembers[llmqType].clear();
+        } else if (LOCK(cs_indexed_members); mapIndexedQuorumMembers[llmqType].get(std::pair(pCycleQuorumBaseBlockIndex->GetBlockHash(), quorumIndex), quorumMembers)) {
+            LOCK(cs_members);
+            mapQuorumMembers[llmqType].insert(pQuorumBaseBlockIndex->GetBlockHash(), quorumMembers);
+            return quorumMembers;
+        }
 
         auto q = ComputeQuorumMembersByQuarterRotation(llmqType, pCycleQuorumBaseBlockIndex);
         LOCK(cs_indexed_members);
@@ -161,21 +166,23 @@ std::vector<std::vector<CDeterministicMNCPtr>> CLLMQUtils::ComputeQuorumMembersB
             LogPrint(BCLog::LLMQ, "QuarterComposition h[%d] i[%d]:%s\n", pCycleQuorumBaseBlockIndex->nHeight, i,
                      ss.str());
         }
+    }
 
-        for (auto i = 0; i < nQuorums; ++i) {
-            for (auto &m: previousQuarters.quarterHMinus3C[i]) {
-                quorumMembers[i].push_back(std::move(m));
-            }
-            for (auto &m: previousQuarters.quarterHMinus2C[i]) {
-                quorumMembers[i].push_back(std::move(m));
-            }
-            for (auto &m: previousQuarters.quarterHMinusC[i]) {
-                quorumMembers[i].push_back(std::move(m));
-            }
-            for (auto &m: newQuarterMembers[i]) {
-                quorumMembers[i].push_back(std::move(m));
-            }
+    for (auto i = 0; i < nQuorums; ++i) {
+        for (auto &m: previousQuarters.quarterHMinus3C[i]) {
+            quorumMembers[i].push_back(std::move(m));
+        }
+        for (auto &m: previousQuarters.quarterHMinus2C[i]) {
+            quorumMembers[i].push_back(std::move(m));
+        }
+        for (auto &m: previousQuarters.quarterHMinusC[i]) {
+            quorumMembers[i].push_back(std::move(m));
+        }
+        for (auto &m: newQuarterMembers[i]) {
+            quorumMembers[i].push_back(std::move(m));
+        }
 
+        if (LogAcceptCategory(BCLog::LLMQ)) {
             std::stringstream ss;
             ss << " [";
             for (auto &m: quorumMembers[i]) {
@@ -701,12 +708,23 @@ std::set<size_t> CLLMQUtils::CalcDeterministicWatchConnections(Consensus::LLMQTy
 
 bool CLLMQUtils::EnsureQuorumConnections(const Consensus::LLMQParams& llmqParams, const CBlockIndex* pQuorumBaseBlockIndex, const uint256& myProTxHash)
 {
+    if (!fMasternodeMode && !CLLMQUtils::IsWatchQuorumsEnabled()) {
+        return false;
+    }
+
     auto members = GetAllQuorumMembers(llmqParams.type, pQuorumBaseBlockIndex);
+    if (members.empty()) {
+        return false;
+    }
+
     bool isMember = std::find_if(members.begin(), members.end(), [&](const auto& dmn) { return dmn->proTxHash == myProTxHash; }) != members.end();
 
     if (!isMember && !CLLMQUtils::IsWatchQuorumsEnabled()) {
         return false;
     }
+
+    LogPrint(BCLog::NET_NETCONN, "CLLMQUtils::%s -- isMember=%d for quorum %s:\n",
+            __func__, isMember, pQuorumBaseBlockIndex->GetBlockHash().ToString());
 
     std::set<uint256> connections;
     std::set<uint256> relayMembers;
@@ -787,7 +805,7 @@ bool CLLMQUtils::IsQuorumActive(Consensus::LLMQType llmqType, const uint256& quo
     // sig shares and recovered sigs are only accepted from recent/active quorums
     // we allow one more active quorum as specified in consensus, as otherwise there is a small window where things could
     // fail while we are on the brink of a new quorum
-    auto quorums = quorumManager->ScanQuorums(llmqType, GetLLMQParams(llmqType).signingActiveQuorumCount + 1);
+    auto quorums = quorumManager->ScanQuorums(llmqType, GetLLMQParams(llmqType).keepOldConnections);
     return ranges::any_of(quorums, [&quorumHash](const auto& q){ return q->qc->quorumHash == quorumHash; });
 }
 
@@ -931,7 +949,7 @@ void CLLMQUtils::InitQuorumsCache(CacheType& cache)
 {
     for (auto& llmq : Params().GetConsensus().llmqs) {
         cache.emplace(std::piecewise_construct, std::forward_as_tuple(llmq.type),
-                      std::forward_as_tuple(llmq.signingActiveQuorumCount + 1));
+                      std::forward_as_tuple(llmq.keepOldConnections));
     }
 }
 template void CLLMQUtils::InitQuorumsCache<std::map<Consensus::LLMQType, unordered_lru_cache<uint256, bool, StaticSaltedHasher>>>(std::map<Consensus::LLMQType, unordered_lru_cache<uint256, bool, StaticSaltedHasher>>& cache);
