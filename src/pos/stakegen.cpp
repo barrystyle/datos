@@ -17,98 +17,51 @@
 #include <pow.h>
 #include <wallet/coincontrol.h>
 
-void CStakeWallet::AvailableCoinsForStaking(std::vector<COutput> &vCoins) const
-{
-    vCoins.clear();
-    wallet->m_greatest_txn_depth = 0;
-
-    {
-        int nowTime = GetTime();
-        int nHeight = ::ChainActive().Height();
-        int min_stake_confirmations = COINBASE_MATURITY;
-        int nRequiredDepth = std::min(min_stake_confirmations-1, (int)(nHeight / 2));
-
-        for (const auto &walletEntry : wallet->mapWallet) {
-            const CWalletTx* wtx = &walletEntry.second;
-            CTransactionRef tx = wtx->tx;
-
-            auto locked_chain = wallet->chain().lock();
-            int nDepth = wtx->GetDepthInMainChain(*locked_chain);
-            if (nDepth > wallet->m_greatest_txn_depth) {
-                wallet->m_greatest_txn_depth = nDepth;
-            }
-
-            if (nDepth < nRequiredDepth) {
-                continue;
-            }
-
-            if (wtx->IsCoinStake() && min_stake_confirmations < COINBASE_MATURITY) {
-                // min_stake_confirmations is only less than COINBASE_MATURITY in regtest mode
-                if (nDepth < std::min(COINBASE_MATURITY, (int)(nHeight / 2))) {
-                    continue;
-                }
-            }
-
-            const uint256 &wtxid = walletEntry.first;
-            for (size_t i = 0; i < tx->vout.size(); ++i)
-            {
-                const auto &txout = tx->vout[i];
-                if (txout.nValue < params.nStakeMinValue || txout.nValue > params.nStakeMaxValue) {
-                    continue;
-                }
-
-                int input_age = nowTime - wtx->GetTxTime();
-                if (input_age < params.nStakeMinAge || input_age > params.nStakeMaxAge) {
-                    continue;
-                }
-
-                CKeyID keyID;
-                COutPoint kernel(wtxid, i);
-                const CScript pscriptPubKey = txout.scriptPubKey;
-                if (!ExtractStakingKeyID(pscriptPubKey, keyID)) {
-                    continue;
-                }
-
-                {
-                        LOCK(wallet->cs_wallet);
-                        if (!CheckStakeUnused(kernel) || wallet->IsSpent(*locked_chain, wtxid, i) || wallet->IsLockedCoin(wtxid, i)) {
-                            continue;
-                        }
-                }
-
-                isminetype mine = wallet->IsMine(txout);
-                if (!(mine & ISMINE_SPENDABLE)) {
-                    continue;
-                }
-
-                bool fSpendableIn = true;
-                bool fSolvableIn = true;
-
-                int input_bytes = 0; // unnecessary
-                vCoins.emplace_back(wtx, i, nDepth, input_bytes, fSpendableIn, fSolvableIn, true);
-            }
-        }
-    }
-
-    Shuffle(vCoins.begin(), vCoins.end(), FastRandomContext());
-    return;
-}
-
 bool CStakeWallet::SelectCoinsForStaking(CAmount nTargetValue, std::set<std::pair<const CWalletTx*, unsigned int>>& setCoinsRet, CAmount& nValueRet) const
 {
     if (!ready) {
         return false;
     }
 
+    const Consensus::Params &params = Params().GetConsensus();
+
+    // fetch suitable coins
     std::vector<COutput> vCoins;
-    AvailableCoinsForStaking(vCoins);
+    auto locked_chain = wallet->chain().lock();
+    {
+        LOCK(wallet->cs_wallet);
+        wallet->AvailableCoins(*locked_chain, vCoins, true, nullptr, params.nStakeMinValue, params.nStakeMaxValue);
+    }
 
     setCoinsRet.clear();
     nValueRet = 0;
 
-    for (const auto& output : vCoins) {
+    for (const auto& output : vCoins)
+    {
         const CWalletTx* pcoin = output.tx;
         int i = output.i;
+
+        const auto &txout = pcoin->tx->vout[i];
+        int input_age = GetTime() - pcoin->GetTxTime();
+        if (input_age < params.nStakeMinAge || input_age > params.nStakeMaxAge) {
+            LogPrint(BCLog::POS, "not using %s: age params not met\n", txout.ToString());
+            continue;
+        }
+
+        {
+            LOCK(wallet->cs_wallet);
+            COutPoint kernel(pcoin->tx->GetHash(), i);
+            if (!CheckStakeUnused(kernel) || wallet->IsLockedCoin(pcoin->tx->GetHash(), i)) {
+                LogPrint(BCLog::POS, "not using %s: already used or coin is locked\n", txout.ToString());
+                continue;
+            }
+        }
+
+        isminetype mine = wallet->IsMine(txout);
+        if (!(mine & ISMINE_SPENDABLE)) {
+            LogPrint(BCLog::POS, "not using %s: isnt mine/not spendable\n", txout.ToString());
+            continue;
+        }
 
         // Stop if we've chosen enough inputs
         if (nValueRet >= nTargetValue) {
