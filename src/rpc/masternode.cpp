@@ -610,6 +610,13 @@ static UniValue masternodelist(const JSONRPCRequest& request)
         return (int)pindex->nTime;
     };
 
+    auto projectedPayees = mnList.GetProjectedMNPayees(mnList.GetValidMNsCount());
+    std::map<uint256, int> nextPayments;
+    for (size_t i = 0; i < projectedPayees.size(); i++) {
+        const auto& dmn = projectedPayees[i];
+        nextPayments.emplace(dmn->proTxHash, mnList.GetHeight() + (int)i + 1);
+    }
+
     mnList.ForEachMN(false, [&](auto& dmn) {
         std::string strOutpoint = dmn.collateralOutpoint.ToStringShort();
         Coin coin;
@@ -681,6 +688,7 @@ static UniValue masternodelist(const JSONRPCRequest& request)
             objMN.pushKV("pospenaltyscore", dmn.pdmnState->nPoSePenalty);
             objMN.pushKV("lastpaidtime", dmnToLastPaidTime(dmn));
             objMN.pushKV("lastpaidblock", dmn.pdmnState->nLastPaidHeight);
+            objMN.pushKV("nextpaymentblock", nextPayments.count(dmn.proTxHash) ? nextPayments[dmn.proTxHash] : -1);
             objMN.pushKV("owneraddress", EncodeDestination(dmn.pdmnState->keyIDOwner));
             objMN.pushKV("votingaddress", EncodeDestination(dmn.pdmnState->keyIDVoting));
             objMN.pushKV("collateraladdress", collateralAddressStr);
@@ -692,6 +700,9 @@ static UniValue masternodelist(const JSONRPCRequest& request)
         } else if (strMode == "lastpaidtime") {
             if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) return;
             obj.pushKV(strOutpoint, dmnToLastPaidTime(dmn));
+        } else if (strMode == "nextpaymentblock") {
+            if (strFilter !="" && strOutpoint.find(strFilter) == std::string::npos) return;
+            obj.pushKV(strOutpoint, nextPayments.count(dmn.proTxHash) ? nextPayments[dmn.proTxHash] : -1);
         } else if (strMode == "payee") {
             if (strFilter !="" && payeeStr.find(strFilter) == std::string::npos &&
                 strOutpoint.find(strFilter) == std::string::npos) return;
