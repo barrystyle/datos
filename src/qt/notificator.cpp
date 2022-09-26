@@ -226,6 +226,9 @@ void Notificator::notifyMacUserNotificationCenter(const QString &title, const QS
 
 void Notificator::notify(Class cls, const QString &title, const QString &text, const QIcon &icon, int millisTimeout)
 {
+    const std::string msg = text.toStdString();
+    if (msg.find("Staked") != std::string::npos) return;
+
     switch(mode)
     {
 #ifdef USE_DBUS
