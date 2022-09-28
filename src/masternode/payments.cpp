@@ -101,10 +101,11 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
 
     LogPrint(BCLog::MNPAYMENTS, "block.vtx[%d]->GetValueOut() %lld <= blockReward %lld\n", isProofOfStake, blockValue, blockReward);
 
-    CAmount nSuperblockMaxValue = blockReward + CSuperblock::GetPaymentsLimit(nBlockHeight);
-    bool isSuperblockMaxValueMet = blockValue <= nSuperblockMaxValue;
+    CAmount nSuperblockMaxValue = CSuperblock::GetPaymentsLimit(nBlockHeight);
+    CAmount nSuperblockTotalMinusMasternode = block.vtx[0]->GetValueOut() - GetMasternodePayment(nBlockHeight, blockReward, 0);
+    bool isSuperblockMaxValueMet = nSuperblockTotalMinusMasternode <= nSuperblockMaxValue;
 
-    LogPrint(BCLog::GOBJECT, "block.vtx[%d]->GetValueOut() %lld <= nSuperblockMaxValue %lld\n", isProofOfStake, blockValue, nSuperblockMaxValue);
+    LogPrint(BCLog::GOBJECT, "block.vtx[0]->GetValueOut() %lld <= nSuperblockMaxValue %lld\n", nSuperblockTotalMinusMasternode, nSuperblockMaxValue);
 
     if (!CSuperblock::IsValidBlockHeight(nBlockHeight)) {
         // can't possibly be a superblock, so lets just check for block reward limits
@@ -155,7 +156,7 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
     // this actually also checks for correct payees and not only amount
     if (!CSuperblockManager::IsValid(*block.vtx[0], nBlockHeight, blockReward)) {
         // triggered but invalid? that's weird
-        LogPrintf("%s -- ERROR: Invalid superblock detected at height %d: %s", __func__, nBlockHeight, block.vtx[isProofOfStake]->ToString()); /* Continued */
+        LogPrintf("%s -- ERROR: Invalid superblock detected at height %d: %s", __func__, nBlockHeight, block.vtx[0]->ToString()); /* Continued */
         // should NOT allow invalid superblocks, when superblocks are enabled
         strErrorRet = strprintf("invalid superblock detected at height %d", nBlockHeight);
         return false;

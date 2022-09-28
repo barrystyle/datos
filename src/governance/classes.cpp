@@ -611,7 +611,7 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
 
     int nOutputs = txNew.vout.size();
     int nPayments = CountPayments();
-    int nMinerAndMasternodePayments = nOutputs - nPayments;
+    int nMasternodePayments = nOutputs - nPayments;
 
     LogPrint(BCLog::GOBJECT, "CSuperblock::IsValid -- nOutputs = %d, nPayments = %d, GetDataAsHexString = %s\n",
         nOutputs, nPayments, GetGovernanceObject()->GetDataAsHexString());
@@ -619,7 +619,7 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
     // We require an exact match (including order) between the expected
     // superblock payments and the payments actually in the block.
 
-    if (nMinerAndMasternodePayments < 0) {
+    if (nMasternodePayments < 0) {
         // This means the block cannot have all the superblock payments
         // so it is not valid.
         // TODO: could that be that we just hit coinbase size limit?
@@ -635,8 +635,8 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
         return false;
     }
 
-    // miner and masternodes should not get more than they would usually get
-    CAmount nBlockValue = txNew.GetValueOut();
+    // masternodes should not get more than they would usually get
+    CAmount nBlockValue = txNew.GetValueOut() - GetMasternodePayment(nBlockHeight, blockReward, 0);
     if (nBlockValue > blockReward + nPaymentsTotalAmount) {
         LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, block value limit exceeded: block %lld, limit %lld\n", nBlockValue, blockReward + nPaymentsTotalAmount);
         return false;
