@@ -2176,7 +2176,7 @@ static UniValue getblockstats(const JSONRPCRequest& request)
             }
         }
 
-        if (tx->IsCoinBase()) {
+        if (tx->IsCoinBase() || tx->IsCoinStake()) {
             continue;
         }
 
