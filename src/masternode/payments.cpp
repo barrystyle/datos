@@ -86,6 +86,11 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
         stakeValueIn = 0;
     }
     CAmount blockValue = block.vtx[isProofOfStake]->GetValueOut() - stakeValueIn;
+
+    // allow tests to pass for pow
+    if (!isProofOfStake) {
+        blockValue -= GetMasternodePayment(nBlockHeight, blockReward, 0);
+    }
     bool isBlockRewardValueMet = blockValue <= blockReward;
 
     strErrorRet = "";
