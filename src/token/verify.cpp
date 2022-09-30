@@ -77,11 +77,7 @@ bool CheckTokenMempool(CTxMemPool& pool, const CTransactionRef& tx, std::string&
 
 bool IsIdentifierInRange(uint64_t& identifier)
 {
-    uint64_t identifier_index = get_issuances_size() + ISSUANCE_ID_BEGIN;
-    if (identifier < ISSUANCE_ID_BEGIN || identifier > identifier_index * TOKEN_IDRANGE) {
-        return false;
-    }
-    return true;
+    return (identifier > ISSUANCE_ID_BEGIN) && (identifier < (std::numeric_limits<uint64_t>::max() - ISSUANCE_ID_BEGIN));
 }
 
 bool CheckTokenIssuance(const CTransactionRef& tx, std::string& strError, bool onlyCheck)

@@ -9,14 +9,7 @@ std::vector<CToken> known_issuances;
 
 void get_next_issuance_id(uint64_t& id)
 {
-    id = ISSUANCE_ID_BEGIN;
-    while (++id < std::numeric_limits<uint64_t>::max()) {
-        if (!is_identifier_in_issuances(id)) {
-            if (!is_identifier_in_mempool(id)) {
-                return;
-            }
-        }
-    }
+    id = ISSUANCE_ID_BEGIN + (GetRand(std::numeric_limits<uint64_t>::max() - ISSUANCE_ID_BEGIN));
 }
 
 bool is_identifier_in_mempool(uint64_t& id)
