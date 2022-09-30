@@ -459,6 +459,13 @@ libdash_server_a_SOURCES = \
   statsd_client.cpp \
   timedata.cpp \
   torcontrol.cpp \
+  token/index.cpp \
+  token/issuances.cpp \
+  token/rpctoken.cpp \
+  token/token.cpp \
+  token/util.cpp \
+  token/verify.cpp \
+  token/wallet.cpp \
   txdb.cpp \
   txmempool.cpp \
   ui_interface.cpp \

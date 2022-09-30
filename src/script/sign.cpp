@@ -146,6 +146,18 @@ static bool SignStep(const SigningProvider& provider, const BaseSignatureCreator
         return ok;
     }
 
+    case TX_TOKEN:
+    case TX_CHECKSUM: {
+        CKeyID keyID = CKeyID(uint160(vSolutions[0]));
+        CPubKey pubkey;
+        if (!GetPubKey(provider, sigdata, keyID, pubkey)) {
+            return false;
+        }
+        if (!CreateSig(creator, sigdata, provider, sig, pubkey, scriptPubKey, sigversion)) return false;
+        ret.push_back(ToByteVector(pubkey));
+        return true;
+    }
+
     default:
         return false;
     }

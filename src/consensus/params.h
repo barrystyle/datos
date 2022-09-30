@@ -121,6 +121,7 @@ struct Params {
     uint256 posLimit;
     CAmount mnCollateral{0};
     int nLastPoWBlock{0};
+    int nTokenHeight{0};
     int64_t nPosTargetSpacing{0};
     int64_t nPosTargetTimespan{0};
     CAmount nStakeMinValue{0};

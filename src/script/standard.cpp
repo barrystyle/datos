@@ -25,6 +25,8 @@ const char* GetTxnOutputType(txnouttype t)
     case TX_PUBKEYHASH: return "pubkeyhash";
     case TX_SCRIPTHASH: return "scripthash";
     case TX_MULTISIG: return "multisig";
+    case TX_TOKEN: return "token";
+    case TX_CHECKSUM: return "checksum";
     case TX_NULL_DATA: return "nulldata";
     }
     return nullptr;
@@ -89,6 +91,22 @@ txnouttype Solver(const CScript& scriptPubKey, std::vector<std::vector<unsigned 
         return TX_SCRIPTHASH;
     }
 
+    // Shortcut for token bearing script, which adds some extra fields to pubkeyhash for
+    // identification and verification purposes.
+    if (scriptPubKey.IsPayToToken())
+    {
+        std::vector<unsigned char> hashBytes(scriptPubKey.end()-22, scriptPubKey.end()-2);
+        vSolutionsRet.push_back(hashBytes);
+        return TX_TOKEN;
+    }
+
+    // Shortcut for checksum bearing script, which permanently records a 20 byte checksum for
+    // proof/verification purposes.
+    if (scriptPubKey.IsChecksumData())
+    {
+        return TX_CHECKSUM;
+    }
+
     // Provably prunable, data-carrying output
     //
     // So long as script passes the IsUnspendable() test and all but the first
@@ -145,6 +163,16 @@ bool ExtractDestination(const CScript& scriptPubKey, CTxDestination& addressRet)
         addressRet = CScriptID(uint160(vSolutions[0]));
         return true;
     }
+    else if (whichType == TX_TOKEN)
+    {
+        addressRet = CKeyID(uint160(vSolutions[0]));
+        return true;
+    }
+    else if (whichType == TX_CHECKSUM)
+    {
+        return false;
+    }
+
     // Multisig txns have more than one address...
     return false;
 }

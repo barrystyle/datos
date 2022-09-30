@@ -2642,6 +2642,9 @@ CAmount CWalletTx::GetAvailableCredit(interfaces::Chain::Lock& locked_chain, boo
     uint256 hashTx = GetHash();
     for (unsigned int i = 0; i < tx->vout.size(); i++)
     {
+        if (tx->vout[i].IsTokenOutput() || tx->vout[i].IsTokenChecksum()) {
+            continue;
+        }
         if (!pwallet->IsSpent(locked_chain, hashTx, i))
         {
             const CTxOut &txout = tx->vout[i];
@@ -3049,6 +3052,10 @@ void CWallet::AvailableCoins(interfaces::Chain::Lock& locked_chain, std::vector<
             continue;
 
         for (unsigned int i = 0; i < pcoin->tx->vout.size(); i++) {
+            // pass on existing token outputs
+            if (pcoin->tx->vout[i].IsTokenOutput()) {
+                continue;
+            }
             bool found = false;
             if (nCoinType == CoinType::ONLY_FULLY_MIXED) {
                 if (!CCoinJoin::IsDenominatedAmount(pcoin->tx->vout[i].nValue)) continue;
@@ -3823,7 +3830,7 @@ bool CWallet::CreateTransaction(interfaces::Chain::Lock& locked_chain, const std
                         }
                     }
 
-                    if (IsDust(txout, chain().relayDustFee()))
+                    if (!txout.IsTokenOutput() && IsDust(txout, chain().relayDustFee()))
                     {
                         if (recipient.fSubtractFeeFromAmount && nFeeRet > 0)
                         {
