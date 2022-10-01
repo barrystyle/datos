@@ -118,6 +118,7 @@ bool CheckTokenIssuance(const CTransactionRef& tx, std::string& strError, bool o
                 }
                 if (!onlyCheck && (!is_name_in_issuances(name) && !is_identifier_in_issuances(identifier))) {
                     add_to_issuances(token);
+                    LogPrint(BCLog::TOKEN, "%s: added token to issuances %s", __func__, token.ToString());
                 }
             } else if (token.getType() == CToken::NONE) {
                 return false;
