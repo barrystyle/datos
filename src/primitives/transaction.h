@@ -180,6 +180,9 @@ public:
         return !(a == b);
     }
 
+    bool IsTokenOutput() const;
+    bool IsTokenChecksum() const;
+    bool IsStandardOutput() const;
     std::string ToString() const;
 };
 
@@ -280,6 +283,7 @@ public:
         return a.hash != b.hash;
     }
 
+    bool HasTokenOutput() const;
     std::string ToString() const;
 };
 

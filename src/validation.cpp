@@ -36,6 +36,7 @@
 #include <timedata.h>
 #include <tinyformat.h>
 #include <txdb.h>
+#include <token/verify.h>
 #include <txmempool.h>
 #include <ui_interface.h>
 #include <uint256.h>
@@ -578,6 +579,24 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         return state.Invalid(false, REJECT_DUPLICATE, "txn-already-in-mempool");
     }
 
+    // token specific checks
+    if (ptx->HasTokenOutput()) {
+        if (!are_tokens_active()) {
+            return error("%s: CheckToken: token layer is not currently active", __func__);
+        }
+        std::string strError;
+        if (!CheckTokenMempool(pool, ptx, strError)) {
+            LogPrint(BCLog::TOKEN, "%s: CheckTokenMempool returned with %s\n", __func__, strError);
+            return error("%s: CheckTokenMempool: %s", __func__, strError);
+        }
+        CCoinsViewCache &view = ::ChainstateActive().CoinsTip();
+        CBlockIndex* pindex = ::ChainActive().Tip();
+        if (!CheckToken(ptx, pindex, view, strError, chainparams.GetConsensus(), true)) {
+            LogPrint(BCLog::TOKEN, "%s: CheckToken returned with '%s'\n", __func__, strError);
+            return error("%s: CheckToken: %s", __func__, strError);
+        }
+    }
+
     llmq::CInstantSendLockPtr conflictLock = llmq::quorumInstantSendManager->GetConflictingLock(tx);
     if (conflictLock) {
         CTransactionRef txConflict;
@@ -698,12 +717,15 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "mempool min fee not met", false, strprintf("%d < %d", nModifiedFees, mempoolRejectFee));
         }
 
+        //! token transfer doesnt incur fee restrictions
+        bool isTokenTx = ptx->HasTokenOutput();
+
         // No transactions are allowed below minRelayTxFee except from disconnected blocks
-        if (!bypass_limits && nModifiedFees < ::minRelayTxFee.GetFee(nSize)) {
+        if (!isTokenTx && !bypass_limits && nModifiedFees < ::minRelayTxFee.GetFee(nSize)) {
             return state.DoS(0, false, REJECT_INSUFFICIENTFEE, "min relay fee not met", false, strprintf("%d < %d", nModifiedFees, ::minRelayTxFee.GetFee(nSize)));
         }
 
-        if (nAbsurdFee && nFees > nAbsurdFee)
+        if (!isTokenTx && nAbsurdFee && nFees > nAbsurdFee)
             return state.Invalid(false,
                 REJECT_HIGHFEE, "absurdly-high-fee",
                 strprintf("%d > %d", nFees, nAbsurdFee));
@@ -1584,6 +1606,8 @@ DisconnectResult CChainState::DisconnectBlock(const CBlock& block, const CBlockI
         return DISCONNECT_FAILED;
     }
 
+    UndoTokenIssuancesInBlock(block);
+
     // undo transactions in reverse order
     for (int i = block.vtx.size() - 1; i >= 0; i--) {
         const CTransaction &tx = *(block.vtx[i]);
@@ -2192,6 +2216,17 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
             }
 
+        }
+
+        // Perform token consensus checks
+        if (tx.HasTokenOutput()) {
+            if (!are_tokens_active(pindex->nHeight)) {
+                return error("%s: CheckToken: token layer is not currently active", __func__);
+            }
+            std::string strError;
+            if (!CheckToken(MakeTransactionRef(tx), pindex, view, strError, chainparams.GetConsensus(), false)) {
+                return error("%s: CheckToken: %s", __func__, strError);
+            }
         }
 
         // GetTransactionSigOpCount counts 2 types of sigops:

@@ -13,6 +13,7 @@
 #include <policy/feerate.h>
 #include <saltedhasher.h>
 #include <tinyformat.h>
+#include <token/util.h>
 #include <ui_interface.h>
 #include <util/system.h>
 #include <util/strencodings.h>
@@ -514,6 +515,7 @@ public:
     const uint256& GetHash() const { return tx->GetHash(); }
     bool IsCoinBase() const { return tx->IsCoinBase(); }
     bool IsCoinStake() const { return tx->IsCoinStake(); }
+    bool IsTokenType() const { return tx->HasTokenOutput(); }
     bool IsImmatureCoinBase(interfaces::Chain::Lock& locked_chain) const;
     bool IsImmatureCoinStake(interfaces::Chain::Lock& locked_chain) const;
 };
@@ -946,6 +948,31 @@ public:
 
     void GetKeyBirthTimes(interfaces::Chain::Lock& locked_chain, std::map<CTxDestination, int64_t> &mapKeyBirth) const EXCLUSIVE_LOCKS_REQUIRED(cs_wallet);
     unsigned int ComputeTimeSmart(const CWalletTx& wtx) const;
+
+    /**
+     * return suitable input via ret for minting token
+     */
+    bool FundMintTransaction(CAmount& amountMin, CAmount& amountFound, std::vector<CTxIn>& ret) const EXCLUSIVE_LOCKS_REQUIRED(cs_wallet);
+
+    /**
+     * return suitable inputs via ret for given token name and value
+     */
+    bool FundTokenTransaction(std::string& tokenname, CAmount& amountMin, CAmount& amountFound, std::vector<CTxIn>& ret) const EXCLUSIVE_LOCKS_REQUIRED(cs_wallet);
+
+    /**
+     * sign a token-based transaction
+     */
+    bool SignTokenTransaction(CMutableTransaction& rawTx, std::string& strError);
+
+    /**
+     * return a vector with unconfirmed wallet token balance
+     */
+    bool GetUnconfirmedTokenBalance(CTxMemPool& pool, std::map<std::string, CAmount>& balances, std::string& strError);
+
+    /**
+     * abandon invalidated wallet transactions
+     */
+    void AbandonInvalidTransaction();
 
     /**
      * Increment the next transaction order id

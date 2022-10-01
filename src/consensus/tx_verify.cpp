@@ -205,6 +205,10 @@ bool Consensus::CheckTxInputs(const CTransaction& tx, CValidationState& state, c
         if (!MoneyRange(txfee)) {
             return state.Invalid(false, REJECT_INVALID, "bad-txns-fee-outofrange");
         }
+
+        if (tx.HasTokenOutput()) {
+            txfee += 1000;
+        }
     }
 
     return true;

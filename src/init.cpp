@@ -49,6 +49,7 @@
 #include <script/standard.h>
 #include <shutdown.h>
 #include <timedata.h>
+#include <token/index.h>
 #include <torcontrol.h>
 #include <txdb.h>
 #include <txmempool.h>
@@ -2106,6 +2107,12 @@ bool AppInitMain(InitInterfaces& interfaces)
 
                 if (!deterministicMNManager->UpgradeDBIfNeeded() || !llmq::quorumBlockProcessor->UpgradeDB()) {
                     strLoadError = _("Error upgrading evo database");
+                    break;
+                }
+
+                // Right after blockindex has loaded, time to rescan for token metadata
+                if (!BlockUntilTokenMetadataSynced(chainparams.GetConsensus())) {
+                    strLoadError = _("Inconsistency with token state");
                     break;
                 }
 
