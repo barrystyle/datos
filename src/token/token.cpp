@@ -33,10 +33,15 @@ bool decode_checksum_script(CScript& checksum_script, uint160& checksum_output)
 void build_token_script(CScript& token_script, const uint8_t version, const uint16_t type, uint64_t& identifier, std::string& name, CScript& scriptPubKey)
 {
     token_script.clear();
+
+    // workaround for CScriptNum only accepting 32bit num
+    std::vector<uint8_t> vchId(8);
+    memcpy(vchId.data(), &identifier, 8);
+
     token_script = CScript() << OP_TOKEN
                              << GetOpcode(version)
                              << GetOpcode(type)
-                             << CScriptNum(identifier)
+                             << vchId
                              << ToByteVector(name)
                              << OP_DROP
                              << OP_DROP
@@ -77,7 +82,8 @@ bool decode_token_script(CScript& token_script, uint8_t& version, uint16_t& type
     byteoffset += 1;
 
     std::vector<unsigned char> vecId(token_script.begin() + byteoffset, token_script.begin() + byteoffset + idlen);
-    identifier = CScriptNum(vecId, true).getuint64();
+    // workaround for CScriptNum only accepting 32bit num
+    memcpy(&identifier, vecId.data(), idlen);
     byteoffset += idlen;
 
     int namelen = token_script[byteoffset];
