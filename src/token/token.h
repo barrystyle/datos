@@ -60,6 +60,14 @@ public:
         READWRITE(obj.origintx);
     }
 
+    std::string ToString() const
+    {
+        std::stringstream s;
+        s << strprintf("CToken(version=0x%02x, type=0x%02x, uid=0x%08x, name='%s', origintx='%s')\n",
+                       version, type, uid, name, origintx.ToString());
+        return s.str();
+    }
+
     uint64_t getId() { return uid; }
     uint16_t getType() { return type; }
     uint8_t getVersion() { return version; }

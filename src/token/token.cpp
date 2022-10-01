@@ -53,48 +53,51 @@ bool decode_token_script(CScript& token_script, uint8_t& version, uint16_t& type
 
     int script_len = token_script.size();
 
-    try {
-        int byteoffset = 1;
+    int byteoffset = 1;
 
-        version = GetIntFromOpcode((opcodetype)token_script[byteoffset]);
-        if (version != 0x01)
-            return false;
-        byteoffset += 1;
-
-        type = GetIntFromOpcode((opcodetype)token_script[byteoffset]);
-        if (type != 1 && type != 2)
-            return false;
-        byteoffset += 1;
-
-        int idlen = token_script[byteoffset];
-        if (idlen < 1 || idlen > 8)
-            return false;
-        byteoffset += 1;
-
-        std::vector<unsigned char> vecId(token_script.begin() + byteoffset, token_script.begin() + byteoffset + idlen);
-        identifier = CScriptNum(vecId, true).getuint64();
-        byteoffset += idlen;
-
-        int namelen = token_script[byteoffset];
-        if (namelen < TOKENNAME_MINLEN || namelen > TOKENNAME_MAXLEN)
-            return false;
-        byteoffset += 1;
-
-        std::vector<unsigned char> vecName(token_script.begin() + byteoffset, token_script.begin() + byteoffset + namelen);
-        name = std::string(vecName.begin(), vecName.end());
-        byteoffset += namelen;
-
-        std::vector<unsigned char> vecPubKey(token_script.end() - 22, token_script.end() - 2);
-        std::string hashBytes = HexStr(vecPubKey);
-
-        if (debug) {
-            LogPrint(BCLog::TOKEN, "%s (%d bytes) - ver: %d, type %04x, idlen %d, id %016x, namelen %d, name %s, pubkeyhash %s\n",
-                HexStr(token_script), script_len, version, type, idlen, identifier, namelen,
-                std::string(vecName.begin(), vecName.end()).c_str(), hashBytes);
-        }
-
-    } catch (const std::exception& e) {
+    version = GetIntFromOpcode((opcodetype)token_script[byteoffset]);
+    if (version != 0x01) {
+        LogPrint(BCLog::TOKEN, "%s: bad version\n", __func__);
         return false;
+    }
+    byteoffset += 1;
+
+    type = GetIntFromOpcode((opcodetype)token_script[byteoffset]);
+    if (type != 1 && type != 2) {
+        LogPrint(BCLog::TOKEN, "%s: bad type\n", __func__);
+        return false;
+    }
+    byteoffset += 1;
+
+    int idlen = token_script[byteoffset];
+    if (idlen < 1 || idlen > 8) {
+        LogPrint(BCLog::TOKEN, "%s: bad idlength\n", __func__);
+        return false;
+    }
+    byteoffset += 1;
+
+    std::vector<unsigned char> vecId(token_script.begin() + byteoffset, token_script.begin() + byteoffset + idlen);
+    identifier = CScriptNum(vecId, true).getuint64();
+    byteoffset += idlen;
+
+    int namelen = token_script[byteoffset];
+    if (namelen < TOKENNAME_MINLEN || namelen > TOKENNAME_MAXLEN) {
+        LogPrint(BCLog::TOKEN, "%s: bad namelen\n", __func__);
+        return false;
+    }
+    byteoffset += 1;
+
+    std::vector<unsigned char> vecName(token_script.begin() + byteoffset, token_script.begin() + byteoffset + namelen);
+    name = std::string(vecName.begin(), vecName.end());
+    byteoffset += namelen;
+
+    std::vector<unsigned char> vecPubKey(token_script.end() - 22, token_script.end() - 2);
+    std::string hashBytes = HexStr(vecPubKey);
+
+    if (debug) {
+        LogPrint(BCLog::TOKEN, "%s (%d bytes) - ver: %d, type %04x, idlen %d, id %016x, namelen %d, name %s, pubkeyhash %s\n",
+            HexStr(token_script), script_len, version, type, idlen, identifier, namelen,
+            std::string(vecName.begin(), vecName.end()).c_str(), hashBytes);
     }
 
     return true;

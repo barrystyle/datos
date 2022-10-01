@@ -168,6 +168,7 @@ bool CWallet::GetUnconfirmedTokenBalance(CTxMemPool& pool, std::map<std::string,
                 if (token_script.IsPayToToken() && IsMine(mtx.vout[i])) {
                     CToken token;
                     if (!ContextualCheckToken(token_script, token, strError)) {
+                        LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                         strError = "corrupt-invalid-existing-mempool";
                         return false;
                     }

@@ -586,11 +586,13 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
         }
         std::string strError;
         if (!CheckTokenMempool(pool, ptx, strError)) {
+            LogPrint(BCLog::TOKEN, "%s: CheckTokenMempool returned with %s\n", __func__, strError);
             return error("%s: CheckTokenMempool: %s", __func__, strError);
         }
         CCoinsViewCache &view = ::ChainstateActive().CoinsTip();
         CBlockIndex* pindex = ::ChainActive().Tip();
         if (!CheckToken(ptx, pindex, view, strError, chainparams.GetConsensus(), true)) {
+            LogPrint(BCLog::TOKEN, "%s: CheckToken returned with '%s'\n", __func__, strError);
             return error("%s: CheckToken: %s", __func__, strError);
         }
     }

@@ -182,6 +182,9 @@ UniValue tokenmint(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, strprintf("Error signing token transaction (%s)", strError));
     }
 
+    // Print tx for debug
+    LogPrint(BCLog::TOKEN, "Constructed tx:\n%s\n", tx.ToString());
+
     // Check if it will be accepted
     CValidationState state;
     bool res = AcceptToMemoryPool(mempool, state, MakeTransactionRef(tx), NULL, false, 0, true);
@@ -668,6 +671,7 @@ UniValue tokenhistory(const JSONRPCRequest& request)
             std::string strError;
             CScript token_script = tx->vout[n].scriptPubKey;
             if (!ContextualCheckToken(token_script, token, strError)) {
+                LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                 throw JSONRPCError(RPC_TYPE_ERROR, "Token data inconsistent.");
             }
 

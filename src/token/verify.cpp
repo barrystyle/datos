@@ -39,6 +39,7 @@ bool CheckTokenMempool(CTxMemPool& pool, const CTransactionRef& tx, std::string&
                     CToken token;
                     CScript token_script = mtx.vout[i].scriptPubKey;
                     if (!ContextualCheckToken(token_script, token, strError)) {
+                        LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error '%s'\n", strError);
                         strError = "corrupt-invalid-existing-mempool";
                         return false;
                     }
@@ -59,6 +60,7 @@ bool CheckTokenMempool(CTxMemPool& pool, const CTransactionRef& tx, std::string&
         if (tx->vout[i].scriptPubKey.IsPayToToken()) {
             CScript token_script = tx->vout[i].scriptPubKey;
             if (!ContextualCheckToken(token_script, token, strError)) {
+                LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error '%s'\n", strError);
                 strError = "corrupt-invalid-tokentx-mempool";
                 return false;
             }
@@ -77,7 +79,9 @@ bool CheckTokenMempool(CTxMemPool& pool, const CTransactionRef& tx, std::string&
 
 bool IsIdentifierInRange(uint64_t& identifier)
 {
-    return (identifier > ISSUANCE_ID_BEGIN) && (identifier < (std::numeric_limits<uint64_t>::max() - ISSUANCE_ID_BEGIN));
+    bool inRange = (identifier > ISSUANCE_ID_BEGIN) && (identifier < (std::numeric_limits<uint64_t>::max() - ISSUANCE_ID_BEGIN));
+    LogPrint(BCLog::TOKEN, "%s: returning %s\n", __func__, inRange);
+    return inRange;
 }
 
 bool CheckTokenIssuance(const CTransactionRef& tx, std::string& strError, bool onlyCheck)
@@ -88,6 +92,7 @@ bool CheckTokenIssuance(const CTransactionRef& tx, std::string& strError, bool o
             CToken token;
             CScript token_script = tx->vout[i].scriptPubKey;
             if (!ContextualCheckToken(token_script, token, strError)) {
+                LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                 return false;
             }
             token.setOriginTx(hash);
@@ -124,7 +129,9 @@ bool CheckTokenIssuance(const CTransactionRef& tx, std::string& strError, bool o
 
 bool ContextualCheckToken(CScript& token_script, CToken& token, std::string& strError, bool debug)
 {
-    build_token_from_script(token_script, token, debug);
+    if (!build_token_from_script(token_script, token, debug)) {
+        LogPrint(BCLog::TOKEN, "build_token_from_script failed\n");
+    }
 
     if (token.getVersion() != CToken::CURRENT_VERSION) {
         strError = "bad-token-version";
@@ -179,6 +186,7 @@ bool CheckToken(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoi
 
     //! check inputs have sufficient confirms
     if (!CheckTokenInputs(tx, pindex, view, strError)) {
+        LogPrint(BCLog::TOKEN, "CheckTokenInputs returned with error %s\n", strError);
         return false;
     }
 
@@ -189,6 +197,7 @@ bool CheckToken(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoi
             CToken token;
             CScript tokenData = tx->vout[i].scriptPubKey;
             if (!ContextualCheckToken(tokenData, token, strError)) {
+                LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                 strError = "token-isinvalid";
                 return false;
             }
@@ -212,6 +221,7 @@ bool CheckToken(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoi
             CToken token;
             CScript tokenData = tx->vout[i].scriptPubKey;
             if (!ContextualCheckToken(tokenData, token, strError)) {
+                LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                 strError = "token-isinvalid";
                 return false;
             }
@@ -219,6 +229,7 @@ bool CheckToken(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoi
             //! check if issuance token is unique
             if (token.getType() == CToken::ISSUANCE) {
                 if (!CheckTokenIssuance(tx, strError, onlyCheck)) {
+                    LogPrint(BCLog::TOKEN, "CheckTokenIssuance returned with error %s\n", strError);
                     //! if this made its way into mempool, remove it
                     if (is_in_mempool(hash)) {
                         CTransaction toBeRemoved(*tx);
@@ -267,6 +278,7 @@ bool CheckToken(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoi
                 CToken prevToken;
                 CScript prevTokenData = inputPrev->vout[tx->vin[n].prevout.n].scriptPubKey;
                 if (!ContextualCheckToken(prevTokenData, prevToken, strError, false)) {
+                    LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                     strError = "token-prevtoken-isinvalid";
                     return false;
                 }
@@ -318,6 +330,7 @@ bool FindLastTokenUse(std::string& name, COutPoint& token_spend, int lastHeight,
                 std::string strError;
                 CScript token_script = tx->vout[j].scriptPubKey;
                 if (!ContextualCheckToken(token_script, token, strError)) {
+                    LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                     continue;
                 }
 
