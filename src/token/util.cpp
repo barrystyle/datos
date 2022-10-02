@@ -6,6 +6,17 @@
 
 extern CTxMemPool mempool;
 
+void token_safety_checks()
+{
+    if (!are_tokens_active()) {
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Cannot perform token action while token layer is not active");
+    }
+
+    if (::ChainstateActive().IsInitialBlockDownload()) {
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Cannot perform token action while still in Initial Block Download");
+    }
+}
+
 bool are_tokens_active(int height)
 {
     const Consensus::Params& params = Params().GetConsensus();

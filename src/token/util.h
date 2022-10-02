@@ -8,6 +8,7 @@
 #include <amount.h>
 #include <key_io.h>
 #include <logging.h>
+#include <rpc/util.h>
 #include <script/script.h>
 #include <serialize.h>
 #include <token/token.h>
@@ -22,6 +23,7 @@
 class CToken;
 class CTxMemPool;
 
+void token_safety_checks();
 bool are_tokens_active(int height = 0);
 void reclaim_invalid_inputs();
 bool compare_token_name(std::string& prev_token_name, std::string& token_name);

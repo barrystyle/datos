@@ -81,10 +81,7 @@ UniValue tokenmint(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    // Prevent tokenmint while still in blocksync
-    if (::ChainstateActive().IsInitialBlockDownload()) {
-        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Cannot perform token action while still in Initial Block Download");
-    }
+    token_safety_checks();
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -222,10 +219,7 @@ UniValue tokenbalance(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    // Prevent tokenbalance while still in blocksync
-    if (::ChainstateActive().IsInitialBlockDownload()) {
-        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Cannot perform token action while still in Initial Block Download");
-    }
+    token_safety_checks();
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -355,6 +349,8 @@ UniValue tokenlist(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
+    token_safety_checks();
+
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
@@ -448,10 +444,7 @@ UniValue tokensend(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    // Prevent tokensend while still in blocksync
-    if (::ChainstateActive().IsInitialBlockDownload()) {
-        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Cannot perform token action while still in Initial Block Download");
-    }
+    token_safety_checks();
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -562,6 +555,8 @@ UniValue tokenissuances(const JSONRPCRequest& request)
             "none\n");
     }
 
+    token_safety_checks();
+
     UniValue issuances(UniValue::VOBJ);
     {
         LOCK(cs_main);
@@ -587,6 +582,8 @@ UniValue tokenchecksum(const JSONRPCRequest& request)
             "\nArguments:\n"
             "1. \"name\"            (string, required) The token to retrieve checksum from.\n");
     }
+
+    token_safety_checks();
 
     // Name
     std::string strToken = request.params[0].get_str();
@@ -634,6 +631,8 @@ UniValue tokenhistory(const JSONRPCRequest& request)
             "\nArguments:\n"
             "1. \"name\"            (string, required) The token to display history for.\n");
     }
+
+    token_safety_checks();
 
     // Get current height
     int height = ::ChainActive().Height();
@@ -717,6 +716,8 @@ UniValue tokeninfo(const JSONRPCRequest& request)
             "\nArguments:\n"
             "1. \"name\"            (string, required) The token to show information.\n");
     }
+
+    token_safety_checks();
 
     // Name
     std::string strToken = request.params[0].get_str();
@@ -807,6 +808,8 @@ UniValue tokenunspent(const JSONRPCRequest& request)
     CWallet* const pwallet = wallet.get();
 
     EnsureWalletIsUnlocked(pwallet);
+
+    token_safety_checks();
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
