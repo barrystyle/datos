@@ -105,6 +105,9 @@ UniValue tokenmint(const JSONRPCRequest& request)
     if (!check_token_name(strToken, strError)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid token name");
     }
+    if (is_name_in_issuances(strToken)) {
+        throw JSONRPCError(RPC_INVALID_PARAMETER, "Issuance name already used");
+    }
 
     // Amount
     CAmount nAmount = AmountFromValue(request.params[2]) / COIN;
