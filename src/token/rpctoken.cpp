@@ -60,11 +60,6 @@ UniValue tokendecode(const JSONRPCRequest& request)
 
 UniValue tokenmint(const JSONRPCRequest& request)
 {
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CWallet* const pwallet = wallet.get();
-
-    EnsureWalletIsUnlocked(pwallet);
-
     if (request.fHelp || request.params.size() < 3 || request.params.size() > 4) {
         throw std::runtime_error(
             "tokenmint \"address\" \"name\" amount \"checksum\"\n"
@@ -80,6 +75,11 @@ UniValue tokenmint(const JSONRPCRequest& request)
             + HelpExampleCli("tokenmint", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwG\" \"BAZ\" 100000")
             + HelpExampleRpc("tokenmint", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwG\", \"BAZ\", 10000"));
     }
+
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = wallet.get();
+
+    EnsureWalletIsUnlocked(pwallet);
 
     // Prevent tokenmint while still in blocksync
     if (::ChainstateActive().IsInitialBlockDownload()) {
@@ -210,17 +210,17 @@ UniValue tokenmint(const JSONRPCRequest& request)
 
 UniValue tokenbalance(const JSONRPCRequest& request)
 {
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CWallet* const pwallet = wallet.get();
-
-    EnsureWalletIsUnlocked(pwallet);
-
     if (request.fHelp || request.params.size() > 1)
         throw std::runtime_error(
             "tokenbalance \"name\"\n"
             "\nList received tokens and their amount.\n"
             "\nArguments:\n"
             "1. \"name\"            (string, optional) Only show tokens matching name.\n");
+
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = wallet.get();
+
+    EnsureWalletIsUnlocked(pwallet);
 
     // Prevent tokenbalance while still in blocksync
     if (::ChainstateActive().IsInitialBlockDownload()) {
@@ -343,17 +343,17 @@ UniValue tokenbalance(const JSONRPCRequest& request)
 
 UniValue tokenlist(const JSONRPCRequest& request)
 {
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CWallet* const pwallet = wallet.get();
-
-    EnsureWalletIsUnlocked(pwallet);
-
     if (request.fHelp || request.params.size() != 0)
         throw std::runtime_error(
             "tokenlist\n"
             "\nList all token transactions in wallet.\n"
             "\nArguments:\n"
             "\nNone.\n");
+
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = wallet.get();
+
+    EnsureWalletIsUnlocked(pwallet);
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -428,11 +428,6 @@ UniValue tokenlist(const JSONRPCRequest& request)
 
 UniValue tokensend(const JSONRPCRequest& request)
 {
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CWallet* const pwallet = wallet.get();
-
-    EnsureWalletIsUnlocked(pwallet);
-
     if (request.fHelp || request.params.size() != 3) {
         throw std::runtime_error(
             "tokensend \"address\" \"name\" amount\n"
@@ -447,6 +442,11 @@ UniValue tokensend(const JSONRPCRequest& request)
             + HelpExampleCli("tokensend", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwG\" \"BAZ\" 100000")
             + HelpExampleRpc("tokensend", "\"XwnLY9Tf7Zsef8gMGL2fhWA9ZmMjt4KPwG\", \"BAZ\", 10000"));
     }
+
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = wallet.get();
+
+    EnsureWalletIsUnlocked(pwallet);
 
     // Prevent tokensend while still in blocksync
     if (::ChainstateActive().IsInitialBlockDownload()) {
@@ -798,15 +798,15 @@ UniValue tokeninfo(const JSONRPCRequest& request)
 
 UniValue tokenunspent(const JSONRPCRequest& request)
 {
-    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
-    CWallet* const pwallet = wallet.get();
-
-    EnsureWalletIsUnlocked(pwallet);
-
     if (request.fHelp || request.params.size() != 0)
         throw std::runtime_error(
             "tokenunspent\n"
             "\nList all unspent token outputs.\n");
+
+    std::shared_ptr<CWallet> const wallet = GetWalletForJSONRPCRequest(request);
+    CWallet* const pwallet = wallet.get();
+
+    EnsureWalletIsUnlocked(pwallet);
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
