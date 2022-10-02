@@ -233,8 +233,6 @@ UniValue tokenbalance(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    LOCK(pwallet->cs_wallet);
-
     // Name
     bool use_filter = false;
     std::string filter_name;
@@ -255,7 +253,13 @@ UniValue tokenbalance(const JSONRPCRequest& request)
     {
         auto locked_chain = pwallet->chain().lock();
 
-        for (auto it : pwallet->mapWallet) {
+        std::map<uint256, CWalletTx> walletInst;
+        {
+            LOCK(pwallet->cs_wallet);
+            walletInst = pwallet->mapWallet;
+        }
+
+        for (auto it : walletInst) {
 
             const CWalletTx& wtx = it.second;
             if (wtx.IsCoinBase())
