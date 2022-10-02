@@ -16,7 +16,14 @@ extern std::unique_ptr<CCoinsViewCache> pcoinsTip;
 bool CWallet::FundMintTransaction(CAmount& amountMin, CAmount& amountFound, std::vector<CTxIn>& ret) const
 {
     amountFound = 0;
-    for (auto out : GetSpendableTXs()) {
+
+    std::unordered_set<const CWalletTx*, WalletTxHasher> spendableTx;
+    {
+        LOCK(cs_wallet);
+        spendableTx = GetSpendableTXs();
+    }
+
+    for (auto out : spendableTx) {
         const auto& tx = out->tx;
         uint256 tx_hash = tx->GetHash();
         for (int n = 0; n < tx->vout.size(); n++) {
