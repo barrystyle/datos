@@ -6,6 +6,17 @@
 
 extern CTxMemPool mempool;
 
+bool are_tokens_active(int height)
+{
+    const Consensus::Params& params = Params().GetConsensus();
+    //! check against provided height
+    if (height != 0) {
+        return height >= params.nTokenHeight;
+    }
+    //! otherwise use active chainheight
+    return ::ChainActive().Height() >= params.nTokenHeight;
+}
+
 void reclaim_invalid_inputs()
 {
     auto vpwallets = GetWallets();

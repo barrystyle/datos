@@ -4,17 +4,6 @@
 
 #include <token/verify.h>
 
-bool are_tokens_active(int height)
-{
-    const Consensus::Params& params = Params().GetConsensus();
-    //! check against provided height
-    if (height != 0) {
-        return height >= params.nTokenHeight;
-    }
-    //! otherwise use active chainheight
-    return ::ChainActive().Height() >= params.nTokenHeight;
-}
-
 bool CheckTokenMempool(CTxMemPool& pool, const CTransactionRef& tx, std::string& strError)
 {
     LOCK(mempool.cs);

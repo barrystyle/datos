@@ -22,6 +22,7 @@
 class CToken;
 class CTxMemPool;
 
+bool are_tokens_active(int height = 0);
 void reclaim_invalid_inputs();
 bool compare_token_name(std::string& prev_token_name, std::string& token_name);
 bool check_token_name(std::string& tokenName, std::string& errorReason);
