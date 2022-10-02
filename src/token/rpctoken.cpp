@@ -372,9 +372,13 @@ UniValue tokenlist(const JSONRPCRequest& request)
     // Iterate wallet txes
     UniValue result(UniValue::VARR);
     {
-        LOCK(pwallet->cs_wallet);
+        std::map<uint256, CWalletTx> walletInst;
+        {
+            LOCK(pwallet->cs_wallet);
+            walletInst = pwallet->mapWallet;
+        }
 
-        for (auto it : pwallet->mapWallet) {
+        for (auto it : walletInst) {
 
             const CWalletTx& wtx = it.second;
 
