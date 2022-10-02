@@ -465,9 +465,6 @@ UniValue tokensend(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    LOCK2(cs_main, mempool.cs);
-    LOCK(pwallet->cs_wallet);
-
     // Address
     std::string strDest = request.params[0].get_str();
     CTxDestination dest = DecodeDestination(strDest);
@@ -510,8 +507,11 @@ UniValue tokensend(const JSONRPCRequest& request)
     bool change_was_used = false;
     CPubKey newKey;
     CReserveKey reservekey(pwallet);
-    if (!reservekey.GetReservedKey(newKey, true)) {
-        throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
+    {
+       LOCK(pwallet->cs_wallet);
+       if (!reservekey.GetReservedKey(newKey, true)) {
+           throw JSONRPCError(RPC_WALLET_KEYPOOL_RAN_OUT, "Error: Keypool ran out, please call keypoolrefill first");
+       }
     }
     CKeyID keyID = newKey.GetID();
 
@@ -537,9 +537,17 @@ UniValue tokensend(const JSONRPCRequest& request)
         throw JSONRPCError(RPC_WALLET_ERROR, strprintf("Error signing token transaction (%s)", strError));
     }
 
+    // Print tx for debug
+    LogPrint(BCLog::TOKEN, "Constructed tx:\n%s\n", tx.ToString());
+
     // Check if it will be accepted
+    bool res;
     CValidationState state;
-    bool res = AcceptToMemoryPool(mempool, state, MakeTransactionRef(tx), NULL, false, 0, true);
+    {
+        LOCK(cs_main);
+        res = AcceptToMemoryPool(mempool, state, MakeTransactionRef(tx), NULL, false, 0, true);
+    }
+
     if (!res) {
         throw JSONRPCError(RPC_WALLET_ERROR, strprintf("Transaction %s was constructed but not accepted by mempool (%s)", tx.GetHash().ToString(), state.GetDebugMessage()));
     }

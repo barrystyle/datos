@@ -62,34 +62,51 @@ bool CWallet::FundMintTransaction(CAmount& amountMin, CAmount& amountFound, std:
 bool CWallet::FundTokenTransaction(std::string& tokenname, CAmount& amountMin, CAmount& amountFound, std::vector<CTxIn>& ret) const
 {
     amountFound = 0;
-    for (auto out : GetSpendableTXs()) {
-        const auto& tx = out->tx;
-        uint256 tx_hash = tx->GetHash();
-        for (int n = 0; n < tx->vout.size(); n++) {
-            CTxOut out = tx->vout[n];
+
+    std::map<uint256, CWalletTx> walletInst;
+    {
+         LOCK(cs_wallet);
+         walletInst = mapWallet;
+    }
+
+    for (auto out : walletInst) {
+        const auto& tx = out.second;
+        uint256 tx_hash = tx.tx->GetHash();
+        for (int n = 0; n < tx.tx->vout.size(); n++) {
+            CTxOut out = tx.tx->vout[n];
             COutPoint wtx_out(tx_hash, n);
+            if (!out.IsTokenOutput()) {
+                LogPrint(BCLog::TOKEN, "%s: pass because not a token output (%s)\n", __func__, out.ToString());
+                continue;
+            }
             if (is_in_mempool(tx_hash)) {
+                LogPrint(BCLog::TOKEN, "%s: pass because tx is in mempool (%s)\n", __func__, out.ToString());
                 continue;
             }
             if (!is_output_unspent(wtx_out)) {
+                LogPrint(BCLog::TOKEN, "%s: pass because output is spent (%s)\n", __func__, out.ToString());
                 continue;
             }
             if (!IsMine(out)) {
+                LogPrint(BCLog::TOKEN, "%s: pass because output is not mine (%s)\n", __func__, out.ToString());
                 continue;
             }
             if (GetUTXOConfirmations(wtx_out) < TOKEN_MINCONFS + 1) {
+                LogPrint(BCLog::TOKEN, "%s: pass because insufficient confirms (%s)\n", __func__, out.ToString());
                 continue;
             }
             if (is_output_in_mempool(wtx_out)) {
+                LogPrint(BCLog::TOKEN, "%s: pass because output is in a mempool tx (%s)\n", __func__, out.ToString());
                 continue;
             }
             CScript pk = out.scriptPubKey;
             CAmount inputValue = out.nValue;
-            if (pk.IsPayToToken() && !pk.IsChecksumData()) {
+            if (!pk.IsChecksumData()) {
                 CToken token;
                 if (!build_token_from_script(pk, token)) {
                     continue;
                 }
+                LogPrint(BCLog::TOKEN, "%s: found %llu of %s\n", __func__, inputValue, token.getName());
                 if (tokenname == token.getName()) {
                     amountFound += inputValue;
                     CTxIn inputFound(COutPoint(tx_hash, n));

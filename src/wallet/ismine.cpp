@@ -74,6 +74,7 @@ IsMineResult IsMineInner(const CWallet& keystore, const CScript& scriptPubKey, I
             ret = std::max(ret, IsMineResult::SPENDABLE);
         }
         break;
+    case TX_TOKEN:
     case TX_PUBKEYHASH:
         keyID = CKeyID(uint160(vSolutions[0]));
         if (!PermitsUncompressed(sigversion)) {
