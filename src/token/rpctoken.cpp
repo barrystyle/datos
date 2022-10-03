@@ -838,14 +838,19 @@ UniValue tokenunspent(const JSONRPCRequest& request)
     // the user could have gotten from another RPC command prior to now
     pwallet->BlockUntilSyncedToCurrentChain();
 
-    LOCK(pwallet->cs_wallet);
-    auto locked_chain = pwallet->chain().lock();
-
     // Iterate wallet txes
     UniValue result(UniValue::VARR);
     {
-        LOCK(pwallet->cs_wallet);
-        for (auto it : pwallet->mapWallet) {
+        auto locked_chain = pwallet->chain().lock();
+
+        std::map<uint256, CWalletTx> walletInst;
+        {
+            LOCK(pwallet->cs_wallet);
+            walletInst = pwallet->mapWallet;
+        }
+
+        for (auto it : walletInst) {
+
             const CWalletTx& wtx = it.second;
             if (wtx.IsCoinBase())
                 continue;
