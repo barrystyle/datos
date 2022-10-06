@@ -9,20 +9,20 @@
 bool ScanForTokenMetadata(int lastHeight, const Consensus::Params& params)
 {
     if (lastHeight < params.nTokenHeight) {
-        LogPrint(BCLog::TOKEN, "%s - loaded chain hasnt entered token phase\n", __func__);
+        LogPrint(BCLog::TOKEN, "%s: loaded chain hasnt entered token phase\n", __func__);
         return true;
     }
 
     for (int height = params.nTokenHeight; height < lastHeight; ++height) {
         const CBlockIndex* pindex = ::ChainActive()[height];
         if (!pindex) {
-            LogPrint(BCLog::TOKEN, "%s - error reading blockindex for height %d\n", __func__, height);
+            LogPrint(BCLog::TOKEN, "%s: error reading blockindex for height %d\n", __func__, height);
             return false;
         }
 
         CBlock block;
         if (!ReadBlockFromDisk(block, pindex, params)) {
-            LogPrint(BCLog::TOKEN, "%s - error reading block %d from disk\n", __func__, height);
+            LogPrint(BCLog::TOKEN, "%s: error reading block %d from disk\n", __func__, height);
             return false;
         }
 
@@ -35,7 +35,7 @@ bool ScanForTokenMetadata(int lastHeight, const Consensus::Params& params)
 
             std::string strError;
             if (!CheckToken(tx, pindex, view, strError, params, false)) {
-                LogPrint(BCLog::TOKEN, "%s - error %s (height %d)\n", __func__, strError, height);
+                LogPrint(BCLog::TOKEN, "%s: error %s (height %d)\n", __func__, strError, height);
                 return false;
             }
         }
@@ -56,7 +56,7 @@ bool BlockUntilTokenMetadataSynced(const Consensus::Params& params)
     }
     int64_t nEnd = GetTimeMillis();
 
-    LogPrint(BCLog::TOKEN, "%s - token index synced in %.2fms\n", __func__, MILLI * (nEnd - nStart));
+    LogPrint(BCLog::TOKEN, "%s: token index synced in %.2fms\n", __func__, MILLI * (nEnd - nStart));
 
     return true;
 }

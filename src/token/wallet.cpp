@@ -222,7 +222,7 @@ void CWallet::AbandonInvalidTransaction()
         int nDepth = wtx.GetDepthInMainChain(*locked_chain);
         if (nDepth == 0 && !wtx.isAbandoned()) {
             if (!AbandonTransaction(*locked_chain, txid)) {
-                LogPrintf("Failed to abandon tx %s\n", wtx.GetHash().ToString());
+                LogPrint(BCLog::TOKEN, "Failed to abandon tx %s\n", wtx.GetHash().ToString());
             }
         }
     }

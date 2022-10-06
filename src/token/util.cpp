@@ -159,7 +159,7 @@ void PrintTxinFunds(std::vector<CTxIn>& FundsRet)
 {
     unsigned int n = 0;
     for (CTxIn input : FundsRet) {
-        LogPrint(BCLog::TOKEN, "%s - input %d - %s\n", __func__, n++, input.ToString());
+        LogPrint(BCLog::TOKEN, "%s: input %d - %s\n", __func__, n++, input.ToString());
     }
 }
 

@@ -158,7 +158,7 @@ bool CheckTokenInputs(const CTransactionRef& tx, const CBlockIndex* pindex, cons
         const Coin& coin = view.AccessCoin(prevout);
         int confirmations = spentHeight - coin.nHeight;
 
-        LogPrint(BCLog::TOKEN, "%s - COutPoint (%s, %d) has %d confirms, want %d confirm\n",
+        LogPrint(BCLog::TOKEN, "%s: COutPoint (%s, %d) has %d confirms, want %d confirm\n",
             __func__, prevout.hash.ToString(), prevout.n, confirmations, TOKEN_MINCONFS);
 
         if (confirmations < TOKEN_MINCONFS) {
