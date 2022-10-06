@@ -4,15 +4,15 @@
 
 #include <token/issuances.h>
 
-std::mutex issuances_mutex;
-std::vector<CToken> known_issuances;
+std::mutex IssuancesMutex;
+std::vector<CToken> KnownIssuances;
 
-void get_next_issuance_id(uint64_t& id)
+void GetNextIssuanceId(uint64_t& id)
 {
     id = ISSUANCE_ID_BEGIN + (GetRand(std::numeric_limits<uint64_t>::max() - ISSUANCE_ID_BEGIN));
 }
 
-bool is_identifier_in_mempool(uint64_t& id)
+bool IsIdentifierInMempool(uint64_t& id)
 {
     LOCK(mempool.cs);
 
@@ -21,10 +21,10 @@ bool is_identifier_in_mempool(uint64_t& id)
         const CTransaction& mtx = l.GetTx();
         if (mtx.HasTokenOutput()) {
             for (unsigned int i = 0; i < mtx.vout.size(); i++) {
-                CScript token_script = mtx.vout[i].scriptPubKey;
-                if (token_script.IsPayToToken()) {
+                CScript TokenScript = mtx.vout[i].scriptPubKey;
+                if (TokenScript.IsPayToToken()) {
                     uint64_t tokenid;
-                    if (!get_tokenid_from_script(token_script, tokenid)) {
+                    if (!GetTokenidFromScript(TokenScript, tokenid)) {
                         continue;
                     }
                     if (tokenid == id) {
@@ -38,11 +38,11 @@ bool is_identifier_in_mempool(uint64_t& id)
     return false;
 }
 
-bool is_name_in_issuances(std::string& name)
+bool IsNameInIssuances(std::string& name)
 {
-    std::lock_guard<std::mutex> lock(issuances_mutex);
+    std::lock_guard<std::mutex> lock(IssuancesMutex);
 
-    for (CToken& token : known_issuances) {
+    for (CToken& token : KnownIssuances) {
         if (token.getName() == name) {
             return true;
         }
@@ -50,11 +50,11 @@ bool is_name_in_issuances(std::string& name)
     return false;
 }
 
-bool is_identifier_in_issuances(uint64_t& identifier)
+bool IsIdentifierInIssuances(uint64_t& identifier)
 {
-    std::lock_guard<std::mutex> lock(issuances_mutex);
+    std::lock_guard<std::mutex> lock(IssuancesMutex);
 
-    for (CToken& token : known_issuances) {
+    for (CToken& token : KnownIssuances) {
         if (token.getId() == identifier) {
             return true;
         }
@@ -62,11 +62,11 @@ bool is_identifier_in_issuances(uint64_t& identifier)
     return false;
 }
 
-bool get_id_for_token_name(std::string& name, uint64_t& id)
+bool GetIdForTokenName(std::string& name, uint64_t& id)
 {
-    std::lock_guard<std::mutex> lock(issuances_mutex);
+    std::lock_guard<std::mutex> lock(IssuancesMutex);
 
-    for (CToken& token : known_issuances) {
+    for (CToken& token : KnownIssuances) {
         if (name == token.getName()) {
             id = token.getId();
             return true;
@@ -75,24 +75,24 @@ bool get_id_for_token_name(std::string& name, uint64_t& id)
     return false;
 }
 
-std::vector<CToken> copy_issuances_vector()
+std::vector<CToken> CopyIssuancesVector()
 {
-    std::lock_guard<std::mutex> lock(issuances_mutex);
+    std::lock_guard<std::mutex> lock(IssuancesMutex);
 
-    std::vector<CToken> temp_known_issuances = known_issuances;
-    return temp_known_issuances;
+    std::vector<CToken> TempKnownIssuances = KnownIssuances;
+    return TempKnownIssuances;
 }
 
-uint64_t get_issuances_size()
+uint64_t GetIssuancesSize()
 {
-    std::lock_guard<std::mutex> lock(issuances_mutex);
+    std::lock_guard<std::mutex> lock(IssuancesMutex);
 
-    return known_issuances.size();
+    return KnownIssuances.size();
 }
 
-void add_to_issuances(CToken& token)
+void AddToIssuances(CToken& token)
 {
-    std::lock_guard<std::mutex> lock(issuances_mutex);
+    std::lock_guard<std::mutex> lock(IssuancesMutex);
 
-    known_issuances.push_back(token);
+    KnownIssuances.push_back(token);
 }

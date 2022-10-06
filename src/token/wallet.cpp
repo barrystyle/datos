@@ -25,14 +25,14 @@ bool CWallet::FundMintTransaction(CAmount& amountMin, CAmount& amountFound, std:
 
     for (auto out : spendableTx) {
         const auto& tx = out->tx;
-        uint256 tx_hash = tx->GetHash();
+        uint256 txHash = tx->GetHash();
         for (int n = 0; n < tx->vout.size(); n++) {
             CTxOut out = tx->vout[n];
-            COutPoint wtx_out(tx_hash, n);
-            if (is_in_mempool(tx_hash)) {
+            COutPoint wtx_out(txHash, n);
+            if (IsInMempool(txHash)) {
                 continue;
             }
-            if (!is_output_unspent(wtx_out)) {
+            if (!IsOutputUnspent(wtx_out)) {
                 continue;
             }
             if (!IsMine(out)) {
@@ -41,14 +41,14 @@ bool CWallet::FundMintTransaction(CAmount& amountMin, CAmount& amountFound, std:
             if (GetUTXOConfirmations(wtx_out) < TOKEN_MINCONFS + 1) {
                 continue;
             }
-            if (is_output_in_mempool(wtx_out)) {
+            if (IsOutputInMempool(wtx_out)) {
                 continue;
             }
             CScript pk = out.scriptPubKey;
             CAmount inputValue = out.nValue;
             if (!pk.IsPayToToken() && !pk.IsChecksumData()) {
                 amountFound += inputValue;
-                CTxIn inputFound(COutPoint(tx_hash, n));
+                CTxIn inputFound(COutPoint(txHash, n));
                 ret.push_back(inputFound);
                 if (amountFound >= amountMin) {
                     return true;
@@ -71,19 +71,19 @@ bool CWallet::FundTokenTransaction(std::string& tokenname, CAmount& amountMin, C
 
     for (auto out : walletInst) {
         const auto& tx = out.second;
-        uint256 tx_hash = tx.tx->GetHash();
+        uint256 txHash = tx.tx->GetHash();
         for (int n = 0; n < tx.tx->vout.size(); n++) {
             CTxOut out = tx.tx->vout[n];
-            COutPoint wtx_out(tx_hash, n);
+            COutPoint wtx_out(txHash, n);
             if (!out.IsTokenOutput()) {
                 LogPrint(BCLog::TOKEN, "%s: pass because not a token output (%s)\n", __func__, out.ToString());
                 continue;
             }
-            if (is_in_mempool(tx_hash)) {
+            if (IsInMempool(txHash)) {
                 LogPrint(BCLog::TOKEN, "%s: pass because tx is in mempool (%s)\n", __func__, out.ToString());
                 continue;
             }
-            if (!is_output_unspent(wtx_out)) {
+            if (!IsOutputUnspent(wtx_out)) {
                 LogPrint(BCLog::TOKEN, "%s: pass because output is spent (%s)\n", __func__, out.ToString());
                 continue;
             }
@@ -95,7 +95,7 @@ bool CWallet::FundTokenTransaction(std::string& tokenname, CAmount& amountMin, C
                 LogPrint(BCLog::TOKEN, "%s: pass because insufficient confirms (%s)\n", __func__, out.ToString());
                 continue;
             }
-            if (is_output_in_mempool(wtx_out)) {
+            if (IsOutputInMempool(wtx_out)) {
                 LogPrint(BCLog::TOKEN, "%s: pass because output is in a mempool tx (%s)\n", __func__, out.ToString());
                 continue;
             }
@@ -103,13 +103,13 @@ bool CWallet::FundTokenTransaction(std::string& tokenname, CAmount& amountMin, C
             CAmount inputValue = out.nValue;
             if (!pk.IsChecksumData()) {
                 CToken token;
-                if (!build_token_from_script(pk, token)) {
+                if (!BuildTokenFromScript(pk, token)) {
                     continue;
                 }
                 LogPrint(BCLog::TOKEN, "%s: found %llu of %s\n", __func__, inputValue, token.getName());
                 if (tokenname == token.getName()) {
                     amountFound += inputValue;
-                    CTxIn inputFound(COutPoint(tx_hash, n));
+                    CTxIn inputFound(COutPoint(txHash, n));
                     ret.push_back(inputFound);
                     if (amountFound >= amountMin) {
                         return true;
@@ -188,10 +188,10 @@ bool CWallet::GetUnconfirmedTokenBalance(CTxMemPool& pool, std::map<std::string,
         const CTransaction& mtx = l.GetTx();
         if (mtx.HasTokenOutput()) {
             for (unsigned int i = 0; i < mtx.vout.size(); i++) {
-                CScript token_script = mtx.vout[i].scriptPubKey;
-                if (token_script.IsPayToToken() && IsMine(mtx.vout[i])) {
+                CScript TokenScript = mtx.vout[i].scriptPubKey;
+                if (TokenScript.IsPayToToken() && IsMine(mtx.vout[i])) {
                     CToken token;
-                    if (!ContextualCheckToken(token_script, token, strError)) {
+                    if (!ContextualCheckToken(TokenScript, token, strError)) {
                         LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                         strError = "corrupt-invalid-existing-mempool";
                         return false;

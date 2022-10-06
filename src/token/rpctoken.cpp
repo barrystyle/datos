@@ -41,7 +41,7 @@ UniValue tokendecode(const JSONRPCRequest& request)
     uint64_t identifier;
     std::string name;
     CPubKey ownerKey;
-    decode_token_script(script, version, type, identifier, name, ownerKey, true);
+    DecodeTokenScript(script, version, type, identifier, name, ownerKey, true);
 
     // Decode destination
     CTxDestination dest;
@@ -81,7 +81,7 @@ UniValue tokenmint(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    token_safety_checks();
+    TokenSafetyChecks();
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -98,11 +98,11 @@ UniValue tokenmint(const JSONRPCRequest& request)
     std::string strToken = request.params[1].get_str();
 
     std::string strError;
-    strip_control_chars(strToken);
-    if (!check_token_name(strToken, strError)) {
+    StripControlChars(strToken);
+    if (!CheckTokenName(strToken, strError)) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid token name");
     }
-    if (is_name_in_issuances(strToken)) {
+    if (IsNameInIssuances(strToken)) {
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Issuance name already used");
     }
 
@@ -126,31 +126,31 @@ UniValue tokenmint(const JSONRPCRequest& request)
 
     // Build script
     uint64_t identifier;
-    CScript issuance_script;
-    get_next_issuance_id(identifier);
-    CScript token_destination = GetScriptForDestination(dest);
-    build_token_script(issuance_script, CToken::CURRENT_VERSION, CToken::ISSUANCE, identifier, strToken, token_destination);
+    CScript IssuanceScript;
+    GetNextIssuanceId(identifier);
+    CScript TokenDestination = GetScriptForDestination(dest);
+    BuildTokenScript(IssuanceScript, CToken::CURRENT_VERSION, CToken::ISSUANCE, identifier, strToken, TokenDestination);
 
     // Build checksum script (if required)
-    CScript checksum_script;
+    CScript ChecksumScript;
     if (usingChecksum) {
         std::vector<unsigned char> vecChecksum = ParseHex(strChecksum.c_str());
         uint160 checksum;
         memcpy(&checksum, vecChecksum.data(), 20);
-        build_checksum_script(checksum_script, checksum);
+        BuildChecksumScript(ChecksumScript, checksum);
     }
 
     // Extract balances from wallet
     CAmount valueOut;
-    std::vector<CTxIn> ret_input;
-    CAmount required_funds = nAmount + (usingChecksum ? 1000 : 0);
-    if (!pwallet->FundMintTransaction(required_funds, valueOut, ret_input)) {
+    std::vector<CTxIn> RetInput;
+    CAmount RequiredFunds = nAmount + (usingChecksum ? 1000 : 0);
+    if (!pwallet->FundMintTransaction(RequiredFunds, valueOut, RetInput)) {
         throw JSONRPCError(RPC_TYPE_ERROR, "Could not find enough token to create transaction.");
     }
-    print_txin_funds(ret_input);
+    PrintTxinFunds(RetInput);
 
     // Generate new change address
-    bool change_was_used = (valueOut - required_funds) > 0;
+    bool changeWasUsed = (valueOut - RequiredFunds) > 0;
     CPubKey newKey;
     CReserveKey reservekey(pwallet);
     {
@@ -164,17 +164,17 @@ UniValue tokenmint(const JSONRPCRequest& request)
     // Create transaction
     CMutableTransaction tx;
     tx.nLockTime = ::ChainActive().Height();
-    tx.vin = ret_input;
-    tx.vout.push_back(CTxOut(nAmount, issuance_script));
+    tx.vin = RetInput;
+    tx.vout.push_back(CTxOut(nAmount, IssuanceScript));
 
     if (usingChecksum) {
-        tx.vout.push_back(CTxOut(1000, checksum_script));
+        tx.vout.push_back(CTxOut(1000, ChecksumScript));
     }
 
-    if (change_was_used) {
-        CAmount change_amount = valueOut - required_funds;
-        CScript change_script = GetScriptForDestination(keyID);
-        tx.vout.push_back(CTxOut(change_amount, change_script));
+    if (changeWasUsed) {
+        CAmount ChangeAmount = valueOut - RequiredFunds;
+        CScript ChangeScript = GetScriptForDestination(keyID);
+        tx.vout.push_back(CTxOut(ChangeAmount, ChangeScript));
     }
 
     // Sign transaction
@@ -198,15 +198,15 @@ UniValue tokenmint(const JSONRPCRequest& request)
     }
 
     // Broadcast transaction
-    std::string unused_err_string;
+    std::string UnusedErrString;
     auto locked_chain = pwallet->chain().lock();
     CWalletTx wtx(pwallet, MakeTransactionRef(tx));
-    if (!wtx.SubmitMemoryPoolAndRelay(unused_err_string, false, *locked_chain)) {
+    if (!wtx.SubmitMemoryPoolAndRelay(UnusedErrString, false, *locked_chain)) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Error broadcasting token transaction");
     }
 
     // return change key if not used
-    if (!change_was_used) {
+    if (!changeWasUsed) {
         reservekey.ReturnKey();
     }
 
@@ -227,7 +227,7 @@ UniValue tokenbalance(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    token_safety_checks();
+    TokenSafetyChecks();
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -239,13 +239,13 @@ UniValue tokenbalance(const JSONRPCRequest& request)
     if (!request.params[0].isNull()) {
         use_filter = true;
         filter_name = request.params[0].get_str();
-        strip_control_chars(filter_name);
+        StripControlChars(filter_name);
     } else {
         filter_name.clear();
     }
 
-    std::map<std::string, CAmount> token_balances_confirmed;
-    std::map<std::string, CAmount> token_balances_unconfirmed;
+    std::map<std::string, CAmount> TokenBalancesConfirmed;
+    std::map<std::string, CAmount> TokenBalancesUnconfirmed;
 
     // Iterate wallet txes
     std::string strError;
@@ -270,7 +270,7 @@ UniValue tokenbalance(const JSONRPCRequest& request)
                 continue;
             }
 
-            uint256 tx_hash = wtx.tx->GetHash();
+            uint256 txHash = wtx.tx->GetHash();
             for (int n = 0; n < wtx.tx->vout.size(); n++) {
                 CTxOut out = wtx.tx->vout[n];
                 CScript pk = out.scriptPubKey;
@@ -287,10 +287,10 @@ UniValue tokenbalance(const JSONRPCRequest& request)
                 }
 
                 //! account for token in mempool, but not stale wallet sends
-                bool in_mempool = false;
+                bool inMempool = false;
                 if (wtx.GetDepthInMainChain(*locked_chain) == 0) {
-                    if (is_in_mempool(tx_hash)) {
-                        in_mempool = true;
+                    if (IsInMempool(txHash)) {
+                        inMempool = true;
                     } else {
                         continue;
                     }
@@ -298,7 +298,7 @@ UniValue tokenbalance(const JSONRPCRequest& request)
 
                 if (pk.IsPayToToken()) {
                     CToken token;
-                    if (!build_token_from_script(pk, token)) {
+                    if (!BuildTokenFromScript(pk, token)) {
                         continue;
                     }
                     CTxDestination address;
@@ -311,33 +311,33 @@ UniValue tokenbalance(const JSONRPCRequest& request)
 
                     //! create and fill entry
                     std::string name = token.getName();
-                    if (!in_mempool) {
-                        token_balances_confirmed[name] += nValue;
+                    if (!inMempool) {
+                        TokenBalancesConfirmed[name] += nValue;
                     }
                 }
             }
         }
     }
 
-    pwallet->GetUnconfirmedTokenBalance(mempool, token_balances_unconfirmed, strError);
+    pwallet->GetUnconfirmedTokenBalance(mempool, TokenBalancesUnconfirmed, strError);
 
     UniValue confirmed(UniValue::VOBJ);
-    for (const auto& l : token_balances_confirmed) {
+    for (const auto& l : TokenBalancesConfirmed) {
         std::string name = l.first;
         if (!use_filter) {
             confirmed.pushKV(name, l.second);
-        } else if (use_filter && compare_token_name(filter_name, name)) {
+        } else if (use_filter && CompareTokenName(filter_name, name)) {
             confirmed.pushKV(name, l.second);
         }
     }
     result.pushKV("confirmed", confirmed);
 
     UniValue unconfirmed(UniValue::VOBJ);
-    for (const auto& l : token_balances_unconfirmed) {
+    for (const auto& l : TokenBalancesUnconfirmed) {
         std::string name = l.first;
         if (!use_filter) {
             unconfirmed.pushKV(name, l.second);
-        } else if (use_filter && compare_token_name(filter_name, name)) {
+        } else if (use_filter && CompareTokenName(filter_name, name)) {
             unconfirmed.pushKV(name, l.second);
         }
     }
@@ -360,7 +360,7 @@ UniValue tokenlist(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    token_safety_checks();
+    TokenSafetyChecks();
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -382,8 +382,8 @@ UniValue tokenlist(const JSONRPCRequest& request)
 
             const CWalletTx& wtx = it.second;
 
-            uint256 wtx_hash = wtx.GetHash();
-            if (is_in_mempool(wtx_hash))
+            uint256 wtxHash = wtx.GetHash();
+            if (IsInMempool(wtxHash))
                 continue;
 
             if (wtx.IsCoinBase())
@@ -397,7 +397,7 @@ UniValue tokenlist(const JSONRPCRequest& request)
                 if (pk.IsPayToToken()) {
 
                     CToken token;
-                    if (!build_token_from_script(pk, token)) {
+                    if (!BuildTokenFromScript(pk, token)) {
                         continue;
                     }
                     CTxDestination address;
@@ -459,7 +459,7 @@ UniValue tokensend(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    token_safety_checks();
+    TokenSafetyChecks();
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -474,7 +474,7 @@ UniValue tokensend(const JSONRPCRequest& request)
 
     // Name
     std::string strToken = request.params[1].get_str();
-    strip_control_chars(strToken);
+    StripControlChars(strToken);
     if (strToken.size() < TOKENNAME_MINLEN || strToken.size() > TOKENNAME_MAXLEN) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid token name");
     }
@@ -487,24 +487,24 @@ UniValue tokensend(const JSONRPCRequest& request)
 
     // Extract token/balances from wallet
     CAmount valueOut;
-    std::vector<CTxIn> ret_input;
-    if (!pwallet->FundTokenTransaction(strToken, nAmount, valueOut, ret_input)) {
+    std::vector<CTxIn> RetInput;
+    if (!pwallet->FundTokenTransaction(strToken, nAmount, valueOut, RetInput)) {
         throw JSONRPCError(RPC_TYPE_ERROR, "Could not find enough token to create transaction.");
     }
-    print_txin_funds(ret_input);
+    PrintTxinFunds(RetInput);
 
     // Generate target destination 'out'
     CScript destPubKey;
     CScript destScript = GetScriptForDestination(dest);
     uint64_t id;
-    if (!get_id_for_token_name(strToken, id)) {
+    if (!GetIdForTokenName(strToken, id)) {
         throw JSONRPCError(RPC_TYPE_ERROR, "Could not find token id from returned token inputs.");
     }
-    build_token_script(destPubKey, CToken::CURRENT_VERSION, CToken::TRANSFER, id, strToken, destScript);
+    BuildTokenScript(destPubKey, CToken::CURRENT_VERSION, CToken::TRANSFER, id, strToken, destScript);
     CTxOut destOutput(nAmount, destPubKey);
 
     // Generate new change address
-    bool change_was_used = false;
+    bool changeWasUsed = false;
     CPubKey newKey;
     CReserveKey reservekey(pwallet);
     {
@@ -518,17 +518,17 @@ UniValue tokensend(const JSONRPCRequest& request)
     // Create transaction
     CMutableTransaction tx;
     tx.nLockTime = ::ChainActive().Height();
-    tx.vin = ret_input;
+    tx.vin = RetInput;
     tx.vout.push_back(destOutput);
 
     // Generate target change 'out'
     if (valueOut - nAmount > 0) {
         CScript destChangePubKey;
         CScript destChangeScript = GetScriptForDestination(keyID);
-        build_token_script(destChangePubKey, CToken::CURRENT_VERSION, CToken::TRANSFER, id, strToken, destChangeScript);
+        BuildTokenScript(destChangePubKey, CToken::CURRENT_VERSION, CToken::TRANSFER, id, strToken, destChangeScript);
         CTxOut destChangeOutput(valueOut - nAmount, destChangePubKey);
         tx.vout.push_back(destChangeOutput);
-        change_was_used = true;
+        changeWasUsed = true;
     }
 
     // Sign transaction
@@ -553,15 +553,15 @@ UniValue tokensend(const JSONRPCRequest& request)
     }
 
     // Broadcast transaction
-    std::string unused_err_string;
+    std::string UnusedErrString;
     auto locked_chain = pwallet->chain().lock();
     CWalletTx wtx(pwallet, MakeTransactionRef(tx));
-    if (!wtx.SubmitMemoryPoolAndRelay(unused_err_string, false, *locked_chain)) {
+    if (!wtx.SubmitMemoryPoolAndRelay(UnusedErrString, false, *locked_chain)) {
         throw JSONRPCError(RPC_WALLET_ERROR, "Error broadcasting token transaction");
     }
 
     // return change key if not used
-    if (!change_was_used) {
+    if (!changeWasUsed) {
         reservekey.ReturnKey();
     }
 
@@ -578,12 +578,12 @@ UniValue tokenissuances(const JSONRPCRequest& request)
             "none\n");
     }
 
-    token_safety_checks();
+    TokenSafetyChecks();
 
     UniValue issuances(UniValue::VOBJ);
     {
         LOCK(cs_main);
-        for (CToken& token : known_issuances) {
+        for (CToken& token : KnownIssuances) {
             UniValue issuance(UniValue::VOBJ);
             issuance.pushKV("version", strprintf("%02x", token.getVersion()));
             issuance.pushKV("type", strprintf("%04x", token.getType()));
@@ -606,11 +606,11 @@ UniValue tokenchecksum(const JSONRPCRequest& request)
             "1. \"name\"            (string, required) The token to retrieve checksum from.\n");
     }
 
-    token_safety_checks();
+    TokenSafetyChecks();
 
     // Name
     std::string strToken = request.params[0].get_str();
-    strip_control_chars(strToken);
+    StripControlChars(strToken);
     if (strToken.size() < TOKENNAME_MINLEN || strToken.size() > TOKENNAME_MAXLEN) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid token name");
     }
@@ -618,7 +618,7 @@ UniValue tokenchecksum(const JSONRPCRequest& request)
     // Search and retrieve checksum
     {
         LOCK(cs_main);
-        for (CToken& token : known_issuances) {
+        for (CToken& token : KnownIssuances) {
             if (strToken == token.getName()) {
                 //! fetch token origin tx
                 uint256 blockHash;
@@ -630,12 +630,12 @@ UniValue tokenchecksum(const JSONRPCRequest& request)
                 //! fetch checksum output
                 for (unsigned int i = 0; i < tx->vout.size(); i++) {
                     if (tx->vout[i].IsTokenChecksum()) {
-                        uint160 checksum_output;
-                        CScript checksum_script = tx->vout[i].scriptPubKey;
-                        if (!decode_checksum_script(checksum_script, checksum_output)) {
+                        uint160 ChecksumOutput;
+                        CScript ChecksumScript = tx->vout[i].scriptPubKey;
+                        if (!DecodeChecksumScript(ChecksumScript, ChecksumOutput)) {
                             throw JSONRPCError(RPC_TYPE_ERROR, "Could not retrieve checksum from token origin transaction.");
                         }
-                        return HexStr(checksum_output);
+                        return HexStr(ChecksumOutput);
                     }
                 }
             }
@@ -655,14 +655,14 @@ UniValue tokenhistory(const JSONRPCRequest& request)
             "1. \"name\"            (string, required) The token to display history for.\n");
     }
 
-    token_safety_checks();
+    TokenSafetyChecks();
 
     // Get current height
     int height = ::ChainActive().Height();
 
     // Name
     std::string strToken = request.params[0].get_str();
-    strip_control_chars(strToken);
+    StripControlChars(strToken);
     if (strToken.size() < TOKENNAME_MINLEN || strToken.size() > TOKENNAME_MAXLEN) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid token name");
     }
@@ -671,13 +671,13 @@ UniValue tokenhistory(const JSONRPCRequest& request)
     UniValue history(UniValue::VARR);
     {
         LOCK(cs_main);
-        COutPoint token_spend;
-        if (!FindLastTokenUse(strToken, token_spend, height, Params().GetConsensus())) {
+        COutPoint TokenSpend;
+        if (!FindLastTokenUse(strToken, TokenSpend, height, Params().GetConsensus())) {
             throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Unable to find usage of token");
         }
 
-        uint256 hash = token_spend.hash;
-        int n = token_spend.n;
+        uint256 hash = TokenSpend.hash;
+        int n = TokenSpend.n;
 
         while (true) {
 
@@ -691,8 +691,8 @@ UniValue tokenhistory(const JSONRPCRequest& request)
             // decode token
             CToken token;
             std::string strError;
-            CScript token_script = tx->vout[n].scriptPubKey;
-            if (!ContextualCheckToken(token_script, token, strError)) {
+            CScript TokenScript = tx->vout[n].scriptPubKey;
+            if (!ContextualCheckToken(TokenScript, token, strError)) {
                 LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                 throw JSONRPCError(RPC_TYPE_ERROR, "Token data inconsistent.");
             }
@@ -740,11 +740,11 @@ UniValue tokeninfo(const JSONRPCRequest& request)
             "1. \"name\"            (string, required) The token to show information.\n");
     }
 
-    token_safety_checks();
+    TokenSafetyChecks();
 
     // Name
     std::string strToken = request.params[0].get_str();
-    strip_control_chars(strToken);
+    StripControlChars(strToken);
     if (strToken.size() < TOKENNAME_MINLEN || strToken.size() > TOKENNAME_MAXLEN) {
         throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid token name");
     }
@@ -753,7 +753,7 @@ UniValue tokeninfo(const JSONRPCRequest& request)
     UniValue result(UniValue::VOBJ);
     {
         LOCK(cs_main);
-        for (CToken& token : known_issuances) {
+        for (CToken& token : KnownIssuances) {
             if (strToken == token.getName()) {
                 //! fetch token origin tx
                 uint256 blockHash;
@@ -772,8 +772,8 @@ UniValue tokeninfo(const JSONRPCRequest& request)
                 origin.pushKV("tx", token.getOriginTx().ToString());
 
                 //! fetch token and checksum output from origin transactions
-                bool found_token = false;
-                bool found_checksum = false;
+                bool FoundToken = false;
+                bool FoundChecksum = false;
                 for (unsigned int i = 0; i < tx->vout.size(); i++) {
                     if (tx->vout[i].IsTokenOutput()) {
                         uint8_t version;
@@ -781,29 +781,29 @@ UniValue tokeninfo(const JSONRPCRequest& request)
                         uint64_t identifier;
                         std::string name;
                         CPubKey ownerKey;
-                        CScript token_script = tx->vout[i].scriptPubKey;
-                        if (!decode_token_script(token_script, version, type, identifier, name, ownerKey, true)) {
+                        CScript TokenScript = tx->vout[i].scriptPubKey;
+                        if (!DecodeTokenScript(TokenScript, version, type, identifier, name, ownerKey, true)) {
                             throw JSONRPCError(RPC_TYPE_ERROR, "Could not retrieve token from origin transaction.");
                         }
                         CTxDestination address;
-                        ExtractDestination(token_script, address);
+                        ExtractDestination(TokenScript, address);
                         CAmount amount = tx->vout[i].nValue;
                         origin.pushKV("address", EncodeDestination(address));
                         origin.pushKV("maxsupply", amount);
-                        found_token = true;
-                        if (found_token && found_checksum) {
+                        FoundToken = true;
+                        if (FoundToken && FoundChecksum) {
                             break;
                         }
                     }
                     if (tx->vout[i].IsTokenChecksum()) {
-                        uint160 checksum_output;
-                        CScript checksum_script = tx->vout[i].scriptPubKey;
-                        if (!decode_checksum_script(checksum_script, checksum_output)) {
+                        uint160 ChecksumOutput;
+                        CScript ChecksumScript = tx->vout[i].scriptPubKey;
+                        if (!DecodeChecksumScript(ChecksumScript, ChecksumOutput)) {
                             throw JSONRPCError(RPC_TYPE_ERROR, "Could not retrieve checksum from token origin transaction.");
                         }
-                        entry.pushKV("checksum", HexStr(checksum_output));
-                        found_checksum = true;
-                        if (found_token && found_checksum) {
+                        entry.pushKV("checksum", HexStr(ChecksumOutput));
+                        FoundChecksum = true;
+                        if (FoundToken && FoundChecksum) {
                             break;
                         }
                     }
@@ -832,7 +832,7 @@ UniValue tokenunspent(const JSONRPCRequest& request)
 
     EnsureWalletIsUnlocked(pwallet);
 
-    token_safety_checks();
+    TokenSafetyChecks();
 
     // Make sure the results are valid at least up to the most recent block
     // the user could have gotten from another RPC command prior to now
@@ -861,7 +861,7 @@ UniValue tokenunspent(const JSONRPCRequest& request)
             if (!wtx.IsTrusted(*locked_chain))
                 continue;
 
-            uint256 tx_hash = wtx.tx->GetHash();
+            uint256 txHash = wtx.tx->GetHash();
             for (int n = 0; n < wtx.tx->vout.size(); n++) {
                 CTxOut out = wtx.tx->vout[n];
                 CScript pk = out.scriptPubKey;
@@ -874,7 +874,7 @@ UniValue tokenunspent(const JSONRPCRequest& request)
 
                 if (pk.IsPayToToken()) {
                     CToken token;
-                    if (!build_token_from_script(pk, token)) {
+                    if (!BuildTokenFromScript(pk, token)) {
                         continue;
                     }
 

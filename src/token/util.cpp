@@ -6,9 +6,9 @@
 
 extern CTxMemPool mempool;
 
-void token_safety_checks()
+void TokenSafetyChecks()
 {
-    if (!are_tokens_active()) {
+    if (!AreTokensActive()) {
         throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Cannot perform token action while token layer is not active");
     }
 
@@ -17,7 +17,7 @@ void token_safety_checks()
     }
 }
 
-bool are_tokens_active(int height)
+bool AreTokensActive(int height)
 {
     const Consensus::Params& params = Params().GetConsensus();
     //! check against provided height
@@ -28,7 +28,7 @@ bool are_tokens_active(int height)
     return ::ChainActive().Height() >= params.nTokenHeight;
 }
 
-void reclaim_invalid_inputs()
+void ReclaimInvalidInputs()
 {
     auto vpwallets = GetWallets();
     size_t nWallets = vpwallets.size();
@@ -42,12 +42,12 @@ void reclaim_invalid_inputs()
     }
 }
 
-bool compare_token_name(std::string& prev_token_name, std::string& token_name)
+bool CompareTokenName(std::string& PrevTokenName, std::string& TokenName)
 {
-    return (prev_token_name.compare(token_name) == 0);
+    return (PrevTokenName.compare(TokenName) == 0);
 }
 
-bool check_token_name(std::string& tokenName, std::string& errorReason)
+bool CheckTokenName(std::string& tokenName, std::string& errorReason)
 {
     if (tokenName.length() < TOKENNAME_MINLEN || tokenName.length() > TOKENNAME_MAXLEN) {
         errorReason = "tokenname-bounds-exceeded";
@@ -74,7 +74,7 @@ bool check_token_name(std::string& tokenName, std::string& errorReason)
     return true;
 }
 
-void strip_control_chars(std::string& instr)
+void StripControlChars(std::string& instr)
 {
     std::string outstr;
     outstr.clear();
@@ -86,7 +86,7 @@ void strip_control_chars(std::string& instr)
     instr = outstr;
 }
 
-bool is_in_mempool(uint256& txhash)
+bool IsInMempool(uint256& txhash)
 {
     LOCK(mempool.cs);
     if (mempool.exists(txhash)) {
@@ -95,13 +95,13 @@ bool is_in_mempool(uint256& txhash)
     return false;
 }
 
-void remove_from_mempool(CTransaction& tx)
+void RemoveFromMempool(CTransaction& tx)
 {
     LOCK(mempool.cs);
     mempool.removeRecursive(tx, MemPoolRemovalReason::CONFLICT);
 }
 
-bool is_output_unspent(const COutPoint& out)
+bool IsOutputUnspent(const COutPoint& out)
 {
     Coin coin;
     if (!GetUTXOCoin(out, coin)) {
@@ -110,35 +110,35 @@ bool is_output_unspent(const COutPoint& out)
     return true;
 }
 
-bool is_output_in_mempool(const COutPoint& out)
+bool IsOutputInMempool(const COutPoint& out)
 {
     LOCK(mempool.cs);
 
     //! build quick vin cache
-    std::vector<COutPoint> mempool_outputs;
+    std::vector<COutPoint> MempoolOutputs;
     for (const auto& l : mempool.mapTx) {
         const CTransaction& mtx = l.GetTx();
         if (mtx.HasTokenOutput()) {
             for (unsigned int i = 0; i < mtx.vin.size(); i++) {
-                mempool_outputs.push_back(mtx.vin[i].prevout);
+                MempoolOutputs.push_back(mtx.vin[i].prevout);
             }
         }
     }
 
     //! then see if our output is in this cache
-    const auto& it = std::find(mempool_outputs.begin(), mempool_outputs.end(), out);
-    if (it != mempool_outputs.end()) {
+    const auto& it = std::find(MempoolOutputs.begin(), MempoolOutputs.end(), out);
+    if (it != MempoolOutputs.end()) {
         return true;
     }
 
     return false;
 }
 
-int tokentx_in_mempool()
+int TokentxInMempool()
 {
     LOCK(mempool.cs);
 
-    int token_total = 0;
+    int TokenTotal = 0;
     for (const auto& l : mempool.mapTx) {
         const CTransaction& mtx = l.GetTx();
         bool is_token_tx = true;
@@ -148,17 +148,17 @@ int tokentx_in_mempool()
             }
         }
         if (is_token_tx) {
-            token_total++;
+            TokenTotal++;
         }
     }
 
-    return token_total;
+    return TokenTotal;
 }
 
-void print_txin_funds(std::vector<CTxIn>& funds_ret)
+void PrintTxinFunds(std::vector<CTxIn>& FundsRet)
 {
     unsigned int n = 0;
-    for (CTxIn input : funds_ret) {
+    for (CTxIn input : FundsRet) {
         LogPrint(BCLog::TOKEN, "%s - input %d - %s\n", __func__, n++, input.ToString());
     }
 }

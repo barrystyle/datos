@@ -581,7 +581,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
 
     // token specific checks
     if (ptx->HasTokenOutput()) {
-        if (!are_tokens_active()) {
+        if (!AreTokensActive()) {
             return error("%s: CheckToken: token layer is not currently active", __func__);
         }
         std::string strError;
@@ -2220,7 +2220,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
         // Perform token consensus checks
         if (tx.HasTokenOutput()) {
-            if (!are_tokens_active(pindex->nHeight)) {
+            if (!AreTokensActive(pindex->nHeight)) {
                 return error("%s: CheckToken: token layer is not currently active", __func__);
             }
             std::string strError;

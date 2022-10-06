@@ -23,18 +23,18 @@
 class CToken;
 class CTxMemPool;
 
-void token_safety_checks();
-bool are_tokens_active(int height = 0);
-void reclaim_invalid_inputs();
-bool compare_token_name(std::string& prev_token_name, std::string& token_name);
-bool check_token_name(std::string& tokenName, std::string& errorReason);
-void strip_control_chars(std::string& instr);
-bool is_in_mempool(uint256& txhash);
-void remove_from_mempool(CTransaction& tx);
-bool is_output_unspent(const COutPoint& out);
-bool is_output_in_mempool(const COutPoint& out);
-int tokentx_in_mempool();
-void print_txin_funds(std::vector<CTxIn>& funds_ret);
+void TokenSafetyChecks();
+bool AreTokensActive(int height = 0);
+void ReclaimInvalidInputs();
+bool CompareTokenName(std::string& PrevTokenName, std::string& TokenName);
+bool CheckTokenName(std::string& tokenName, std::string& errorReason);
+void StripControlChars(std::string& instr);
+bool IsInMempool(uint256& txhash);
+void RemoveFromMempool(CTransaction& tx);
+bool IsOutputUnspent(const COutPoint& out);
+bool IsOutputInMempool(const COutPoint& out);
+int TokentxInMempool();
+void PrintTxinFunds(std::vector<CTxIn>& FundsRet);
 opcodetype GetOpcode(int n);
 int GetIntFromOpcode(opcodetype n);
 
