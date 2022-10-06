@@ -17,13 +17,12 @@
 
 class CToken;
 
-bool are_tokens_active(int height = 0);
 bool CheckTokenMempool(CTxMemPool& pool, const CTransactionRef& tokenTx, std::string& strError);
 bool CheckTokenIssuance(const CTransactionRef& tx, std::string& strError, bool onlyCheck);
 bool CheckTokenInputs(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoinsViewCache& view, std::string& strError);
-bool ContextualCheckToken(CScript& token_script, CToken& token, std::string& strError, bool debug = false);
+bool ContextualCheckToken(CScript& TokenScript, CToken& token, std::string& strError, bool debug = false);
 bool CheckToken(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoinsViewCache& view, std::string& strError, const Consensus::Params& params, bool onlyCheck);
-bool FindLastTokenUse(std::string& name, COutPoint& token_spend, int lastHeight, const Consensus::Params& params);
+bool FindLastTokenUse(std::string& name, COutPoint& TokenSpend, int lastHeight, const Consensus::Params& params);
 void UndoTokenIssuance(uint64_t& id, std::string& name);
 void UndoTokenIssuancesInBlock(const CBlock& block);
 

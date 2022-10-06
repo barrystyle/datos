@@ -151,9 +151,12 @@ static bool SignStep(const SigningProvider& provider, const BaseSignatureCreator
         CKeyID keyID = CKeyID(uint160(vSolutions[0]));
         CPubKey pubkey;
         if (!GetPubKey(provider, sigdata, keyID, pubkey)) {
+            // Pubkey could not be found, add to missing
+            sigdata.missing_pubkeys.push_back(keyID);
             return false;
         }
         if (!CreateSig(creator, sigdata, provider, sig, pubkey, scriptPubKey, sigversion)) return false;
+        ret.push_back(std::move(sig));
         ret.push_back(ToByteVector(pubkey));
         return true;
     }

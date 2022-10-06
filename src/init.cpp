@@ -2110,12 +2110,6 @@ bool AppInitMain(InitInterfaces& interfaces)
                     break;
                 }
 
-                // Right after blockindex has loaded, time to rescan for token metadata
-                if (!BlockUntilTokenMetadataSynced(chainparams.GetConsensus())) {
-                    strLoadError = _("Inconsistency with token state");
-                    break;
-                }
-
                 if (!is_coinsview_empty) {
                     uiInterface.InitMessage(_("Verifying blocks...").translated);
                     if (fHavePruned && gArgs.GetArg("-checkblocks", DEFAULT_CHECKBLOCKS) > MIN_BLOCKS_TO_KEEP) {
@@ -2500,6 +2494,12 @@ bool AppInitMain(InitInterfaces& interfaces)
 
     SetRPCWarmupFinished();
     uiInterface.InitMessage(_("Done loading").translated);
+
+    // Now that blockindex has loaded, time to rescan for token metadata..
+    if (!BlockUntilTokenMetadataSynced(chainparams.GetConsensus())) {
+        LogPrintf("Inconsistency with token state\n");
+        return false;
+    }
 
     for (const auto& client : interfaces.chain_clients) {
         client->start(scheduler);

@@ -4,41 +4,41 @@
 
 #include <token/token.h>
 
-void build_checksum_script(CScript& checksum_script, uint160& checksum_input)
+void BuildChecksumScript(CScript& ChecksumScript, uint160& ChecksumInput)
 {
-    checksum_script.clear();
-    checksum_script = CScript() << OP_TOKEN
+    ChecksumScript.clear();
+    ChecksumScript = CScript() << OP_TOKEN
                                 << OP_0
                                 << OP_DROP
                                 << OP_DUP
                                 << OP_HASH160
-                                << ToByteVector(checksum_input)
+                                << ToByteVector(ChecksumInput)
                                 << OP_EQUALVERIFY
                                 << OP_CHECKSIG;
 }
 
-bool decode_checksum_script(CScript& checksum_script, uint160& checksum_output)
+bool DecodeChecksumScript(CScript& ChecksumScript, uint160& ChecksumOutput)
 {
-    if (!checksum_script.IsChecksumData()) {
+    if (!ChecksumScript.IsChecksumData()) {
         return false;
     }
 
     //! retrieve checksum from hash160
-    std::vector<unsigned char> vecCksum(checksum_script.end() - 22, checksum_script.end() - 2);
-    memcpy(&checksum_output, vecCksum.data(), 20);
+    std::vector<unsigned char> vecCksum(ChecksumScript.end() - 22, ChecksumScript.end() - 2);
+    memcpy(&ChecksumOutput, vecCksum.data(), 20);
 
     return true;
 }
 
-void build_token_script(CScript& token_script, const uint8_t version, const uint16_t type, uint64_t& identifier, std::string& name, CScript& scriptPubKey)
+void BuildTokenScript(CScript& TokenScript, const uint8_t version, const uint16_t type, uint64_t& identifier, std::string& name, CScript& scriptPubKey)
 {
-    token_script.clear();
+    TokenScript.clear();
 
     // workaround for CScriptNum only accepting 32bit num
     std::vector<uint8_t> vchId(8);
     memcpy(vchId.data(), &identifier, 8);
 
-    token_script = CScript() << OP_TOKEN
+    TokenScript = CScript() << OP_TOKEN
                              << GetOpcode(version)
                              << GetOpcode(type)
                              << vchId
@@ -47,76 +47,76 @@ void build_token_script(CScript& token_script, const uint8_t version, const uint
                              << OP_DROP
                              << OP_DROP
                              << OP_DROP;
-    token_script += scriptPubKey;
+    TokenScript += scriptPubKey;
 }
 
-bool decode_token_script(CScript& token_script, uint8_t& version, uint16_t& type, uint64_t& identifier, std::string& name, CPubKey& ownerPubKey, bool debug)
+bool DecodeTokenScript(CScript& TokenScript, uint8_t& version, uint16_t& type, uint64_t& identifier, std::string& name, CPubKey& ownerPubKey, bool debug)
 {
-    if (!token_script.IsPayToToken()) {
+    if (!TokenScript.IsPayToToken()) {
         return false;
     }
 
-    int script_len = token_script.size();
+    int scriptLen = TokenScript.size();
 
-    int byteoffset = 1;
+    int byteOffset = 1;
 
-    version = GetIntFromOpcode((opcodetype)token_script[byteoffset]);
+    version = GetIntFromOpcode((opcodetype)TokenScript[byteOffset]);
     if (version != 0x01) {
         LogPrint(BCLog::TOKEN, "%s: bad version\n", __func__);
         return false;
     }
-    byteoffset += 1;
+    byteOffset += 1;
 
-    type = GetIntFromOpcode((opcodetype)token_script[byteoffset]);
+    type = GetIntFromOpcode((opcodetype)TokenScript[byteOffset]);
     if (type != 1 && type != 2) {
         LogPrint(BCLog::TOKEN, "%s: bad type\n", __func__);
         return false;
     }
-    byteoffset += 1;
+    byteOffset += 1;
 
-    int idlen = token_script[byteoffset];
-    if (idlen < 1 || idlen > 8) {
-        LogPrint(BCLog::TOKEN, "%s: bad idlength\n", __func__);
+    int idLen = TokenScript[byteOffset];
+    if (idLen < 1 || idLen > 8) {
+        LogPrint(BCLog::TOKEN, "%s: bad idLength\n", __func__);
         return false;
     }
-    byteoffset += 1;
+    byteOffset += 1;
 
-    std::vector<unsigned char> vecId(token_script.begin() + byteoffset, token_script.begin() + byteoffset + idlen);
+    std::vector<unsigned char> vecId(TokenScript.begin() + byteOffset, TokenScript.begin() + byteOffset + idLen);
     // workaround for CScriptNum only accepting 32bit num
-    memcpy(&identifier, vecId.data(), idlen);
-    byteoffset += idlen;
+    memcpy(&identifier, vecId.data(), idLen);
+    byteOffset += idLen;
 
-    int namelen = token_script[byteoffset];
-    if (namelen < TOKENNAME_MINLEN || namelen > TOKENNAME_MAXLEN) {
-        LogPrint(BCLog::TOKEN, "%s: bad namelen\n", __func__);
+    int nameLen = TokenScript[byteOffset];
+    if (nameLen < TOKENNAME_MINLEN || nameLen > TOKENNAME_MAXLEN) {
+        LogPrint(BCLog::TOKEN, "%s: bad nameLen\n", __func__);
         return false;
     }
-    byteoffset += 1;
+    byteOffset += 1;
 
-    std::vector<unsigned char> vecName(token_script.begin() + byteoffset, token_script.begin() + byteoffset + namelen);
+    std::vector<unsigned char> vecName(TokenScript.begin() + byteOffset, TokenScript.begin() + byteOffset + nameLen);
     name = std::string(vecName.begin(), vecName.end());
-    byteoffset += namelen;
+    byteOffset += nameLen;
 
-    std::vector<unsigned char> vecPubKey(token_script.end() - 22, token_script.end() - 2);
+    std::vector<unsigned char> vecPubKey(TokenScript.end() - 22, TokenScript.end() - 2);
     std::string hashBytes = HexStr(vecPubKey);
 
     if (debug) {
-        LogPrint(BCLog::TOKEN, "%s (%d bytes) - ver: %d, type %04x, idlen %d, id %016x, namelen %d, name %s, pubkeyhash %s\n",
-            HexStr(token_script), script_len, version, type, idlen, identifier, namelen,
+        LogPrint(BCLog::TOKEN, "%s (%d bytes) - ver: %d, type %04x, idLen %d, id %016x, nameLen %d, name %s, pubkeyhash %s\n",
+            HexStr(TokenScript), scriptLen, version, type, idLen, identifier, nameLen,
             std::string(vecName.begin(), vecName.end()).c_str(), hashBytes);
     }
 
     return true;
 }
 
-bool get_tokenid_from_script(CScript& token_script, uint64_t& id, bool debug)
+bool GetTokenidFromScript(CScript& TokenScript, uint64_t& id, bool debug)
 {
     uint8_t version;
     uint16_t type;
     uint64_t identifier;
     std::string name;
     CPubKey ownerKey;
-    if (!decode_token_script(token_script, version, type, identifier, name, ownerKey, debug)) {
+    if (!DecodeTokenScript(TokenScript, version, type, identifier, name, ownerKey, debug)) {
         return false;
     }
     id = identifier;
@@ -124,14 +124,14 @@ bool get_tokenid_from_script(CScript& token_script, uint64_t& id, bool debug)
     return true;
 }
 
-bool build_token_from_script(CScript& token_script, CToken& token, bool debug)
+bool BuildTokenFromScript(CScript& TokenScript, CToken& token, bool debug)
 {
     uint8_t version;
     uint16_t type;
     uint64_t identifier;
     std::string name;
     CPubKey ownerKey;
-    if (!decode_token_script(token_script, version, type, identifier, name, ownerKey, debug)) {
+    if (!DecodeTokenScript(TokenScript, version, type, identifier, name, ownerKey, debug)) {
         return false;
     }
 

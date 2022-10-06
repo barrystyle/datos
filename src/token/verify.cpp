@@ -4,23 +4,12 @@
 
 #include <token/verify.h>
 
-bool are_tokens_active(int height)
-{
-    const Consensus::Params& params = Params().GetConsensus();
-    //! check against provided height
-    if (height != 0) {
-        return height >= params.nTokenHeight;
-    }
-    //! otherwise use active chainheight
-    return ::ChainActive().Height() >= params.nTokenHeight;
-}
-
 bool CheckTokenMempool(CTxMemPool& pool, const CTransactionRef& tx, std::string& strError)
 {
     LOCK(mempool.cs);
 
     // we are checking and ensuring that all token inputs have minimum confirms,
-    // and also if any duplicate issuance token names exist (before they get committed to known_issuances via connectblock)
+    // and also if any duplicate issuance token names exist (before they get committed to KnownIssuances via connectblock)
 
     //! check inputs have sufficient confirms
     CCoinsViewCache& view = ::ChainstateActive().CoinsTip();
@@ -30,23 +19,23 @@ bool CheckTokenMempool(CTxMemPool& pool, const CTransactionRef& tx, std::string&
     }
 
     //! build issuance name list from mempool
-    std::vector<std::string> mempool_names;
+    std::vector<std::string> MempoolNames;
     for (const auto& l : pool.mapTx) {
         const CTransaction& mtx = l.GetTx();
         if (mtx.HasTokenOutput()) {
             for (unsigned int i = 0; i < mtx.vout.size(); i++) {
                 if (mtx.vout[i].scriptPubKey.IsPayToToken()) {
                     CToken token;
-                    CScript token_script = mtx.vout[i].scriptPubKey;
-                    if (!ContextualCheckToken(token_script, token, strError)) {
+                    CScript TokenScript = mtx.vout[i].scriptPubKey;
+                    if (!ContextualCheckToken(TokenScript, token, strError)) {
                         LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error '%s'\n", strError);
                         strError = "corrupt-invalid-existing-mempool";
                         return false;
                     }
                     std::string name = token.getName();
                     if (token.getType() == CToken::ISSUANCE) {
-                        if (std::find(mempool_names.begin(), mempool_names.end(), name) == mempool_names.end()) {
-                            mempool_names.push_back(name);
+                        if (std::find(MempoolNames.begin(), MempoolNames.end(), name) == MempoolNames.end()) {
+                            MempoolNames.push_back(name);
                         }
                     }
                 }
@@ -58,15 +47,15 @@ bool CheckTokenMempool(CTxMemPool& pool, const CTransactionRef& tx, std::string&
     for (unsigned int i = 0; i < tx->vout.size(); i++) {
         CToken token;
         if (tx->vout[i].scriptPubKey.IsPayToToken()) {
-            CScript token_script = tx->vout[i].scriptPubKey;
-            if (!ContextualCheckToken(token_script, token, strError)) {
+            CScript TokenScript = tx->vout[i].scriptPubKey;
+            if (!ContextualCheckToken(TokenScript, token, strError)) {
                 LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error '%s'\n", strError);
                 strError = "corrupt-invalid-tokentx-mempool";
                 return false;
             }
             std::string name = token.getName();
             if (token.getType() == CToken::ISSUANCE) {
-                if (std::find(mempool_names.begin(), mempool_names.end(), name) != mempool_names.end()) {
+                if (std::find(MempoolNames.begin(), MempoolNames.end(), name) != MempoolNames.end()) {
                     strError = "token-issuance-exists-mempool";
                     return false;
                 }
@@ -90,16 +79,16 @@ bool CheckTokenIssuance(const CTransactionRef& tx, std::string& strError, bool o
     for (unsigned int i = 0; i < tx->vout.size(); i++) {
         if (tx->vout[i].scriptPubKey.IsPayToToken()) {
             CToken token;
-            CScript token_script = tx->vout[i].scriptPubKey;
-            if (!ContextualCheckToken(token_script, token, strError)) {
+            CScript TokenScript = tx->vout[i].scriptPubKey;
+            if (!ContextualCheckToken(TokenScript, token, strError)) {
                 LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                 return false;
             }
             token.setOriginTx(hash);
             if (token.getType() == CToken::ISSUANCE) {
                 //! we're only reading from it, so this is fine
-                std::vector<CToken> temp_issuances = copy_issuances_vector();
-                for (CToken& issued : temp_issuances) {
+                std::vector<CToken> TempIssuances = CopyIssuancesVector();
+                for (CToken& issued : TempIssuances) {
                     if (issued.getOriginTx() != token.getOriginTx()) {
                         if (issued.getName() == token.getName()) {
                             strError = "issuance-name-exists";
@@ -116,8 +105,9 @@ bool CheckTokenIssuance(const CTransactionRef& tx, std::string& strError, bool o
                     strError = "token-identifier-out-of-range";
                     return false;
                 }
-                if (!onlyCheck && (!is_name_in_issuances(name) && !is_identifier_in_issuances(identifier))) {
-                    add_to_issuances(token);
+                if (!onlyCheck && (!IsNameInIssuances(name) && !IsIdentifierInIssuances(identifier))) {
+                    AddToIssuances(token);
+                    LogPrint(BCLog::TOKEN, "%s: added token to issuances %s", __func__, token.ToString());
                 }
             } else if (token.getType() == CToken::NONE) {
                 return false;
@@ -127,10 +117,10 @@ bool CheckTokenIssuance(const CTransactionRef& tx, std::string& strError, bool o
     return true;
 }
 
-bool ContextualCheckToken(CScript& token_script, CToken& token, std::string& strError, bool debug)
+bool ContextualCheckToken(CScript& TokenScript, CToken& token, std::string& strError, bool debug)
 {
-    if (!build_token_from_script(token_script, token, debug)) {
-        LogPrint(BCLog::TOKEN, "build_token_from_script failed\n");
+    if (!BuildTokenFromScript(TokenScript, token, debug)) {
+        LogPrint(BCLog::TOKEN, "BuildTokenFromScript failed\n");
     }
 
     if (token.getVersion() != CToken::CURRENT_VERSION) {
@@ -149,7 +139,7 @@ bool ContextualCheckToken(CScript& token_script, CToken& token, std::string& str
     }
 
     std::string name = token.getName();
-    if (!check_token_name(name, strError)) {
+    if (!CheckTokenName(name, strError)) {
         return false;
     }
 
@@ -168,7 +158,7 @@ bool CheckTokenInputs(const CTransactionRef& tx, const CBlockIndex* pindex, cons
         const Coin& coin = view.AccessCoin(prevout);
         int confirmations = spentHeight - coin.nHeight;
 
-        LogPrint(BCLog::TOKEN, "%s - COutPoint (%s, %d) has %d confirms, want %d confirm\n",
+        LogPrint(BCLog::TOKEN, "%s: COutPoint (%s, %d) has %d confirms, want %d confirm\n",
             __func__, prevout.hash.ToString(), prevout.n, confirmations, TOKEN_MINCONFS);
 
         if (confirmations < TOKEN_MINCONFS) {
@@ -231,9 +221,9 @@ bool CheckToken(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoi
                 if (!CheckTokenIssuance(tx, strError, onlyCheck)) {
                     LogPrint(BCLog::TOKEN, "CheckTokenIssuance returned with error %s\n", strError);
                     //! if this made its way into mempool, remove it
-                    if (is_in_mempool(hash)) {
+                    if (IsInMempool(hash)) {
                         CTransaction toBeRemoved(*tx);
-                        remove_from_mempool(toBeRemoved);
+                        RemoveFromMempool(toBeRemoved);
                     }
                     return false;
                 }
@@ -286,7 +276,7 @@ bool CheckToken(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoi
                 //! check if token name same as prevtoken name
                 uint64_t prevIdentifier = prevToken.getId();
                 std::string prevTokenName = prevToken.getName();
-                if (!compare_token_name(prevTokenName, tokenName)) {
+                if (!CompareTokenName(prevTokenName, tokenName)) {
                     strError = "prevtoken-isunknown-name";
                     return false;
                 }
@@ -302,7 +292,7 @@ bool CheckToken(const CTransactionRef& tx, const CBlockIndex* pindex, const CCoi
     return true;
 }
 
-bool FindLastTokenUse(std::string& name, COutPoint& token_spend, int lastHeight, const Consensus::Params& params)
+bool FindLastTokenUse(std::string& name, COutPoint& TokenSpend, int lastHeight, const Consensus::Params& params)
 {
     for (int height = lastHeight; height > params.nTokenHeight; --height) {
 
@@ -328,16 +318,16 @@ bool FindLastTokenUse(std::string& name, COutPoint& token_spend, int lastHeight,
                 // parse each token transaction
                 CToken token;
                 std::string strError;
-                CScript token_script = tx->vout[j].scriptPubKey;
-                if (!ContextualCheckToken(token_script, token, strError)) {
+                CScript TokenScript = tx->vout[j].scriptPubKey;
+                if (!ContextualCheckToken(TokenScript, token, strError)) {
                     LogPrint(BCLog::TOKEN, "ContextualCheckToken returned with error %s\n", strError);
                     continue;
                 }
 
                 // check if it matches
                 if (name == token.getName()) {
-                    token_spend.hash = tx->GetHash();
-                    token_spend.n = j;
+                    TokenSpend.hash = tx->GetHash();
+                    TokenSpend.n = j;
                     return true;
                 }
             }
@@ -350,12 +340,12 @@ bool FindLastTokenUse(std::string& name, COutPoint& token_spend, int lastHeight,
 void UndoTokenIssuance(uint64_t& id, std::string& name)
 {
     LOCK(cs_main);
-    if (is_identifier_in_issuances(id) && is_name_in_issuances(name)) {
-        for (unsigned int index = 0; index < known_issuances.size(); index++) {
-            uint64_t stored_id = known_issuances.at(index).getId();
-            std::string stored_name = known_issuances.at(index).getName();
-            if (stored_id == id && stored_name == name) {
-                known_issuances.erase(known_issuances.begin() + index);
+    if (IsIdentifierInIssuances(id) && IsNameInIssuances(name)) {
+        for (unsigned int index = 0; index < KnownIssuances.size(); index++) {
+            uint64_t StoredId = KnownIssuances.at(index).getId();
+            std::string StoredName = KnownIssuances.at(index).getName();
+            if (StoredId == id && StoredName == name) {
+                KnownIssuances.erase(KnownIssuances.begin() + index);
                 return;
             }
         }

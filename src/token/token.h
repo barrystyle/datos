@@ -89,11 +89,11 @@ public:
     }
 };
 
-void build_checksum_script(CScript& checksum_script, uint160& checksum_input);
-bool decode_checksum_script(CScript& checksum_script, uint160& checksum_output);
-void build_token_script(CScript& token_script, const uint8_t version, const uint16_t type, uint64_t& identifier, std::string& name, CScript& scriptPubKey);
-bool decode_token_script(CScript& token_script, uint8_t& version, uint16_t& type, uint64_t& identifier, std::string& name, CPubKey& ownerPubKey, bool debug = false);
-bool get_tokenid_from_script(CScript& token_script, uint64_t& id, bool debug = false);
-bool build_token_from_script(CScript& token_script, CToken& token, bool debug = false);
+void BuildChecksumScript(CScript& ChecksumScript, uint160& ChecksumInput);
+bool DecodeChecksumScript(CScript& ChecksumScript, uint160& ChecksumOutput);
+void BuildTokenScript(CScript& TokenScript, const uint8_t version, const uint16_t type, uint64_t& identifier, std::string& name, CScript& scriptPubKey);
+bool DecodeTokenScript(CScript& TokenScript, uint8_t& version, uint16_t& type, uint64_t& identifier, std::string& name, CPubKey& ownerPubKey, bool debug = false);
+bool GetTokenidFromScript(CScript& TokenScript, uint64_t& id, bool debug = false);
+bool BuildTokenFromScript(CScript& TokenScript, CToken& token, bool debug = false);
 
 #endif // TOKEN_TOKEN_H
