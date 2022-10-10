@@ -1979,7 +1979,9 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     }
 
     // calculate modifier for both pow/pos to prevent precomputing on pos phase-in
-    pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
+    if (pindex->nStakeModifier.IsNull()) {
+        pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
+    }
 
     if (fProofOfStake) {
         setDirtyBlockIndex.insert(pindex);
