@@ -5,6 +5,7 @@
 
 #include <pos/stakeseen.h>
 
+CCriticalSection cs_stakeseen;
 std::list<COutPoint> listStakeSeen;
 std::map<COutPoint, uint256> mapStakeSeen;
 static const size_t MAX_STAKE_SEEN_SIZE = 1000;
@@ -24,13 +25,15 @@ bool AddToMapStakeSeen(const COutPoint &kernel, const uint256 &blockHash)
 
 bool CheckStakeUnused(const COutPoint &kernel)
 {
+    LOCK(cs_stakeseen);
+
     std::map<COutPoint, uint256>::const_iterator mi = mapStakeSeen.find(kernel);
     return (mi == mapStakeSeen.end());
 }
 
 bool CheckStakeUnique(const CBlock &block, bool fUpdate)
 {
-    LOCK(cs_main);
+    LOCK(cs_stakeseen);
 
     uint256 blockHash = block.GetHash();
     const COutPoint &kernel = block.vtx[1]->vin[1].prevout;
