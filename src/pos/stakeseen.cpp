@@ -5,12 +5,15 @@
 
 #include <pos/stakeseen.h>
 
+CCriticalSection cs_stakeseen;
 std::list<COutPoint> listStakeSeen;
 std::map<COutPoint, uint256> mapStakeSeen;
 static const size_t MAX_STAKE_SEEN_SIZE = 1000;
 
 bool AddToMapStakeSeen(const COutPoint &kernel, const uint256 &blockHash)
 {
+    LOCK(cs_stakeseen);
+
     std::pair<std::map<COutPoint, uint256>::iterator,bool> ret;
     ret = mapStakeSeen.insert(std::pair<COutPoint, uint256>(kernel, blockHash));
     if (ret.second == false) {
@@ -22,38 +25,58 @@ bool AddToMapStakeSeen(const COutPoint &kernel, const uint256 &blockHash)
     return true;
 };
 
+bool SearchStakeNotSeen(const COutPoint &kernel, uint256& hash)
+{
+    LOCK(cs_stakeseen);
+
+    std::map<COutPoint, uint256>::const_iterator mi = mapStakeSeen.find(kernel);
+    if (mi == mapStakeSeen.end()) {
+        hash = uint256();
+        return true;
+    }
+    hash = mi->second;
+
+    return false;
+}
+
+void MaintainSeenCache()
+{
+    LOCK(cs_stakeseen);
+
+    while (listStakeSeen.size() > MAX_STAKE_SEEN_SIZE) {
+        const COutPoint &oldest = listStakeSeen.front();
+        if (!mapStakeSeen.erase(oldest)) {
+            LogPrint(BCLog::POS, "%s: Warning: mapStakeSeen did not erase %s %n\n", __func__, oldest.hash.ToString(), oldest.n);
+        }
+        listStakeSeen.pop_front();
+    }
+}
+
 bool CheckStakeUnused(const COutPoint &kernel)
 {
-    std::map<COutPoint, uint256>::const_iterator mi = mapStakeSeen.find(kernel);
-    return (mi == mapStakeSeen.end());
+    uint256 hash;
+    return SearchStakeNotSeen(kernel, hash);
 }
 
 bool CheckStakeUnique(const CBlock &block, bool fUpdate)
 {
-    LOCK(cs_main);
-
     uint256 blockHash = block.GetHash();
     const COutPoint &kernel = block.vtx[1]->vin[1].prevout;
 
-    std::map<COutPoint, uint256>::const_iterator mi = mapStakeSeen.find(kernel);
-    if (mi != mapStakeSeen.end()) {
-        if (mi->second == blockHash) {
+    uint256 hash;
+    if (!SearchStakeNotSeen(kernel, hash)) {
+        if (hash == blockHash) {
             return true;
         }
-        return error("%s: Stake kernel for %s first seen on %s.", __func__, blockHash.ToString(), mi->second.ToString());
+        LogPrint(BCLog::POS, "%s: Stake kernel for %s first seen on %s\n", __func__, blockHash.ToString(), hash.ToString());
+        return false;
     }
 
     if (!fUpdate) {
         return true;
     }
 
-    while (listStakeSeen.size() > MAX_STAKE_SEEN_SIZE) {
-        const COutPoint &oldest = listStakeSeen.front();
-        if (1 != mapStakeSeen.erase(oldest)) {
-            LogPrint(BCLog::POS, "%s: Warning: mapStakeSeen did not erase %s %n\n", __func__, oldest.hash.ToString(), oldest.n);
-        }
-        listStakeSeen.pop_front();
-    }
+    MaintainSeenCache();
 
     return AddToMapStakeSeen(kernel, blockHash);
 };
