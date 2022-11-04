@@ -1974,11 +1974,6 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         return state.DoS(10, error("%s: conflicting with chainlock", __func__), REJECT_INVALID, "bad-chainlock");
     }
 
-    // calculate modifier for both pow/pos to prevent precomputing on pos phase-in
-    if (pindex->nStakeModifier.IsNull()) {
-        pindex->nStakeModifier = ComputeStakeModifier(pindex->pprev, pindex->prevoutStake.hash);
-    }
-
     if (fProofOfStake) {
         setDirtyBlockIndex.insert(pindex);
         uint256 hashProof, targetProofOfStake;
@@ -3563,6 +3558,9 @@ CBlockIndex* BlockManager::AddToBlockIndex(const CBlockHeader& block, enum Block
         pindexNew->pprev = (*miPrev).second;
         pindexNew->nHeight = pindexNew->pprev->nHeight + 1;
         pindexNew->BuildSkip();
+
+        // calculate modifier for both pow/pos to prevent precomputing on pos phase-in
+        pindexNew->nStakeModifier = ComputeStakeModifier(pindexNew->pprev, pindexNew->prevoutStake.hash);
     }
     pindexNew->nTimeMax = (pindexNew->pprev ? std::max(pindexNew->pprev->nTimeMax, pindexNew->nTime) : pindexNew->nTime);
     pindexNew->nChainWork = (pindexNew->pprev ? pindexNew->pprev->nChainWork : 0) + GetBlockProof(*pindexNew);

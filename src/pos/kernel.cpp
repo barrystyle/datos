@@ -82,7 +82,11 @@ uint256 ComputeStakeModifier(const CBlockIndex* pindexPrev, const uint256& kerne
 
     CDataStream ss(SER_GETHASH, 0);
     ss << kernel << stakeModifier;
-    return Hash(ss.begin(), ss.end());
+    uint256 calcModifier = Hash(ss.begin(), ss.end());
+    LogPrint(BCLog::POS, "%s: height %d pprev %s modifier %s\n",
+                         __func__, pindexPrev->nHeight + 1, pindexPrev->IsProofOfStake() ? "PoS" : "PoW", calcModifier.ToString());
+
+    return calcModifier;
 }
 
 /**
