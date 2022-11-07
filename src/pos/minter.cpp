@@ -12,8 +12,8 @@
 #include <miner.h>
 #include <pos/kernel.h>
 #include <pos/signature.h>
-#include <pos/stakegen.h>
-#include <pos/stakeseen.h>
+#include <pos/wallet.h>
+#include <pos/prevstake.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>
 #include <shutdown.h>

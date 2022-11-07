@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <pos/stakegen.h>
+#include <pos/wallet.h>
 
 #include <chainparams.h>
 #include <consensus/consensus.h>
@@ -13,7 +13,7 @@
 #include <pos/kernel.h>
 #include <pos/minter.h>
 #include <pos/signature.h>
-#include <pos/stakeseen.h>
+#include <pos/prevstake.h>
 #include <pow.h>
 #include <wallet/coincontrol.h>
 

@@ -21,7 +21,7 @@
 #include <policy/policy.h>
 #include <pos/kernel.h>
 #include <pos/minter.h>
-#include <pos/stakegen.h>
+#include <pos/wallet.h>
 #include <primitives/transaction.h>
 #include <rpc/server.h>
 #include <rpc/util.h>

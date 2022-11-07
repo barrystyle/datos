@@ -25,7 +25,7 @@
 #include <policy/policy.h>
 #include <pos/kernel.h>
 #include <pos/signature.h>
-#include <pos/stakeseen.h>
+#include <pos/prevstake.h>
 #include <pow.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>

@@ -2,7 +2,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <pos/stakeman.h>
+#include <pos/manager.h>
 
 bool fStakerRunning{false};
 bool fStakerRequestStart{false};
