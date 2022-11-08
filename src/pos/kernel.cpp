@@ -21,11 +21,6 @@
 
 double GetDifficulty(const CBlockIndex* blockindex);
 
-uint32_t GetStakeTimestampMask(int nHeight)
-{
-    return nStakeTimestampMask;
-}
-
 /**
  * Calculate PoS kernel weight for an interval of prior blocks:
  * Returns the sum of difficulty of a series of blocks over an interval
@@ -61,7 +56,7 @@ double GetPoSKernelPS(CBlockIndex *pindex)
         result = dStakeKernelsTriedAvg / nStakesTime;
     }
 
-    result *= GetStakeTimestampMask(nBestHeight) + 1;
+    result *= nStakeTimestampMask + 1;
 
     return result;
 }
@@ -283,7 +278,7 @@ bool CheckProofOfStake(CValidationState& state, const CBlockIndex* pindexPrev, c
 // Check whether the coinstake timestamp meets protocol
 bool CheckCoinStakeTimestamp(int nHeight, int64_t nTimeBlock)
 {
-    return (nTimeBlock & GetStakeTimestampMask(nHeight)) == 0;
+    return (nTimeBlock & nStakeTimestampMask) == 0;
 }
 
 // Used only when staking, not during validation

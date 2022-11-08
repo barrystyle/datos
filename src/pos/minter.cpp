@@ -219,7 +219,7 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
         }
 
         int64_t nTime = GetAdjustedTime();
-        int64_t nMask = GetStakeTimestampMask(nBestHeight+1);
+        int64_t nMask = nStakeTimestampMask;
         int64_t nSearchTime = nTime & ~nMask;
 
         if (nSearchTime <= nBestTime)
