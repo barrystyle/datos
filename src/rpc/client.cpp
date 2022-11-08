@@ -164,6 +164,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "logging", 0, "include" },
     { "logging", 1, "exclude" },
     { "setstaking", 0, "mode" },
+    { "getposdifficulty", 0, "height" },
     { "spork", 1, "value" },
     { "voteraw", 1, "tx_index" },
     { "voteraw", 5, "time" },
