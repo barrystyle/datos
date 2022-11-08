@@ -8,18 +8,8 @@
 #include <pos/kernel.h>
 
 #include <chainparams.h>
-#include <coins.h>
-#include <consensus/validation.h>
-#include <hash.h>
 #include <policy/policy.h>
-#include <script/interpreter.h>
-#include <script/script.h>
-#include <serialize.h>
-#include <streams.h>
-#include <txmempool.h>
-#include <util/system.h>
-
-double GetDifficulty(const CBlockIndex* blockindex);
+#include <rpc/blockchain.h>
 
 /**
  * Calculate PoS kernel weight for an interval of prior blocks:
