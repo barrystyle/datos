@@ -10,7 +10,6 @@
 
 using valtype = std::vector<unsigned char>;
 
-bool ExtractStakingKeyID(const CScript &scriptPubKey, CKeyID &keyID);
 bool SignBlockWithKey(CBlock& block, const CKey& key);
 bool CheckBlockSignature(const CBlock& block);
 
