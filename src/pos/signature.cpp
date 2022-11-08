@@ -6,21 +6,6 @@
 
 #include <keystore.h>
 
-bool ExtractStakingKeyID(const CScript &scriptPubKey, CKeyID &keyID)
-{
-    if (scriptPubKey.IsPayToPublicKeyHash()) {
-        keyID = CKeyID(uint160(&scriptPubKey[3], 20));
-        return true;
-    }
-
-    if (scriptPubKey.IsPayToScriptHash()) {
-        keyID = CKeyID(uint160(&scriptPubKey[5], 20));
-        return true;
-    }
-
-    return false;
-};
-
 bool SignBlockWithKey(CBlock& block, const CKey& key)
 {
     std::vector<valtype> vSolutions;

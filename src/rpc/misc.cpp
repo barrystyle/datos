@@ -10,7 +10,7 @@
 #include <httpserver.h>
 #include <key_io.h>
 #include <net.h>
-#include <pos/stakeman.h>
+#include <pos/manager.h>
 #include <rpc/blockchain.h>
 #include <rpc/server.h>
 #include <rpc/util.h>

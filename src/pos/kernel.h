@@ -11,8 +11,6 @@
 
 static const uint32_t nStakeTimestampMask = (1 << 4) - 1;
 
-uint32_t GetStakeTimestampMask(int nHeight);
-
 /**
  * Calculate PoS kernel weight for an interval of prior blocks
  */

@@ -35,7 +35,7 @@
 #include <interfaces/handler.h>
 #include <interfaces/node.h>
 #include <pos/minter.h>
-#include <pos/stakeman.h>
+#include <pos/manager.h>
 #include <qt/governancelist.h>
 #include <qt/masternodelist.h>
 #include <ui_interface.h>

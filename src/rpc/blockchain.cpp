@@ -21,7 +21,7 @@
 #include <policy/policy.h>
 #include <pos/kernel.h>
 #include <pos/minter.h>
-#include <pos/stakegen.h>
+#include <pos/wallet.h>
 #include <primitives/transaction.h>
 #include <rpc/server.h>
 #include <rpc/util.h>
@@ -439,6 +439,50 @@ static UniValue getdifficulty(const JSONRPCRequest& request)
 
     LOCK(cs_main);
     return GetDifficulty(::ChainActive().Tip());
+}
+
+static UniValue getposdifficulty(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() > 1) {
+        throw std::runtime_error(
+            RPCHelpMan{"getposdifficulty",
+                "\nReturns the proof-of-stake difficulty and estimated network stake weight.\n",
+                {},
+                RPCResult{
+		    RPCResult::Type::OBJ, "", "",
+		    {
+		        {RPCResult::Type::NUM, "height", "the block height"},
+		        {RPCResult::Type::STR_HEX, "hash", "the block hash"},
+		        {RPCResult::Type::NUM, "difficulty", "the block difficulty"},
+		        {RPCResult::Type::NUM, "netstakeweight", "the stake weight of the network"},
+		    }},
+                RPCExamples{
+                    HelpExampleCli("getposdifficulty","")
+            + HelpExampleRpc("getposdifficulty","")
+                },
+            }.ToString());
+    }
+
+    LOCK(cs_main);
+
+    CBlockIndex *pblockindex = ::ChainActive().Tip();
+    if (!request.params[0].isNull()) {
+        int height = request.params[0].get_int();
+        if (height < 0 || height > ::ChainActive().Height()) {
+            throw JSONRPCError(RPC_INVALID_PARAMETER, "Block height out of range");
+        }
+        pblockindex = ::ChainActive()[height];
+    }
+
+    double network_weight = GetPoSKernelPS(pblockindex);
+
+    UniValue result(UniValue::VOBJ);
+    result.pushKV("height", pblockindex->nHeight);
+    result.pushKV("hash", pblockindex->GetBlockHash().GetHex());
+    result.pushKV("difficulty", GetDifficulty(pblockindex));
+    result.pushKV("netstakeweight", (uint64_t)network_weight);
+
+    return result;
 }
 
 static std::string EntryDescriptionString()
@@ -2818,6 +2862,7 @@ static const CRPCCommand commands[] =
     { "blockchain",         "getmerkleblocks",        &getmerkleblocks,        {"filter","blockhash","count"} },
     { "blockchain",         "getchaintips",           &getchaintips,           {"count","branchlen"} },
     { "blockchain",         "getdifficulty",          &getdifficulty,          {} },
+    { "blockchain",         "getposdifficulty",       &getposdifficulty,       {"height"} },
     { "blockchain",         "getmempoolancestors",    &getmempoolancestors,    {"txid","verbose"} },
     { "blockchain",         "getmempooldescendants",  &getmempooldescendants,  {"txid","verbose"} },
     { "blockchain",         "getmempoolentry",        &getmempoolentry,        {"txid"} },

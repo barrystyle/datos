@@ -8,23 +8,8 @@
 #include <pos/kernel.h>
 
 #include <chainparams.h>
-#include <coins.h>
-#include <consensus/validation.h>
-#include <hash.h>
 #include <policy/policy.h>
-#include <script/interpreter.h>
-#include <script/script.h>
-#include <serialize.h>
-#include <streams.h>
-#include <txmempool.h>
-#include <util/system.h>
-
-double GetDifficulty(const CBlockIndex* blockindex);
-
-uint32_t GetStakeTimestampMask(int nHeight)
-{
-    return nStakeTimestampMask;
-}
+#include <rpc/blockchain.h>
 
 /**
  * Calculate PoS kernel weight for an interval of prior blocks:
@@ -61,7 +46,7 @@ double GetPoSKernelPS(CBlockIndex *pindex)
         result = dStakeKernelsTriedAvg / nStakesTime;
     }
 
-    result *= GetStakeTimestampMask(nBestHeight) + 1;
+    result *= nStakeTimestampMask + 1;
 
     return result;
 }
@@ -82,7 +67,11 @@ uint256 ComputeStakeModifier(const CBlockIndex* pindexPrev, const uint256& kerne
 
     CDataStream ss(SER_GETHASH, 0);
     ss << kernel << stakeModifier;
-    return Hash(ss.begin(), ss.end());
+    uint256 calcModifier = Hash(ss.begin(), ss.end());
+    LogPrint(BCLog::POS, "%s: height %d pprev %s modifier %s\n",
+                         __func__, pindexPrev->nHeight + 1, pindexPrev->IsProofOfStake() ? "PoS" : "PoW", calcModifier.ToString());
+
+    return calcModifier;
 }
 
 /**
@@ -279,7 +268,7 @@ bool CheckProofOfStake(CValidationState& state, const CBlockIndex* pindexPrev, c
 // Check whether the coinstake timestamp meets protocol
 bool CheckCoinStakeTimestamp(int nHeight, int64_t nTimeBlock)
 {
-    return (nTimeBlock & GetStakeTimestampMask(nHeight)) == 0;
+    return (nTimeBlock & nStakeTimestampMask) == 0;
 }
 
 // Used only when staking, not during validation

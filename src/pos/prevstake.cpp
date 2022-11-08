@@ -3,7 +3,7 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include <pos/stakeseen.h>
+#include <pos/prevstake.h>
 
 CCriticalSection cs_stakeseen;
 std::list<COutPoint> listStakeSeen;

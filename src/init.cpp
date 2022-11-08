@@ -39,7 +39,7 @@
 #include <policy/policy.h>
 #include <policy/settings.h>
 #include <pos/minter.h>
-#include <pos/stakeman.h>
+#include <pos/manager.h>
 #include <rpc/blockchain.h>
 #include <rpc/register.h>
 #include <rpc/server.h>

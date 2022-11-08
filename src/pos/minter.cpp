@@ -12,8 +12,8 @@
 #include <miner.h>
 #include <pos/kernel.h>
 #include <pos/signature.h>
-#include <pos/stakegen.h>
-#include <pos/stakeseen.h>
+#include <pos/wallet.h>
+#include <pos/prevstake.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>
 #include <shutdown.h>
@@ -219,7 +219,7 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
         }
 
         int64_t nTime = GetAdjustedTime();
-        int64_t nMask = GetStakeTimestampMask(nBestHeight+1);
+        int64_t nMask = nStakeTimestampMask;
         int64_t nSearchTime = nTime & ~nMask;
 
         if (nSearchTime <= nBestTime)
