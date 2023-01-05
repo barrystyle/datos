@@ -272,8 +272,7 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
             if (!pblocktemplate.get()) {
                 pblocktemplate = BlockAssembler(Params()).CreateNewBlock(coinbaseScript, true);
                 if (!pblocktemplate.get()) {
-                    fIsStaking = false;
-                    nWaitFor = std::min(nWaitFor, (size_t)nMinerSleep);
+                    nWaitFor = std::min(nWaitFor, (size_t)5000);
                     LogPrint(BCLog::POS, "%s: Couldn't create new block.\n", __func__);
                     continue;
                 }

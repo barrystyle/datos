@@ -9,9 +9,12 @@
 #include <list>
 #include <primitives/transaction.h>
 #include <serialize.h>
+#include <storage/netproof.h>
 #include <uint256.h>
 #include <cstddef>
 #include <type_traits>
+
+class CNetworkProof;
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
@@ -30,13 +33,25 @@ public:
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
+    uint256 nProof;
 
     CBlockHeader()
     {
         SetNull();
     }
 
-    SERIALIZE_METHODS(CBlockHeader, obj) { READWRITE(obj.nVersion, obj.hashPrevBlock, obj.hashMerkleRoot, obj.nTime, obj.nBits, obj.nNonce); }
+    SERIALIZE_METHODS(CBlockHeader, obj)
+    {
+        READWRITE(obj.nVersion);
+        READWRITE(obj.hashPrevBlock);
+        READWRITE(obj.hashMerkleRoot);
+        READWRITE(obj.nTime);
+        READWRITE(obj.nBits);
+        READWRITE(obj.nNonce);
+        if (obj.IsProofOfStake()) {
+            READWRITE(obj.nProof);
+        }
+    }
 
     void SetNull()
     {
@@ -46,6 +61,7 @@ public:
         nTime = 0;
         nBits = 0;
         nNonce = 0;
+        nProof.SetNull();
     }
 
     bool IsNull() const
@@ -54,6 +70,8 @@ public:
     }
 
     uint256 GetHash() const;
+    bool IsProofOfWork() const;
+    bool IsProofOfStake() const;
 
     int64_t GetBlockTime() const
     {
@@ -189,6 +207,9 @@ public:
     // network and disk
     std::vector<CTransactionRef> vtx;
 
+    // network proof
+    CNetworkProof netProof;
+
     // block signature
     std::vector<unsigned char> vchBlockSig;
 
@@ -211,6 +232,9 @@ public:
         READWRITEAS(CBlockHeader, obj);
         READWRITE(obj.vtx);
         READWRITE(obj.vchBlockSig);
+        if (obj.IsProofOfStake()) {
+            READWRITE(obj.netProof);
+        }
     }
 
     void SetNull()
@@ -219,6 +243,7 @@ public:
         vtx.clear();
         fChecked = false;
         vchBlockSig.clear();
+        netProof.SetNull();
     }
 
     CBlockHeader GetBlockHeader() const
@@ -230,6 +255,7 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        block.nProof         = nProof;
         return block;
     }
 

@@ -1221,6 +1221,9 @@ public:
         } else if (inv.type == MSG_BLOCK) {
             LogPrint(BCLog::NET, "%s -- adding new inv: %s peer=%d\n", __func__, inv.ToString(), id);
             vInventoryBlockToSend.push_back(inv.hash);
+        } else if (inv.type == MSG_NETPROOF) {
+            LogPrint(BCLog::NET, "%s -- adding new inv: %s peer=%d\n", __func__, inv.ToString(), id);
+            vInventoryOtherToSend.push_back(inv);
         } else {
             if (!filterInventoryKnown.contains(inv.hash)) {
                 LogPrint(BCLog::NET, "%s -- adding new inv: %s peer=%d\n", __func__, inv.ToString(), id);

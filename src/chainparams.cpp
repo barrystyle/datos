@@ -377,8 +377,8 @@ public:
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.DIP0001Height = 0;
-        consensus.DIP0003Height = 1000;
-        consensus.DIP0003EnforcementHeight = 1500;
+        consensus.DIP0003Height = 250;
+        consensus.DIP0003EnforcementHeight = 750;
         consensus.DIP0003EnforcementHash = uint256();
         consensus.DIP0008Height = std::numeric_limits<int>::max();
         consensus.BRRHeight = std::numeric_limits<int>::max();
@@ -455,7 +455,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
         // pacprotocol consensus parameters
-        consensus.nLastPoWBlock = 1000;
+        consensus.nLastPoWBlock = 250;
         consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 28
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
@@ -464,7 +464,7 @@ public:
         consensus.nStakeMaxValue = MAX_MONEY;
         consensus.nStakeMinAge = 10 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 90;
-        consensus.nTokenHeight = 3550;
+        consensus.nTokenHeight = std::numeric_limits<int>::max();
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256();

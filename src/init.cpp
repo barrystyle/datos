@@ -47,6 +47,8 @@
 #include <scheduler.h>
 #include <script/sigcache.h>
 #include <script/standard.h>
+#include <storage/behavior.h>
+#include <storage/manager.h>
 #include <shutdown.h>
 #include <timedata.h>
 #include <token/index.h>
@@ -1201,7 +1203,7 @@ namespace { // Variables internal to initialization process only
 int nMaxConnections;
 int nUserMaxConnections;
 int nFD;
-ServiceFlags nLocalServices = ServiceFlags(NODE_NETWORK | NODE_NETWORK_LIMITED | NODE_HEADERS_COMPRESSED);
+ServiceFlags nLocalServices = ServiceFlags(NODE_NETWORK | NODE_NETWORK_LIMITED);
 int64_t peer_connect_timeout;
 std::set<BlockFilterType> g_enabled_filter_types;
 
@@ -2195,6 +2197,10 @@ bool AppInitMain(InitInterfaces& interfaces)
         InitBlockFilterIndex(filter_type, filter_index_cache, false, fReindex);
         GetBlockFilterIndex(filter_type)->Start();
     }
+
+    // ********************************************************* Step 8.5: fill proof cache
+    proofManager.Initialise(chainparams.GetConsensus());
+    scoreManager.Init(chainparams.GetConsensus());
 
     // ********************************************************* Step 9: load wallet
     for (const auto& client : interfaces.chain_clients) {

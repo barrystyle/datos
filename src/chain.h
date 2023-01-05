@@ -179,6 +179,7 @@ public:
     uint32_t nTime{0};
     uint32_t nBits{0};
     uint32_t nNonce{0};
+    uint256 nProof{};
 
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     int32_t nSequenceId{0};
@@ -192,6 +193,7 @@ public:
     uint256 nStakeModifier{};
     COutPoint prevoutStake{};
     uint256 hashProof{};
+    CNetworkProof netProof{};
 
     CBlockIndex()
     {
@@ -202,7 +204,8 @@ public:
           hashMerkleRoot{block.hashMerkleRoot},
           nTime{block.nTime},
           nBits{block.nBits},
-          nNonce{block.nNonce}
+          nNonce{block.nNonce},
+          nProof{block.nProof}
     {
     }
 
@@ -234,6 +237,7 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
+        block.nProof         = nProof;
         return block;
     }
 
@@ -382,6 +386,7 @@ public:
         READWRITE(obj.nTime);
         READWRITE(obj.nBits);
         READWRITE(obj.nNonce);
+        READWRITE(obj.nProof);
 
         // chain state
         READWRITE(obj.nMint);
@@ -389,6 +394,7 @@ public:
         READWRITE(obj.nStakeModifier);
         READWRITE(obj.hashProof);
         READWRITE(obj.prevoutStake);
+        READWRITE(obj.netProof);
     }
 
     uint256 GetBlockHash() const
@@ -402,6 +408,7 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
+        block.nProof          = nProof;
         return block.GetHash();
     }
 

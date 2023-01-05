@@ -17,6 +17,7 @@
 #include <policy/policy.h>
 #include <pow.h>
 #include <primitives/transaction.h>
+#include <storage/manager.h>
 #include <timedata.h>
 #include <token/util.h>
 #include <util/moneystr.h>
@@ -218,6 +219,21 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
 
     pblock->vtx[0] = MakeTransactionRef(std::move(coinbaseTx));
     pblocktemplate->vTxFees[0] = -nFees;
+
+    if (proofManager.IsProofRequired(nHeight, chainparams.GetConsensus())) {
+        CNetworkProof netproof;
+        if (!proofManager.GetProofByHeight(nHeight, netproof)) {
+            LogPrint(BCLog::STORAGE, "%s: proof not found for new block\n", __func__);
+            return nullptr;
+        }
+        if (!proofManager.Validate(netproof)) {
+            LogPrint(BCLog::STORAGE, "%s: retrieved proof is bad\n", __func__);
+            return nullptr;
+        }
+        LogPrint(BCLog::STORAGE, "%s: using proof %s for new block\n", __func__, netproof.hash.ToString());
+        pblock->nProof = netproof.hash;
+        pblock->netProof = netproof;
+    }
 
     // Fill in header
     pblock->hashPrevBlock  = pindexPrev->GetBlockHash();

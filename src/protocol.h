@@ -301,6 +301,9 @@ extern const char *SENDHEADERS2;
 extern const char *HEADERS2;
 extern const char *GETQUORUMROTATIONINFO;
 extern const char *QUORUMROTATIONINFO;
+
+// Pacprotocol message types
+extern const char *NETPROOF;
 };
 
 /* Get a vector of all valid message types (see above) */
@@ -468,6 +471,8 @@ enum GetDataMsg {
     MSG_CLSIG = 29,
     MSG_ISLOCK = 30,
     MSG_ISDLOCK = 31,
+    /* STORAGE LAYER */
+    MSG_NETPROOF = 40
 };
 
 /** inv message data */

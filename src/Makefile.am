@@ -284,6 +284,12 @@ BITCOIN_CORE_H = \
   stacktraces.h \
   streams.h \
   statsd_client.h \
+  storage/behavior.h \
+  storage/proof.h \
+  storage/netproof.h \
+  storage/manager.h \
+  storage/serialize.h \
+  storage/util.h \
   support/allocators/mt_pooled_secure.h \
   support/allocators/pooled_secure.h \
   support/allocators/secure.h \
@@ -456,6 +462,11 @@ libdash_server_a_SOURCES = \
   script/sigcache.cpp \
   shutdown.cpp \
   spork.cpp \
+  storage/behavior.cpp \
+  storage/manager.cpp \
+  storage/serialize.cpp \
+  storage/rpc.cpp \
+  storage/util.cpp \
   statsd_client.cpp \
   timedata.cpp \
   torcontrol.cpp \
@@ -667,6 +678,8 @@ libdash_consensus_a_SOURCES = \
   script/script_error.cpp \
   script/script_error.h \
   serialize.h \
+  storage/netproof.h \
+  storage/proof.h \
   span.h \
   streams.h \
   tinyformat.h \
@@ -915,6 +928,7 @@ CLEANFILES += policy/*.gcda policy/*.gcno
 CLEANFILES += primitives/*.gcda primitives/*.gcno
 CLEANFILES += rpc/*.gcda rpc/*.gcno
 CLEANFILES += script/*.gcda script/*.gcno
+CLEANFILES += storage/*.gcda storage/*.gcno
 CLEANFILES += support/*.gcda support/*.gcno
 CLEANFILES += univalue/*.gcda univalue/*.gcno
 CLEANFILES += util/*.gcda util/*.gcno

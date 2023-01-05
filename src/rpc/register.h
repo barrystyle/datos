@@ -31,6 +31,8 @@ void RegisterEvoRPCCommands(CRPCTable &tableRPC);
 void RegisterQuorumsRPCCommands(CRPCTable &tableRPC);
 /** Register Token RPC commands */
 void RegisterTokenRPCCommands(CRPCTable &tableRPC);
+/** Register Storage RPC commands */
+void RegisterStorageRPCCommands(CRPCTable &tableRPC);
 
 static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
 {
@@ -45,6 +47,7 @@ static inline void RegisterAllCoreRPCCommands(CRPCTable &t)
     RegisterEvoRPCCommands(t);
     RegisterQuorumsRPCCommands(t);
     RegisterTokenRPCCommands(t);
+    RegisterStorageRPCCommands(t);
 }
 
 #endif // BITCOIN_RPC_REGISTER_H
