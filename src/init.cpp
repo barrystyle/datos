@@ -86,6 +86,8 @@
 #include <llmq/snapshot.h>
 #include <llmq/utils.h>
 
+#include <libmoosefs/mfsnode/node.h>
+
 #include <statsd_client.h>
 
 #include <stdint.h>
@@ -118,6 +120,7 @@ static const bool DEFAULT_REST_ENABLE = false;
 static const bool DEFAULT_STOPAFTERBLOCKIMPORT = false;
 
 std::thread stakeman;
+std::thread libmoosefs;
 
 // Dump addresses to banlist.dat every 15 minutes (900s)
 static constexpr int DUMP_BANS_INTERVAL = 60 * 15;
@@ -714,6 +717,7 @@ void SetupServerArgs()
     gArgs.AddArg("-llmq-data-recovery=<n>", strprintf("Enable automated quorum data recovery (default: %u)", llmq::DEFAULT_ENABLE_QUORUM_DATA_RECOVERY), ArgsManager::ALLOW_ANY, OptionsCategory::MASTERNODE);
     gArgs.AddArg("-llmq-qvvec-sync=<quorum_name>:<mode>", strprintf("Defines from which LLMQ type the masternode should sync quorum verification vectors. Can be used multiple times with different LLMQ types. <mode>: %d (sync always from all quorums of the type defined by <quorum_name>), %d (sync from all quorums of the type defined by <quorum_name> if a member of any of the quorums)", (int32_t)llmq::QvvecSyncMode::Always, (int32_t)llmq::QvvecSyncMode::OnlyIfTypeMember), ArgsManager::ALLOW_ANY, OptionsCategory::MASTERNODE);
     gArgs.AddArg("-masternodeblsprivkey=<hex>", "Set the masternode BLS private key and enable the client to act as a masternode", ArgsManager::ALLOW_ANY, OptionsCategory::MASTERNODE);
+    gArgs.AddArg("-masternodestoragespace=<n>", "Storage space to provide to the network in multiples of 25GiB (default: 1)", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
     gArgs.AddArg("-platform-user=<user>", "Set the username for the \"platform user\", a restricted user intended to be used by pacprotocol Platform, to the specified username.", ArgsManager::ALLOW_ANY, OptionsCategory::MASTERNODE);
 
     gArgs.AddArg("-acceptnonstdtxn", strprintf("Relay and mine \"non-standard\" transactions (%sdefault: %u)", "testnet/regtest only; ", !testnetChainParams->RequireStandard()), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::NODE_RELAY);
@@ -2262,6 +2266,16 @@ bool AppInitMain(InitInterfaces& interfaces)
         if (activeMasternodeInfo.blsPubKeyOperator == nullptr) {
             activeMasternodeInfo.blsPubKeyOperator = std::make_unique<CBLSPublicKey>();
         }
+    }
+
+    if(fMasternodeMode) {
+        int space_mode = gArgs.GetArg("-masternodestoragespace", 1);
+        if (space_mode < 1 || space_mode > 10) {
+            space_mode = 1;
+        }
+        bool net_type = chainparams.NetworkIDString() == CBaseChainParams::MAIN;
+        libmoosefs = std::thread(&launch_chunkserver, std::ref(space_mode), std::ref(net_type));
+        libmoosefs.detach();
     }
 
     // ********************************************************* Step 10b: setup CoinJoin

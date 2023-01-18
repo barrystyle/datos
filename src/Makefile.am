@@ -474,6 +474,29 @@ libdash_server_a_SOURCES = \
   versionbits.cpp \
   $(BITCOIN_CORE_H)
 
+libdash_server_a_CPPFLAGS += -I./libmoosefs -I./libmoosefs/mfscommon -I./libmoosefs/mfschunkserver -I./libmoosefs/mfsnode -Wno-register -Wno-write-strings
+libdash_server_a_SOURCES += \
+  libmoosefs/mfsnode/init.cpp \
+  libmoosefs/mfsnode/node.cpp \
+  libmoosefs/mfsnode/check.cpp \
+  libmoosefs/mfscommon/clocks.cpp \
+  libmoosefs/mfscommon/conncache.cpp \
+  libmoosefs/mfscommon/crc.cpp \
+  libmoosefs/mfscommon/lwthread.cpp \
+  libmoosefs/mfscommon/mainthread.cpp \
+  libmoosefs/mfscommon/md5.cpp \
+  libmoosefs/mfscommon/pcqueue.cpp \
+  libmoosefs/mfscommon/random.cpp \
+  libmoosefs/mfscommon/sockets.cpp \
+  libmoosefs/mfscommon/squeue.cpp \
+  libmoosefs/mfscommon/strerr.cpp \
+  libmoosefs/mfschunkserver/bgjobs.cpp \
+  libmoosefs/mfschunkserver/csserv.cpp \
+  libmoosefs/mfschunkserver/hddspacemgr.cpp \
+  libmoosefs/mfschunkserver/mainserv.cpp \
+  libmoosefs/mfschunkserver/masterconn.cpp \
+  libmoosefs/mfschunkserver/replicator.cpp
+
 if ENABLE_WALLET
 libdash_server_a_SOURCES += wallet/init.cpp
 endif
@@ -885,6 +908,9 @@ CLEANFILES += crc32c/src/*.gcda crc32c/src/*.gcno
 CLEANFILES += crypto/*.gcda crypto/*.gcno
 CLEANFILES += index/*.gcda index/*.gcno
 CLEANFILES += interfaces/*.gcda interfaces/*.gcno
+CLEANFILES += libmoosefs/mfsnode/*.gcda libmoosefs/mfsnode/*.gcno
+CLEANFILES += libmoosefs/mfscommon/*.gcda libmoosefs/mfscommon/*.gcno
+CLEANFILES += libmoosefs/mfschunkserver/*.gcda libmoosefs/mfschunkserver/*.gcno
 CLEANFILES += node/*.gcda node/*.gcno
 CLEANFILES += policy/*.gcda policy/*.gcno
 CLEANFILES += primitives/*.gcda primitives/*.gcno
