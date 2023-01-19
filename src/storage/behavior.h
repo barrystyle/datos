@@ -5,6 +5,7 @@
 #ifndef BITCOIN_STORAGE_BEHAVIOR_H
 #define BITCOIN_STORAGE_BEHAVIOR_H
 
+#include <evo/deterministicmns.h>
 #include <util/system.h>
 #include <validation.h>
 
@@ -34,6 +35,7 @@ public:
     bool HaveSeen(int height);
     bool HaveNode(uint32_t ipaddr);
     void AddNode(struct NodeHistory in);
+    bool IsValidDMN(uint32_t ip);
     void AddProof(const CNetworkProof& netproof);
     bool ReplaceNode(struct NodeHistory in);
     struct NodeHistory ReturnNode(uint32_t ipaddr);

@@ -8,6 +8,7 @@
 #include <hash.h>
 #include <key_io.h>
 #include <logging.h>
+#include <netbase.h>
 #include <protocol.h>
 #include <pubkey.h>
 #include <streams.h>
@@ -90,6 +91,16 @@ void CNodeBehavior::AddNode(struct NodeHistory in)
     nodes.push_back(in);
 }
 
+bool CNodeBehavior::IsValidDMN(uint32_t ip)
+{
+    CService addr;
+    char ipaddress[16];
+    uint32_to_ip(ip, ipaddress);
+    if (!Lookup(ipaddress, addr, 0, false)) return false;
+    if (!deterministicMNManager->GetListAtChainTip().GetMNByService(addr)) return false;
+    return true;
+}
+
 void CNodeBehavior::AddProof(const CNetworkProof& netproof)
 {
     int height;
@@ -123,7 +134,11 @@ void CNodeBehavior::AddProof(const CNetworkProof& netproof)
                 in2.health = 100;
             }
             uint32_to_ip(in2.ipaddr, ipaddress);
-            LogPrint(BCLog::STORAGE, "%s: height %d, ip %s, score %d\n", __func__, height, ipaddress, in2.health);
+            if (IsValidDMN(in2.ipaddr)) {
+                LogPrint(BCLog::STORAGE, "%s: height %d, ip %s, score %d (dmn)\n", __func__, height, ipaddress, in2.health);
+            } else {
+                LogPrint(BCLog::STORAGE, "%s: height %d, ip %s, score %d (unknown)\n", __func__, height, ipaddress, in2.health);
+            }
             ReplaceNode(in2);
         }
     }
@@ -138,7 +153,11 @@ void CNodeBehavior::AddProof(const CNetworkProof& netproof)
              l.health = 0;
          }
          uint32_to_ip(l.ipaddr, ipaddress);
-         LogPrint(BCLog::STORAGE, "%s: height %d, ip %s, score %d\n", __func__, height, ipaddress, l.health);
+         if (IsValidDMN(l.ipaddr)) {
+             LogPrint(BCLog::STORAGE, "%s: height %d, ip %s, score %d (dmn)\n", __func__, height, ipaddress, l.health);
+         } else {
+             LogPrint(BCLog::STORAGE, "%s: height %d, ip %s, score %d (unknown)\n", __func__, height, ipaddress, l.health);
+         }
     }
 }
 
