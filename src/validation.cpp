@@ -1068,12 +1068,6 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
-CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int spaceMode)
-{
-    // TBD: storage mode dependent reward
-    return 8280 * COIN;
-}
-
 CAmount GetProofOfStakeReward(CBlockIndex* pindexPrev, CAmount nFees)
 {
     return GetBlockSubsidy(0, pindexPrev->nHeight, Params().GetConsensus(), false);

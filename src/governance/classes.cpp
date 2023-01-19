@@ -10,6 +10,7 @@
 #include <key_io.h>
 #include <primitives/transaction.h>
 #include <script/standard.h>
+#include <storage/rewards.h>
 #include <timedata.h>
 #include <util/strencodings.h>
 #include <validation.h>
@@ -636,7 +637,7 @@ bool CSuperblock::IsValid(const CTransaction& txNew, int nBlockHeight, CAmount b
     }
 
     // masternodes should not get more than they would usually get
-    CAmount nBlockValue = txNew.GetValueOut() - GetMasternodePayment(nBlockHeight, blockReward, 0);
+    CAmount nBlockValue = txNew.GetValueOut() - GetMasternodePayment(nBlockHeight);
     if (nBlockValue > blockReward + nPaymentsTotalAmount) {
         LogPrintf("CSuperblock::IsValid -- ERROR: Block invalid, block value limit exceeded: block %lld, limit %lld\n", nBlockValue, blockReward + nPaymentsTotalAmount);
         return false;

@@ -465,6 +465,7 @@ libdash_server_a_SOURCES = \
   storage/behavior.cpp \
   storage/manager.cpp \
   storage/serialize.cpp \
+  storage/rewards.cpp \
   storage/rpc.cpp \
   storage/util.cpp \
   statsd_client.cpp \
