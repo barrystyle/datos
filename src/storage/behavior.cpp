@@ -130,6 +130,10 @@ void CNodeBehavior::AddProof(const CNetworkProof& netproof)
             if (in.mode > 0 && in.stat > 0 && in.reg > 0) {
                 in2.health += SCORE_INCREASE;
             }
+            if (in.space != in2.space) {
+                in2.space = in.space;
+                in2.health = 0;
+            }
             if (in2.health > 100) {
                 in2.health = 100;
             }
