@@ -37,6 +37,7 @@ public:
     void AddProof(const CNetworkProof& netproof);
     bool ReplaceNode(struct NodeHistory in);
     struct NodeHistory ReturnNode(uint32_t ipaddr);
+    void GetNodeScore(CService& mnAddress, int& score, int& space);
 };
 
 #endif // BITCOIN_STORAGE_BEHAVIOR_H

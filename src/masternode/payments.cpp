@@ -15,6 +15,7 @@
 #include <masternode/sync.h>
 #include <primitives/block.h>
 #include <script/standard.h>
+#include <storage/behavior.h>
 #include <tinyformat.h>
 #include <util/ranges.h>
 #include <util/system.h>
@@ -286,8 +287,19 @@ bool CMasternodePayments::GetBlockTxOuts(int nBlockHeight, CAmount blockReward, 
         return false;
     }
 
+    // get storagenode
+    int score, space;
+    CService mnAddress(dmnPayee->pdmnState->addr);
+    scoreManager.GetNodeScore(mnAddress, score, space);
+
+    // get masternode reward
     CAmount operatorReward = 0;
-    CAmount masternodeReward = GetMasternodePayment(nBlockHeight, blockReward, Params().GetConsensus().BRRHeight);
+    CAmount masternodeReward = GetMasternodePayment(nBlockHeight, blockReward, space);
+
+    // penalize if not perfect
+    if (score != 100) {
+        masternodeReward = 0;
+    }
 
     if (dmnPayee->nOperatorReward != 0 && dmnPayee->pdmnState->scriptOperatorPayout != CScript()) {
         // This calculation might eventually turn out to result in 0 even if an operator reward percentage is given.

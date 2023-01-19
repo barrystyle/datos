@@ -141,3 +141,23 @@ void CNodeBehavior::AddProof(const CNetworkProof& netproof)
          LogPrint(BCLog::STORAGE, "%s: height %d, ip %s, score %d\n", __func__, height, ipaddress, l.health);
     }
 }
+
+void CNodeBehavior::GetNodeScore(CService& mnAddress, int& score, int& space)
+{
+    std::string mnAddressString = mnAddress.ToStringIP();
+
+    for (auto& l : nodes) {
+         char ipaddress[16];
+         uint32_to_ip(l.ipaddr, ipaddress);
+         std::string nodeAddressString = std::string(ipaddress);
+         if (mnAddressString.compare(nodeAddressString) == 0) {
+             score = l.health;
+             space = l.space;
+             return;
+         }
+    }
+
+    score = 0;
+    space = 0;
+    return;
+}
