@@ -26,7 +26,6 @@
 
 #include "datapack.h"
 #include "defaults.h"
-#include "lwthread.h"
 #include "mainthread.h"
 #include "massert.h"
 #include "pcqueue.h"
@@ -175,7 +174,7 @@ static inline void job_spawn_worker(jobpool* jp)
     w = (worker*)malloc(sizeof(worker));
     passert(w);
     w->jp = jp;
-    if (lwt_minthread_create(&(w->thread_id), 0, job_worker, w) < 0) {
+    if (pthread_create(&(w->thread_id), 0, job_worker, w) < 0) {
         return;
     }
     jp->workers_avail++;

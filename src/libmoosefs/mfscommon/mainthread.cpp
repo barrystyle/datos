@@ -78,6 +78,7 @@
 
 #include "mfsnode/init.h"
 #include "mfsnode/node.h"
+#include "shutdown.h"
 
 #include "clocks.h"
 #include "crc.h"
@@ -935,7 +936,7 @@ void set_signal_handlers(int daemonflag)
     for (i = 0; ignoresignal[i] > 0; i++) {
         sigaction(ignoresignal[i], &sa, (struct sigaction*)0);
     }
-    sa.sa_handler = daemonflag ? SIG_IGN : termhandle;
+    sa.sa_handler = termhandle;
     for (i = 0; daemonignoresignal[i] > 0; i++) {
         sigaction(daemonignoresignal[i], &sa, (struct sigaction*)0);
     }
@@ -1341,6 +1342,7 @@ void mfschunkserver(void)
         ch = 1;
     }
 
+    StartShutdown();
     mfs_syslog(LOG_NOTICE, "exiting ...");
     destruct();
     free_all_registered_entries();

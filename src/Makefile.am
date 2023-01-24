@@ -482,7 +482,6 @@ libdash_server_a_SOURCES += \
   libmoosefs/mfscommon/clocks.cpp \
   libmoosefs/mfscommon/conncache.cpp \
   libmoosefs/mfscommon/crc.cpp \
-  libmoosefs/mfscommon/lwthread.cpp \
   libmoosefs/mfscommon/mainthread.cpp \
   libmoosefs/mfscommon/md5.cpp \
   libmoosefs/mfscommon/pcqueue.cpp \
