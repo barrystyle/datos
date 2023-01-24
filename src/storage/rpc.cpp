@@ -7,6 +7,7 @@
 #include <rpc/protocol.h>
 #include <rpc/request.h>
 #include <rpc/server.h>
+#include <rpc/util.h>
 #include <storage/manager.h>
 #include <storage/netproof.h>
 #include <storage/proof.h>
@@ -50,6 +51,15 @@ bool DecodeHexProof(CProof& proof, const std::string& strHexProof)
 
 static UniValue resubmitproof(const JSONRPCRequest& request)
 {
+    if (request.fHelp || request.params.size() != 0)
+        throw std::runtime_error(
+            RPCHelpMan{"resubmitproof",
+                "\nResubmit the last network proof to the network.\n",
+                {},
+                RPCResults{},
+                RPCExamples{""},
+            }.ToString());
+
     UniValue result(UniValue::VOBJ);
 
     if (proofs.size() < 1) {
@@ -64,11 +74,23 @@ static UniValue resubmitproof(const JSONRPCRequest& request)
 
 static UniValue submitproof(const JSONRPCRequest& request)
 {
-    UniValue result(UniValue::VOBJ);
+    if (request.fHelp || request.params.size() != 2)
+        throw std::runtime_error(
+            RPCHelpMan{"submitproof",
+                "\nSubmit a network proof to be signed and broadcast to the network.\n",
+                {
+                    {"hexstring", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "the hex-encoded netproof"},
+                    {"privatekey", RPCArg::Type::STR_HEX, RPCArg::Optional::OMITTED, "private key in base58-encoding"},
+                },
+                RPCResult{
+                    RPCResult::Type::STR_HEX, "", "The netproof hash"},
+                RPCExamples{
+                    HelpExampleCli("submitproof", "030000000600000042284e05010101001000..")
+            + HelpExampleRpc("submitproof", "030000000600000042284e05010101001000..")
+                },
+            }.ToString());
 
-    if (request.params.size() < 2) {
-        throw JSONRPCError(RPC_INVALID_PARAMETER, "Proof and private key required");
-    }
+    UniValue result(UniValue::VOBJ);
 
     std::string hexProof = request.params[0].get_str();
     if (hexProof.size() < 2 * MIN_PROOF_SZ) {
@@ -106,23 +128,32 @@ static UniValue submitproof(const JSONRPCRequest& request)
     return result;
 }
 
-static UniValue listmemproof(const JSONRPCRequest& request)
+static UniValue listproof(const JSONRPCRequest& request)
 {
-    int count, lcount;
+    if (request.fHelp || request.params.size() != 0)
+        throw std::runtime_error(
+            RPCHelpMan{"listproof",
+                "\nReturn a list of the most recent proofs seen on the network.\n",
+                {},
+                RPCResults{},
+                RPCExamples{""},
+            }.ToString());
+
     UniValue result(UniValue::VOBJ);
 
     LOCK(cs_main);
+    const int height = ::ChainActive().Height();
 
     // sum the proofs we have
-    count = 0;
-    for (auto l : proofs)
-        count++;
+    int count = 0;
+    for (auto l : proofs) count++;
+    if (count == 0) {
+        return result;
+    }
 
     // only display the last 50
-    lcount = 0;
     for (auto l : proofs) {
-        lcount++;
-        if (lcount > count - 50) {
+        if (l.height > height - 50) {
             result.pushKV(std::to_string(l.height), l.hash.ToString());
         }
     }
@@ -135,8 +166,8 @@ static const CRPCCommand commands[] =
 { //  category              name                      actor (function)
   //  --------------------- ------------------------  -----------------------
     { "storage",            "resubmitproof",          &resubmitproof,          {}  },
-    { "storage",            "submitproof",            &submitproof,            {}  },
-    { "storage",            "listmemproof",           &listmemproof,           {}  }
+    { "storage",            "submitproof",            &submitproof,            {"hexstring", "privatekey"}  },
+    { "storage",            "listproof",              &listproof,              {}  }
 };
 
 // clang-format on
