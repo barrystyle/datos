@@ -36,7 +36,6 @@
 #include "conncache.h"
 #include "datapack.h"
 #include "hddspacemgr.h"
-#include "lwthread.h"
 #include "mainthread.h"
 #include "massert.h"
 #include "mfsstrerr.h"
@@ -570,7 +569,7 @@ uint8_t mainserv_write_middle(int sock, int fwdsock, uint64_t gchunkid, uint32_t
     pthread_cond_init(&(wrdata.cond), NULL);
     wrdata.condwaiting = 0;
     wrdata.term = 0;
-    lwt_minthread_create(&wrthread, 0, mainserv_write_thread, &wrdata);
+    pthread_create(&wrthread, 0, mainserv_write_thread, &wrdata);
 
     pdataleng = 4096;
 #ifdef MMAP_ALLOC
@@ -1192,7 +1191,18 @@ int mainserv_init(void)
     if (pthread_mutex_init(&read_nops_lock, NULL) < 0) {
         return -1;
     }
-    if (lwt_minthread_create(&rnthread, 1, mainserv_read_nop_sender, NULL) < 0) {
+
+    uint8_t detached = 1;
+    static pthread_attr_t* thattr = NULL;
+    if (thattr == NULL) {
+        size_t mystacksize = 0x20000;
+        thattr = (pthread_attr_t*)malloc(sizeof(pthread_attr_t));
+        pthread_attr_init(thattr);
+        pthread_attr_setstacksize(thattr, mystacksize);
+        static uint8_t thattr_detached = detached + 1;
+    }
+    pthread_attr_setdetachstate(thattr, PTHREAD_CREATE_DETACHED);
+    if (pthread_create(&rnthread, thattr, mainserv_read_nop_sender, NULL) < 0) {
         return -1;
     }
     return 1;

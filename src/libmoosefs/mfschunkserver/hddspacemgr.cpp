@@ -47,7 +47,6 @@
 #include "datapack.h"
 #include "defaults.h"
 #include "hddspacemgr.h"
-#include "lwthread.h"
 #include "massert.h"
 #include "masterconn.h"
 #include "portable.h"
@@ -2185,7 +2184,7 @@ void hdd_check_folders(void)
             switch (f->scanstate) {
             case SCST_SCANNEEDED:
                 f->scanstate = SCST_SCANINPROGRESS;
-                zassert(lwt_minthread_create(&(f->scanthread), 0, hdd_folder_scan, f));
+                zassert(pthread_create(&(f->scanthread), 0, hdd_folder_scan, f));
                 break;
             case SCST_SCANFINISHED:
                 zassert(pthread_join(f->scanthread, NULL));
@@ -7241,13 +7240,12 @@ int hdd_late_init(void)
     term = 0;
     zassert(pthread_mutex_unlock(&termlock));
 
-    lwt_minthread_create(&knownblocksthread, 0, hdd_knownblocks_thread, NULL);
-    lwt_minthread_create(&testerthread, 0, hdd_tester_thread, NULL);
-    lwt_minthread_create(&foldersthread, 0, hdd_folders_thread, NULL);
-    lwt_minthread_create(&rebalancethread, 0, hdd_rebalance_thread, NULL);
-    lwt_minthread_create(&hsrebalancethread, 0, hdd_highspeed_rebalance_thread, NULL);
-    lwt_minthread_create(&delayedthread, 0, hdd_delayed_thread, NULL);
-
+    zassert(pthread_create(&knownblocksthread, 0, hdd_knownblocks_thread, NULL));
+    zassert(pthread_create(&testerthread, 0, hdd_tester_thread, NULL));
+    zassert(pthread_create(&foldersthread, 0, hdd_folders_thread, NULL));
+    zassert(pthread_create(&rebalancethread, 0, hdd_rebalance_thread, NULL));
+    zassert(pthread_create(&hsrebalancethread, 0, hdd_highspeed_rebalance_thread, NULL));
+    zassert(pthread_create(&delayedthread, 0, hdd_delayed_thread, NULL));
     return 0;
 }
 
