@@ -161,13 +161,48 @@ static UniValue listproof(const JSONRPCRequest& request)
     return result;
 }
 
+static UniValue parseproof(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 0)
+        throw std::runtime_error(
+            RPCHelpMan{"parseproof",
+                "\nParse the most recent proof to get the current network storage capacity (in Gb).\n",
+                {},
+                RPCResults{},
+                RPCExamples{""},
+            }.ToString());
+
+    UniValue result(UniValue::VOBJ);
+
+    // sum the proofs we have
+    int count = 0;
+    for (auto l : proofs) count++;
+    if (count == 0) {
+        return result;
+    }
+
+    // most recent
+    CNetworkProof& netproof = proofs.back();
+    CProof& proof = netproof.proof;
+    int totalStorage = 0;
+    for (auto l : proof.nodes) {
+        totalStorage += l.space;
+    }
+
+    result.pushKV("height", netproof.height);
+    result.pushKV("storage", totalStorage);
+
+    return result;
+}
+
 // clang-format off
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)
   //  --------------------- ------------------------  -----------------------
     { "storage",            "resubmitproof",          &resubmitproof,          {}  },
     { "storage",            "submitproof",            &submitproof,            {"hexstring", "privatekey"}  },
-    { "storage",            "listproof",              &listproof,              {}  }
+    { "storage",            "listproof",              &listproof,              {}  },
+    { "storage",            "parseproof",             &parseproof,             {}  },
 };
 
 // clang-format on
