@@ -16,6 +16,7 @@
 #include <pos/prevstake.h>
 #include <primitives/block.h>
 #include <primitives/transaction.h>
+#include <storage/manager.h>
 #include <shutdown.h>
 #include <sync.h>
 #include <net.h>
@@ -278,11 +279,30 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
                 }
             }
 
+            const int nHeight = nBestHeight + 1;
+            CBlock *pblock = &pblocktemplate->block;
+
+            if (proofManager.IsProofRequired(nBestHeight, params.GetConsensus())) {
+                CNetworkProof netproof;
+                if (!proofManager.GetProofByHeight(nHeight, netproof)) {
+                    LogPrint(BCLog::POS, "%s: proof not found for new block\n", __func__);
+                    condWaitFor(nThreadID, 15000);
+                    continue;
+                }
+                if (!proofManager.Validate(netproof)) {
+                    LogPrint(BCLog::POS, "%s: retrieved proof is bad\n", __func__);
+                    condWaitFor(nThreadID, 15000);
+                    continue;
+                }
+                LogPrint(BCLog::POS, "%s: using proof %s for new block\n", __func__, netproof.hash.ToString());
+                pblock->nProof = netproof.hash;
+                pblock->netProof = netproof;
+            }
+
             pwallet->m_is_staking = IS_STAKING;
             nWaitFor = nMinerSleep;
             fIsStaking = true;
             if (wallet.SignBlock(pblocktemplate.get(), nBestHeight + 1, nSearchTime)) {
-                CBlock *pblock = &pblocktemplate->block;
                 if (CheckStake(pblock)) {
                      nTimeLastStake = GetTime();
                      continue;
