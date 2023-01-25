@@ -63,12 +63,17 @@ bool CStakeWallet::SelectCoinsForStaking(CAmount nTargetValue, std::set<std::pai
             continue;
         }
 
+        // dont stake collateral-like amounts
+        CAmount n = pcoin->tx->vout[i].nValue;
+        if (n == params.mnCollateral) {
+            LogPrint(BCLog::POS, "not using %s: collateral-like amount\n", txout.ToString());
+            continue;
+        }
+
         // Stop if we've chosen enough inputs
         if (nValueRet >= nTargetValue) {
             break;
         }
-
-        CAmount n = pcoin->tx->vout[i].nValue;
 
         std::pair<int64_t, std::pair<const CWalletTx*, unsigned int>> coin = std::make_pair(n, std::make_pair(pcoin, i));
 

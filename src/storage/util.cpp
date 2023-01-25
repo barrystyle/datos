@@ -4,12 +4,15 @@
 
 #include <storage/util.h>
 
-void uint32_to_ip(uint32_t address, char* straddress)
+void uint32_to_ip(uint32_t address, char* straddress, int port)
 {
     unsigned char bytes[4];
     bytes[0] = address & 0xFF;
     bytes[1] = (address >> 8) & 0xFF;
     bytes[2] = (address >> 16) & 0xFF;
     bytes[3] = (address >> 24) & 0xFF;
-    snprintf(straddress, 16, "%u.%u.%u.%u", bytes[3], bytes[2], bytes[1], bytes[0]);
+    if (port)
+        snprintf(straddress, 21, "%u.%u.%u.%u:%d", bytes[3], bytes[2], bytes[1], bytes[0], port);
+    else
+        snprintf(straddress, 16, "%u.%u.%u.%u", bytes[3], bytes[2], bytes[1], bytes[0]);
 }

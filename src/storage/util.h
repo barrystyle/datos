@@ -10,6 +10,6 @@
 
 #include <list>
 
-void uint32_to_ip(uint32_t address, char* straddress);
+void uint32_to_ip(uint32_t address, char* straddress, int port = 0);
 
 #endif // STORAGE_UTIL_H

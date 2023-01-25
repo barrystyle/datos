@@ -14,9 +14,14 @@ CAmount CalculateNodeReward(CAmount& base_reward, int space_mode, int score)
     int percentile;
     CAmount calcReward;
 
+    // return zero if params are out of range
     if (space_mode < 1 || space_mode > 10) {
-        return 0;
+        LogPrint(BCLog::STORAGE, "%s: returning 0 because space_mode out of range\n", __func__);
+        return 0 * COIN;
     }
+
+    // debug out
+    LogPrint(BCLog::STORAGE, "%s: called with base_reward %ld, space_mode %d and score %d\n", __func__, base_reward, space_mode, score);
 
     switch (space_mode) {
         case 1: percentile = 5;
@@ -32,12 +37,16 @@ CAmount CalculateNodeReward(CAmount& base_reward, int space_mode, int score)
     }
 
     calcReward = base_reward * percentile / 100;
-
     if (score < 100) {
-        calcReward = 0;
+        calcReward = 0 * COIN;
     }
 
     return calcReward;
+}
+
+int ConvertActualSpaceToSpaceMode(int actual_space)
+{
+    return actual_space / 25;
 }
 
 CAmount GetMasternodePayment(int nHeight)
@@ -53,9 +62,12 @@ CAmount GetMasternodePayment(int nHeight)
     CService mnAddress(dmnPayee->pdmnState->addr);
     scoreManager.GetNodeScore(mnAddress, score, space);
 
+    // convert from actual space to space_mode
+    int space_mode = ConvertActualSpaceToSpaceMode(space);
+
     // calculate amount
     CAmount base_reward = GetBaseReward();
-    CAmount reward = CalculateNodeReward(base_reward, space, score);
+    CAmount reward = CalculateNodeReward(base_reward, space_mode, score);
 
     return reward;
 }
