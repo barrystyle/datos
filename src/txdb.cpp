@@ -7,6 +7,8 @@
 
 #include <pow.h>
 #include <random.h>
+#include <storage/proof.h>
+#include <storage/netproof.h>
 #include <shutdown.h>
 #include <uint256.h>
 #include <util/system.h>
@@ -399,6 +401,8 @@ bool CBlockTreeDB::LoadBlockIndexGuts(const Consensus::Params& consensusParams, 
                 pindexNew->nStakeModifier = diskindex.nStakeModifier;
                 pindexNew->hashProof      = diskindex.hashProof;
                 pindexNew->prevoutStake   = diskindex.prevoutStake;
+                pindexNew->nProof         = diskindex.nProof;
+                pindexNew->netProof       = diskindex.netProof;
 
                 if (pindexNew->IsProofOfWork() && !CheckProofOfWork(pindexNew->GetBlockHash(), pindexNew->nBits, consensusParams))
                     return error("%s: CheckProofOfWork failed: %s", __func__, pindexNew->ToString());

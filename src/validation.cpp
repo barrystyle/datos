@@ -33,6 +33,8 @@
 #include <script/script.h>
 #include <script/sigcache.h>
 #include <shutdown.h>
+#include <storage/behavior.h>
+#include <storage/manager.h>
 #include <timedata.h>
 #include <tinyformat.h>
 #include <txdb.h>
@@ -1066,11 +1068,6 @@ CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params&
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
 }
 
-CAmount GetMasternodePayment(int nHeight, CAmount blockValue, int nReallocActivationHeight)
-{
-    return 8280 * COIN;
-}
-
 CAmount GetProofOfStakeReward(CBlockIndex* pindexPrev, CAmount nFees)
 {
     return GetBlockSubsidy(0, pindexPrev->nHeight, Params().GetConsensus(), false);
@@ -1996,6 +1993,22 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
         }
     }
 
+    if (block.IsProofOfStake() && proofManager.IsProofRequired(pindex->nHeight, chainparams.GetConsensus())) {
+        CNetworkProof netProof = block.netProof;
+        if (!proofManager.Validate(netProof)) {
+            LogPrint(BCLog::STORAGE, "%s: invalid block storage proof (failed validate)\n", __func__);
+            return state.DoS(0, error("%s: invalid block proof", __func__), REJECT_INVALID, "blockproof-invalid");
+        }
+        if (netProof.height != pindex->nHeight) {
+            LogPrint(BCLog::STORAGE, "%s: mismatched block storage proof height (found %d, wanted %d)\n", __func__, netProof.height, pindex->nHeight);
+            return state.DoS(0, error("%s: invalid block proof", __func__), REJECT_INVALID, "blockproof-height");
+        }
+        if (netProof.hash != block.nProof) {
+            LogPrint(BCLog::STORAGE, "%s: mismatched block storage proof hash (header %s, block %s)\n", __func__, block.nProof.ToString(), netProof.hash.ToString());
+            return state.DoS(0, error("%s: invalid block proof", __func__), REJECT_INVALID, "blockproof-hash");
+        }
+    }
+
     // Special case for the genesis block, skipping connection of its transactions
     // (its coinbase is unspendable)
     if (block.GetHash() == chainparams.GetConsensus().hashGenesisBlock) {
@@ -2398,6 +2411,10 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
 
     int64_t nTime7 = GetTimeMicros(); nTimeCallbacks += nTime7 - nTime6;
     LogPrint(BCLog::BENCHMARK, "    - Callbacks: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime7 - nTime6), nTimeCallbacks * MICRO, nTimeCallbacks * MILLI / nBlocksTotal);
+
+    // score all nodes
+    const CNetworkProof& in = block.netProof;
+    scoreManager.AddProof(in);
 
     boost::posix_time::ptime finish = boost::posix_time::microsec_clock::local_time();
     boost::posix_time::time_duration diff = finish - start;

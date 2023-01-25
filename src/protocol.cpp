@@ -91,6 +91,8 @@ MAKE_MSG(SENDHEADERS2, "sendheaders2");
 MAKE_MSG(HEADERS2, "headers2");
 MAKE_MSG(GETQUORUMROTATIONINFO, "getqrinfo");
 MAKE_MSG(QUORUMROTATIONINFO, "qrinfo");
+// storage related message types
+MAKE_MSG(NETPROOF, "netproof");
 }; // namespace NetMsgType
 
 /** All known message types. Keep this in the same order as the list of
@@ -171,7 +173,10 @@ const static std::string allNetMessageTypes[] = {
     NetMsgType::MNAUTH,
     NetMsgType::GETHEADERS2,
     NetMsgType::SENDHEADERS2,
-    NetMsgType::HEADERS2};
+    NetMsgType::HEADERS2,
+    // storage related message types
+    NetMsgType::NETPROOF
+};
 const static std::vector<std::string> allNetMessageTypesVec(allNetMessageTypes, allNetMessageTypes+ARRAYLEN(allNetMessageTypes));
 
 CMessageHeader::CMessageHeader(const MessageStartChars& pchMessageStartIn)
@@ -308,6 +313,7 @@ const char* CInv::GetCommandInternal() const
         case MSG_CLSIG:                         return NetMsgType::CLSIG;
         case MSG_ISLOCK:                        return NetMsgType::ISLOCK;
         case MSG_ISDLOCK:                       return NetMsgType::ISDLOCK;
+        case MSG_NETPROOF:                      return NetMsgType::NETPROOF;
         default:
             return nullptr;
     }

@@ -23,6 +23,8 @@
 #include <random.h>
 #include <reverse_iterator.h>
 #include <scheduler.h>
+#include <storage/manager.h>
+#include <storage/serialize.h>
 #include <streams.h>
 #include <tinyformat.h>
 #include <index/txindex.h>
@@ -1442,6 +1444,8 @@ bool static AlreadyHave(const CInv& inv) EXCLUSIVE_LOCKS_REQUIRED(cs_main)
     case MSG_ISLOCK:
     case MSG_ISDLOCK:
         return llmq::quorumInstantSendManager->AlreadyHave(inv);
+    case MSG_NETPROOF:
+        return proofManager.AlreadyHave(inv.hash);
     }
 
     // Don't know what it is, just say we already got one
@@ -1789,6 +1793,14 @@ void static ProcessGetData(CNode* pfrom, const CChainParams& chainparams, CConnm
                 if (llmq::quorumInstantSendManager->GetInstantSendLockByHash(inv.hash, o)) {
                     const auto msg_type = inv.type == MSG_ISLOCK ? NetMsgType::ISLOCK : NetMsgType::ISDLOCK;
                     connman->PushMessage(pfrom, msgMaker.Make(msg_type, o));
+                    push = true;
+                }
+            }
+
+            if (!push && (inv.type == MSG_NETPROOF)) {
+                CNetworkProof netproof;
+                if (proofManager.GetProofByHash(inv.hash, netproof)) {
+                    connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::NETPROOF, netproof));
                     push = true;
                 }
             }
@@ -3973,6 +3985,20 @@ bool static ProcessMessage(CNode* pfrom, const std::string& msg_type, CDataStrea
         // we have never requested this
         LOCK(cs_main);
         Misbehaving(pfrom->GetId(), 100, strprintf("received not-requested quorumrotationinfo. peer=%d", pfrom->GetId()));
+        return true;
+    }
+
+    if (msg_type == NetMsgType::NETPROOF) {
+        LOCK(cs_main);
+
+        CNetworkProof netproof;
+        vRecv >> netproof;
+        if (!proofManager.Validate(netproof)) {
+            Misbehaving(pfrom->GetId(), 0, strprintf("invalid netproof. peer=%d", pfrom->GetId()));
+            return false;
+        }
+        netproof.Relay(*connman);
+
         return true;
     }
 

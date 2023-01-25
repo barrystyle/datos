@@ -178,6 +178,7 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::NETCONN, "netconn"},
     {BCLog::DASH, "pacprotocol"},
     {BCLog::POS, "pos"},
+    {BCLog::STORAGE, "storage"},
 
     //End pacprotocol
 };

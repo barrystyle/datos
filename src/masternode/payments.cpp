@@ -15,6 +15,8 @@
 #include <masternode/sync.h>
 #include <primitives/block.h>
 #include <script/standard.h>
+#include <storage/behavior.h>
+#include <storage/rewards.h>
 #include <tinyformat.h>
 #include <util/ranges.h>
 #include <util/system.h>
@@ -89,7 +91,7 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
 
     // allow tests to pass for pow
     if (!isProofOfStake) {
-        blockValue -= GetMasternodePayment(nBlockHeight, blockReward, 0);
+        blockValue -= GetMasternodePayment(nBlockHeight);
     }
     bool isBlockRewardValueMet = blockValue <= blockReward;
 
@@ -107,7 +109,7 @@ bool IsBlockValueValid(const CBlock& block, int nBlockHeight, CAmount blockRewar
     LogPrint(BCLog::MNPAYMENTS, "block.vtx[%d]->GetValueOut() %lld <= blockReward %lld\n", isProofOfStake, blockValue, blockReward);
 
     CAmount nSuperblockMaxValue = CSuperblock::GetPaymentsLimit(nBlockHeight);
-    CAmount nSuperblockTotalMinusMasternode = block.vtx[0]->GetValueOut() - GetMasternodePayment(nBlockHeight, blockReward, 0);
+    CAmount nSuperblockTotalMinusMasternode = block.vtx[0]->GetValueOut() - GetMasternodePayment(nBlockHeight);
     bool isSuperblockMaxValueMet = nSuperblockTotalMinusMasternode <= nSuperblockMaxValue;
 
     LogPrint(BCLog::GOBJECT, "block.vtx[0]->GetValueOut() %lld <= nSuperblockMaxValue %lld\n", nSuperblockTotalMinusMasternode, nSuperblockMaxValue);
@@ -286,8 +288,9 @@ bool CMasternodePayments::GetBlockTxOuts(int nBlockHeight, CAmount blockReward, 
         return false;
     }
 
+    // get masternode reward
     CAmount operatorReward = 0;
-    CAmount masternodeReward = GetMasternodePayment(nBlockHeight, blockReward, Params().GetConsensus().BRRHeight);
+    CAmount masternodeReward = GetMasternodePayment(nBlockHeight);
 
     if (dmnPayee->nOperatorReward != 0 && dmnPayee->pdmnState->scriptOperatorPayout != CScript()) {
         // This calculation might eventually turn out to result in 0 even if an operator reward percentage is given.
