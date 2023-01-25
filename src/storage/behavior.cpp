@@ -91,13 +91,14 @@ void CNodeBehavior::AddNode(struct NodeHistory in)
     nodes.push_back(in);
 }
 
-bool CNodeBehavior::IsValidDMN(uint32_t ip)
+bool CNodeBehavior::IsValidDMN(uint32_t ip, const CChainParams& chainparams)
 {
     CService addr;
-    char ipaddress[16];
-    uint32_to_ip(ip, ipaddress);
+    char ipaddress[21];
+    uint32_to_ip(ip, ipaddress, chainparams.GetDefaultPort());
     if (!Lookup(ipaddress, addr, 0, false)) return false;
     if (!deterministicMNManager->GetListAtChainTip().GetMNByService(addr)) return false;
+    if (deterministicMNManager->GetListAtChainTip().GetMNByService(addr)->pdmnState->IsBanned()) return false;
     return true;
 }
 
