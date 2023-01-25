@@ -1,5 +1,5 @@
 // Copyright (c) 2017-2019 The Particl Core developers
-// Copyright (c) 2022 pacprotocol
+// Copyright (c) 2022 datosdrive
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 

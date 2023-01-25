@@ -467,7 +467,7 @@ std::vector<CQuorumCPtr> CQuorumManager::ScanQuorums(Consensus::LLMQType llmqTyp
     size_t nScanCommitments{nCountRequested};
     std::vector<CQuorumCPtr> vecResultQuorums;
 
-    // TODO implement caching, see [pre-rotation caching](https://github.com/pacprotocol/pacprotocol/blob/e84bf45cefbcf9ee89ca3d706fd8abffdbcc8a84/src/llmq/quorums.cpp#L424-L448)
+    // TODO implement caching, see [pre-rotation caching](https://github.com/datosdrive/datosdrive/blob/e84bf45cefbcf9ee89ca3d706fd8abffdbcc8a84/src/llmq/quorums.cpp#L424-L448)
     //  for inspiration
 
     // Get the block indexes of the mined commitments to build the required quorums from

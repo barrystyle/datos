@@ -302,7 +302,7 @@ extern const char *HEADERS2;
 extern const char *GETQUORUMROTATIONINFO;
 extern const char *QUORUMROTATIONINFO;
 
-// Pacprotocol message types
+// Datosdrive message types
 extern const char *NETPROOF;
 };
 

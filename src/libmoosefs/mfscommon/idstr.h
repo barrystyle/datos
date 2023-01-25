@@ -23,6 +23,6 @@
 
 #define IDSTR_STR_AUX(x) #x
 #define IDSTR_STR(x) IDSTR_STR_AUX(x)
-const char id[]="libmoosefs pacprotocol internal";
+const char id[]="libmoosefs datosdrive internal";
 
 #endif

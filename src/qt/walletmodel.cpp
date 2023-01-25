@@ -218,7 +218,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         }
         else
 #endif
-        {   // User-entered pacprotocol address / amount:
+        {   // User-entered datosdrive address / amount:
             if(!validateAddress(rcp.address))
             {
                 return InvalidAddress;
@@ -303,7 +303,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
             }
             else
 #endif
-            if (!rcp.message.isEmpty()) // Message from normal pac:URI (pac:XyZ...?message=example)
+            if (!rcp.message.isEmpty()) // Message from normal datos:URI (datos:XyZ...?message=example)
                 vOrderForm.emplace_back("Message", rcp.message.toStdString());
         }
 

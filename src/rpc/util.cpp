@@ -165,7 +165,7 @@ bool ParseBoolV(const UniValue& v, const std::string &strName)
 
 std::string HelpExampleCli(const std::string& methodname, const std::string& args)
 {
-    return "> pacprotocol-cli " + methodname + " " + args + "\n";
+    return "> datosdrive-cli " + methodname + " " + args + "\n";
 }
 
 std::string HelpExampleRpc(const std::string& methodname, const std::string& args)
