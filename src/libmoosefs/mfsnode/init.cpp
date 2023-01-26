@@ -32,9 +32,9 @@ char* get_storagedir(bool net_type)
     char homedir[256];
     memset(homedir, 0, sizeof(homedir));
     if (net_type)
-        snprintf(homedir, 256, "%s/.pacstorage", getenv("HOME"));
+        snprintf(homedir, 256, "%s/.datosstorage", getenv("HOME"));
     else
-        snprintf(homedir, 256, "%s/.pacteststorage", getenv("HOME"));
+        snprintf(homedir, 256, "%s/.datosteststorage", getenv("HOME"));
     return strdup(homedir);
 #else
     return NULL;
@@ -59,9 +59,9 @@ void create_storagedir(char* extrapath, bool net_type)
 bool set_local_node(bool net_type)
 {
     if (net_type)
-        sprintf(node_info.masterhost, "mainnet.tiltpool.com");
+        sprintf(node_info.masterhost, "mfsmain.datosdrive.com");
     else
-        sprintf(node_info.masterhost, "mfsmaster.tiltpool.com");
+        sprintf(node_info.masterhost, "mfstest.datosdrive.com");
 
     sprintf(node_info.masterport, "9420");
     sprintf(node_info.bindhost, "*");
