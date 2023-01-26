@@ -45,9 +45,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case DASH: return QString("PAC");
-            case mDASH: return QString("mPAC");
-            case uDASH: return QString::fromUtf8("μPAC");
+            case DASH: return QString("DTS");
+            case mDASH: return QString("mDTS");
+            case uDASH: return QString::fromUtf8("μDTS");
             case duffs: return QString("puffs");
             default: return QString("???");
         }
@@ -56,9 +56,9 @@ QString BitcoinUnits::name(int unit)
     {
         switch(unit)
         {
-            case DASH: return QString("tPAC");
-            case mDASH: return QString("mtPAC");
-            case uDASH: return QString::fromUtf8("μtPAC");
+            case DASH: return QString("tDTS");
+            case mDASH: return QString("mtDTS");
+            case uDASH: return QString::fromUtf8("μtDTS");
             case duffs: return QString("tuffs");
             default: return QString("???");
         }
@@ -71,10 +71,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case DASH: return QString("PAC");
-            case mDASH: return QString("Milli-PAC (1 / 1" THIN_SP_UTF8 "000)");
-            case uDASH: return QString("Micro-PAC (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-PAC (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case DASH: return QString("DTS");
+            case mDASH: return QString("Milli-DTS (1 / 1" THIN_SP_UTF8 "000)");
+            case uDASH: return QString("Micro-DTS (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-DTS (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }
@@ -82,10 +82,10 @@ QString BitcoinUnits::description(int unit)
     {
         switch(unit)
         {
-            case DASH: return QString("TestPACs");
-            case mDASH: return QString("Milli-TestPAC (1 / 1" THIN_SP_UTF8 "000)");
-            case uDASH: return QString("Micro-TestPAC (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
-            case duffs: return QString("Ten Nano-TestPAC (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case DASH: return QString("TestDTSs");
+            case mDASH: return QString("Milli-TestDTS (1 / 1" THIN_SP_UTF8 "000)");
+            case uDASH: return QString("Micro-TestDTS (1 / 1" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
+            case duffs: return QString("Ten Nano-TestDTS (1 / 100" THIN_SP_UTF8 "000" THIN_SP_UTF8 "000)");
             default: return QString("???");
         }
     }

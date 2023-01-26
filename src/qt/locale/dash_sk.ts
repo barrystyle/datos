@@ -74,12 +74,12 @@
         <translation>Adresa prijatia</translation>
     </message>
     <message>
-        <source>These are your pacprotocol addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Toto sú vaše pacprotocol adresy pre posielanie platieb. Pred poslaním mincí vždy overte sumu a doručovaciu adresu.</translation>
+        <source>These are your datosdrive addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Toto sú vaše datosdrive adresy pre posielanie platieb. Pred poslaním mincí vždy overte sumu a doručovaciu adresu.</translation>
     </message>
     <message>
-        <source>These are your pacprotocol addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
-        <translation>Toto sú vaše pacprotocol adresy na prijímanie platieb. Na vytvorenie nových adries použite tlačidlo „Vytvoriť novú prijímaciu adresu“ na karte prijímania.</translation>
+        <source>These are your datosdrive addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
+        <translation>Toto sú vaše datosdrive adresy na prijímanie platieb. Na vytvorenie nových adries použite tlačidlo „Vytvoriť novú prijímaciu adresu“ na karte prijímania.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -227,8 +227,8 @@
         <translation>Potvrďte zašifrovanie peňaženky</translation>
     </message>
     <message>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR PAC&lt;/b&gt;!</source>
-        <translation>Upozornenie: Ak zašifrujete vašu peňaženku a stratíte prístupové heslo, potom &lt;b&gt;prídete o všetky svoje PAC-y&lt;/b&gt;!</translation>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR DTS&lt;/b&gt;!</source>
+        <translation>Upozornenie: Ak zašifrujete vašu peňaženku a stratíte prístupové heslo, potom &lt;b&gt;prídete o všetky svoje DTS-y&lt;/b&gt;!</translation>
     </message>
     <message>
         <source>Are you sure you wish to encrypt your wallet?</source>
@@ -324,8 +324,8 @@
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <source>A fatal error occurred. pacprotocol can no longer continue safely and will quit.</source>
-        <translation>Došlo k závažnej chybe. pacprotocol už nemôže bezpečne pokračovať a bude ukončený.</translation>
+        <source>A fatal error occurred. datosdrive can no longer continue safely and will quit.</source>
+        <translation>Došlo k závažnej chybe. datosdrive už nemôže bezpečne pokračovať a bude ukončený.</translation>
     </message>
     <message>
         <source>&amp;Overview</source>
@@ -340,8 +340,8 @@
         <translation>&amp;Odoslať</translation>
     </message>
     <message>
-        <source>Send coins to a pacprotocol address</source>
-        <translation>Poslať mince na pacprotocol adresu</translation>
+        <source>Send coins to a datosdrive address</source>
+        <translation>Poslať mince na datosdrive adresu</translation>
     </message>
     <message>
         <source>&amp;Receive</source>
@@ -349,7 +349,7 @@
     </message>
     <message>
         <source>Request payments (generates QR codes and pac: URIs)</source>
-        <translation>Vyžiadať platby (vygeneruje QR kódy a pacprotocol: URI)</translation>
+        <translation>Vyžiadať platby (vygeneruje QR kódy a datosdrive: URI)</translation>
     </message>
     <message>
         <source>&amp;Sending addresses</source>
@@ -436,8 +436,8 @@
         <translation>&amp;O %1</translation>
     </message>
     <message>
-        <source>Send %1 funds to a pacprotocol address</source>
-        <translation>Poslať zdroje %1 na pacprotocol adresu</translation>
+        <source>Send %1 funds to a datosdrive address</source>
+        <translation>Poslať zdroje %1 na datosdrive adresu</translation>
     </message>
     <message>
         <source>Modify configuration options for %1</source>
@@ -492,16 +492,16 @@
         <translation>Podpísať &amp;správu...</translation>
     </message>
     <message>
-        <source>Sign messages with your pacprotocol addresses to prove you own them</source>
-        <translation>Podpísať správy s vašimi pacprotocol adresami ako dôkaz že ich vlastníte</translation>
+        <source>Sign messages with your datosdrive addresses to prove you own them</source>
+        <translation>Podpísať správy s vašimi datosdrive adresami ako dôkaz že ich vlastníte</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
         <translation>&amp;Overiť správu...</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified pacprotocol addresses</source>
-        <translation>Overiť správy pre uistenie, že boli podpísané zadanými pacprotocol adresami</translation>
+        <source>Verify messages to ensure they were signed with specified datosdrive addresses</source>
+        <translation>Overiť správy pre uistenie, že boli podpísané zadanými datosdrive adresami</translation>
     </message>
     <message>
         <source>&amp;Information</source>
@@ -580,8 +580,8 @@
         <translation>&amp;Možnosti príkazového riadku</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible pacprotocol command-line options</source>
-        <translation>Ukázať %1 zoznam možných nastavení pacprotocol pomocou príkazového riadku</translation>
+        <source>Show the %1 help message to get a list with possible datosdrive command-line options</source>
+        <translation>Ukázať %1 zoznam možných nastavení datosdrive pomocou príkazového riadku</translation>
     </message>
     <message>
         <source>default wallet</source>
@@ -646,8 +646,8 @@
         <translation>Zobraziť návrhy dozoru</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to pacprotocol network</source>
-        <translation><numerusform>%n aktívne spojenie so sieťou pacprotocol</numerusform><numerusform>%n aktívne spojenia so sieťou pacprotocol</numerusform><numerusform>%n aktívnych spojení so sieťou pacprotocol</numerusform><numerusform>%n aktívnych spojení so sieťou pacprotocol</numerusform></translation>
+        <source>%n active connection(s) to datosdrive network</source>
+        <translation><numerusform>%n aktívne spojenie so sieťou datosdrive</numerusform><numerusform>%n aktívne spojenia so sieťou datosdrive</numerusform><numerusform>%n aktívnych spojení so sieťou datosdrive</numerusform><numerusform>%n aktívnych spojení so sieťou datosdrive</numerusform></translation>
     </message>
     <message>
         <source>Network activity disabled</source>
@@ -1096,8 +1096,8 @@
         <translation>Upraviť adresu pre odoslanie</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid pacprotocol address.</source>
-        <translation>Zadaná adresa "%1" nie je platná pacprotocol adresa.</translation>
+        <source>The entered address "%1" is not a valid datosdrive address.</source>
+        <translation>Zadaná adresa "%1" nie je platná datosdrive adresa.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -1185,8 +1185,8 @@
         <translation>%1 Informácie</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the pacprotocol in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 PAC, 0.01 PAC, 0.1 PAC, 1 PAC and 10 PAC -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
-        <translation>&lt;h3&gt;Základy %1&lt;/h3&gt; %1 vám poskytuje skutočné finančné súkromie skrývaním pôvodu vašich zdrojov. Všetky pacprotocole vo vašej peňaženke pozostávajú z rôznych "vstupov", ktoré si môžete predstaviť ako rozdelené,  diskrétne mince.&lt;br&gt; %1 používa zdokonalený proces pre miešanie vašich vstupov so vstupmi iných ľudí bez toho, aby vaše mince museli opustiť peňaženku. Počas celej doby máte kontrolu nad vašimi peniazmi.&lt;hr&gt; &lt;b&gt;Proces %1 funguje nasledovne:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 začne rozdelením vašich transakčných vstupov na štandardné časti, takzvané denominácie. Tieto denominácie sú 0.001 PAC, 0.01 PAC, 0.1 PAC, 1 PAC a 10 PAC -- v podstate niečo ako papierové peniaze, ktoré používate každý deň.&lt;/li&gt; &lt;li&gt;Vaša peňaženka potom pošle požiadavok špeciálne nastavenému softvérovému uzlu nazvaného "Masternód". Tieto masternódy sú potom informované, že máte záujem miešať určité denominácie. Masternód neobdrží žiadne informácie ktoré by vás identifikovali, takže nikdy nevie kto ste.&lt;/li&gt; &lt;li&gt;Keď ďalší dvaja ľudia pošlú podobnú správu hovoriacu o tom, že chcú miešať rovnakú denomináciu, začne sa samotné miešanie. Masternód zamieša vstupy a povie peňaženkám všetkých troch používateľov, aby zaplatili teraz už zmiešané vstupy sami sebe. Vaša peňaženka zaplatí tieto denominácie priamo sebe, ale už na inú adresu (nazývanú "meniaca adresa").&lt;/li&gt; &lt;li&gt;Aby boli vaše zdroje plne ukryté, vaša peňaženka musí zopakovať tento proces niekoľko krát s každou denomináciou.  Vždy keď je tento proces dokončený, je nazvaný "kolo". Každé kolo %1 exponenciálne sťažuje určiť, odkiaľ pochádzajú vaše zdroje.&lt;/li&gt; &lt;li&gt;Toto miešanie sa deje na pozadí, bez nutnosti zásahov z vašej strany. Keď si prajete uskutočniť transakciu, vaše zdroje budú už zmiešané. Nie je nutné na nič čakať.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt; &lt;b&gt;DÔLEŽITÉ:&lt;/b&gt; Vaša peňaženka obsahuje iba 1000 takýchto "meniacich adries". Vždy keď prebehne miešanie, použije sa maximálne až 9 vašich adries. To znamená, že týchto 1000 adries vystačí zhruba na 100 miešaní. Keď sa použije 900 adries, vaša peňaženka musí vytvoriť viac adries. Toto je však možné iba vtedy, keď máte zapnuté automatické zálohovanie.&lt;br&gt; V dôsledku toho, používatelia ktorí majú zálohovanie vypnuté, budú mať vypnutý aj %1. &lt;hr&gt;Viac informácií nájdete v &lt;a style="%2" href="%3"&gt;dokumentácií ku %1&lt;/a&gt;.</translation>
+        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the datosdrive in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 DTS, 0.01 DTS, 0.1 DTS, 1 DTS and 10 DTS -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
+        <translation>&lt;h3&gt;Základy %1&lt;/h3&gt; %1 vám poskytuje skutočné finančné súkromie skrývaním pôvodu vašich zdrojov. Všetky datosdrivee vo vašej peňaženke pozostávajú z rôznych "vstupov", ktoré si môžete predstaviť ako rozdelené,  diskrétne mince.&lt;br&gt; %1 používa zdokonalený proces pre miešanie vašich vstupov so vstupmi iných ľudí bez toho, aby vaše mince museli opustiť peňaženku. Počas celej doby máte kontrolu nad vašimi peniazmi.&lt;hr&gt; &lt;b&gt;Proces %1 funguje nasledovne:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 začne rozdelením vašich transakčných vstupov na štandardné časti, takzvané denominácie. Tieto denominácie sú 0.001 DTS, 0.01 DTS, 0.1 DTS, 1 DTS a 10 DTS -- v podstate niečo ako papierové peniaze, ktoré používate každý deň.&lt;/li&gt; &lt;li&gt;Vaša peňaženka potom pošle požiadavok špeciálne nastavenému softvérovému uzlu nazvaného "Masternód". Tieto masternódy sú potom informované, že máte záujem miešať určité denominácie. Masternód neobdrží žiadne informácie ktoré by vás identifikovali, takže nikdy nevie kto ste.&lt;/li&gt; &lt;li&gt;Keď ďalší dvaja ľudia pošlú podobnú správu hovoriacu o tom, že chcú miešať rovnakú denomináciu, začne sa samotné miešanie. Masternód zamieša vstupy a povie peňaženkám všetkých troch používateľov, aby zaplatili teraz už zmiešané vstupy sami sebe. Vaša peňaženka zaplatí tieto denominácie priamo sebe, ale už na inú adresu (nazývanú "meniaca adresa").&lt;/li&gt; &lt;li&gt;Aby boli vaše zdroje plne ukryté, vaša peňaženka musí zopakovať tento proces niekoľko krát s každou denomináciou.  Vždy keď je tento proces dokončený, je nazvaný "kolo". Každé kolo %1 exponenciálne sťažuje určiť, odkiaľ pochádzajú vaše zdroje.&lt;/li&gt; &lt;li&gt;Toto miešanie sa deje na pozadí, bez nutnosti zásahov z vašej strany. Keď si prajete uskutočniť transakciu, vaše zdroje budú už zmiešané. Nie je nutné na nič čakať.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt; &lt;b&gt;DÔLEŽITÉ:&lt;/b&gt; Vaša peňaženka obsahuje iba 1000 takýchto "meniacich adries". Vždy keď prebehne miešanie, použije sa maximálne až 9 vašich adries. To znamená, že týchto 1000 adries vystačí zhruba na 100 miešaní. Keď sa použije 900 adries, vaša peňaženka musí vytvoriť viac adries. Toto je však možné iba vtedy, keď máte zapnuté automatické zálohovanie.&lt;br&gt; V dôsledku toho, používatelia ktorí majú zálohovanie vypnuté, budú mať vypnutý aj %1. &lt;hr&gt;Viac informácií nájdete v &lt;a style="%2" href="%3"&gt;dokumentácií ku %1&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1232,8 +1232,8 @@
         <translation>V tomto adresári bude uložených približne %1 GB dát.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the pacprotocol block chain.</source>
-        <translation>%1 stiahne a bude uchovávať kópiu pacprotocol blockchainu.</translation>
+        <source>%1 will download and store a copy of the datosdrive block chain.</source>
+        <translation>%1 stiahne a bude uchovávať kópiu datosdrive blockchainu.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1386,12 +1386,12 @@
         <translation>Forma</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the pacprotocol network, as detailed below.</source>
-        <translation>Nedávne transakcie ešte nemusia byť viditeľné a preto môže byť stav vašej peňaženky nesprávny. Informácia bude správna hneď ako vaša peňaženka dokončí synchronizáciu so sieťou pacprotocol. Viac detailov nájdete nižšie.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the datosdrive network, as detailed below.</source>
+        <translation>Nedávne transakcie ešte nemusia byť viditeľné a preto môže byť stav vašej peňaženky nesprávny. Informácia bude správna hneď ako vaša peňaženka dokončí synchronizáciu so sieťou datosdrive. Viac detailov nájdete nižšie.</translation>
     </message>
     <message>
-        <source>Attempting to spend pacprotocol that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
-        <translation>Pokús o minutie pacprotocolov, ktoré sú ovplyvnené "ešte nezobrazenými" transakciami, nebude sieťou akceptovaný.</translation>
+        <source>Attempting to spend datosdrive that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <translation>Pokús o minutie datosdriveov, ktoré sú ovplyvnené "ešte nezobrazenými" transakciami, nebude sieťou akceptovaný.</translation>
     </message>
     <message>
         <source>Number of blocks left</source>
@@ -1587,8 +1587,8 @@
         <translation>Cieľový zostatok</translation>
     </message>
     <message>
-        <source>Automatically open the pacprotocol client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automaticky otvoriť na smerovači port pre pacprotocol klient. Toto funguje iba ak váš smerovač  podporuje UPnP a je povolené</translation>
+        <source>Automatically open the datosdrive client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automaticky otvoriť na smerovači port pre datosdrive klient. Toto funguje iba ak váš smerovač  podporuje UPnP a je povolené</translation>
     </message>
     <message>
         <source>Automatically open the Bitcoin client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
@@ -1607,8 +1607,8 @@
         <translation>Povoliť pric&amp;hádzajúce spojenia</translation>
     </message>
     <message>
-        <source>Connect to the pacprotocol network through a SOCKS5 proxy.</source>
-        <translation>Pripojiť sa do siete pacprotocol cez proxy SOCKS5.</translation>
+        <source>Connect to the datosdrive network through a SOCKS5 proxy.</source>
+        <translation>Pripojiť sa do siete datosdrive cez proxy SOCKS5.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1715,8 +1715,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the pacprotocol network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Pripojiť sa do siete pacprotocol cez oddelené SOCKS5 proxy pre skryté služby Tor.</translation>
+        <source>Connect to the datosdrive network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Pripojiť sa do siete datosdrive cez oddelené SOCKS5 proxy pre skryté služby Tor.</translation>
     </message>
     <message>
         <source>Show only a tray icon after minimizing the window.</source>
@@ -1812,8 +1812,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Forma</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the pacprotocol network after a connection is established, but this process has not completed yet.</source>
-        <translation>Zobrazené informácie môžu byť zastaralé. Vaša peňaženka sa automaticky zosynchronizuje so sieťou pacprotocol akonáhle nadviaže spojenie, avšak tento proces ešte nebol dokončený.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the datosdrive network after a connection is established, but this process has not completed yet.</source>
+        <translation>Zobrazené informácie môžu byť zastaralé. Vaša peňaženka sa automaticky zosynchronizuje so sieťou datosdrive akonáhle nadviaže spojenie, avšak tento proces ešte nebol dokončený.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -1892,8 +1892,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Čiastka a kolá:</translation>
     </message>
     <message>
-        <source>0 PAC / 0 Rounds</source>
-        <translation>0 PAC / 0 Kôl</translation>
+        <source>0 DTS / 0 Rounds</source>
+        <translation>0 DTS / 0 Kôl</translation>
     </message>
     <message>
         <source>Submitted Denom:</source>
@@ -2036,7 +2036,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
     <message>
         <source>Cannot start pac: click-to-pay handler</source>
-        <translation>pacprotocol sa nedá spustiť: click-to-pay handler</translation>
+        <translation>datosdrive sa nedá spustiť: click-to-pay handler</translation>
     </message>
     <message>
         <source>URI handling</source>
@@ -2059,8 +2059,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Neplatná adresa platby %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid pacprotocol address or malformed URI parameters.</source>
-        <translation>URI sa nedá analyzovať! Toto môže byť spôsobené neplatnou pacprotocol adresou, alebo nesprávnym tvarom URI parametrov.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid datosdrive address or malformed URI parameters.</source>
+        <translation>URI sa nedá analyzovať! Toto môže byť spôsobené neplatnou datosdrive adresou, alebo nesprávnym tvarom URI parametrov.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -2295,8 +2295,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Suma</translation>
     </message>
     <message>
-        <source>Enter a pacprotocol address (e.g. %1)</source>
-        <translation>Zadajte pacprotocol adresu (e.g. %1)</translation>
+        <source>Enter a datosdrive address (e.g. %1)</source>
+        <translation>Zadajte datosdrive adresu (e.g. %1)</translation>
     </message>
     <message>
         <source>Appearance Setup</source>
@@ -2878,8 +2878,8 @@ https://www.transifex.com/projects/p/pac/</translation>
 <context>
     <name>ReceiveCoinsDialog</name>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the pacprotocol network.</source>
-        <translation>Pripojiť ku vyžiadanej platbe voliteľnú správu, ktorá sa zobrazí, keď bude žiadosť otvorená. Poznámka: Správa nebude poslaná spolu s platbou cez sieť pacprotocol.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the datosdrive network.</source>
+        <translation>Pripojiť ku vyžiadanej platbe voliteľnú správu, ktorá sa zobrazí, keď bude žiadosť otvorená. Poznámka: Správa nebude poslaná spolu s platbou cez sieť datosdrive.</translation>
     </message>
     <message>
         <source>&amp;Message:</source>
@@ -2890,8 +2890,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Voliteľný popis ktorý sa pridá k tejto novej prijímajúcej adrese.</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the pacprotocol network.</source>
-        <translation>Pripojiť ku vyžiadanej platbe voliteľnú správu, ktorá sa zobrazí, keď bude žiadosť otvorená. &lt;br&gt;Poznámka: Správa nebude poslaná spolu s platbou cez sieť pacprotocol.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the datosdrive network.</source>
+        <translation>Pripojiť ku vyžiadanej platbe voliteľnú správu, ktorá sa zobrazí, keď bude žiadosť otvorená. &lt;br&gt;Poznámka: Správa nebude poslaná spolu s platbou cez sieť datosdrive.</translation>
     </message>
     <message>
         <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
@@ -3128,7 +3128,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
     <message>
         <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
-        <translation>Platenie minimálneho poplatku je v poriadku pokiaľ je objem transakcií menší ako je miesto v bloku. &lt;br /&gt;Buďte opatrný pretože to môže skončiť s nikdy nepotvrdenými transakciami, akonáhle je dopyt po pacprotocol transakciách väčší ako dokáže sieť pacprotocol spracovať.</translation>
+        <translation>Platenie minimálneho poplatku je v poriadku pokiaľ je objem transakcií menší ako je miesto v bloku. &lt;br /&gt;Buďte opatrný pretože to môže skončiť s nikdy nepotvrdenými transakciami, akonáhle je dopyt po datosdrive transakciách väčší ako dokáže sieť datosdrive spracovať.</translation>
     </message>
     <message>
         <source>per kilobyte</source>
@@ -3343,8 +3343,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation><numerusform>Odhad pre začiatok potvrdzovania je %n blok.</numerusform><numerusform>Odhad pre začiatok potvrdzovania sú %n bloky.</numerusform><numerusform>Odhad pre začiatok potvrdzovania je %n blokov.</numerusform><numerusform>Odhad pre začiatok potvrdzovania je %n blokov.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid pacprotocol address</source>
-        <translation>Upozornenie: Neplatná pacprotocol adresa</translation>
+        <source>Warning: Invalid datosdrive address</source>
+        <translation>Upozornenie: Neplatná datosdrive adresa</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -3370,8 +3370,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Zapla&amp;tiť:</translation>
     </message>
     <message>
-        <source>The pacprotocol address to send the payment to</source>
-        <translation>pacprotocol adresa pre poslanie platby</translation>
+        <source>The datosdrive address to send the payment to</source>
+        <translation>datosdrive adresa pre poslanie platby</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -3410,8 +3410,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Suma na odoslanie vo vybranej jednotke</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of pacprotocol than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Poplatok sa odpočíta od čiastky, ktorú odosielate. Príjemca dostane menej pacprotocol ako zadáte. Ak je vybraných viacero príjemcov, poplatok je rozdelený rovnakým dielom.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of datosdrive than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Poplatok sa odpočíta od čiastky, ktorú odosielate. Príjemca dostane menej datosdrive ako zadáte. Ak je vybraných viacero príjemcov, poplatok je rozdelený rovnakým dielom.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -3426,8 +3426,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Správa:</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the pacprotocol network.</source>
-        <translation>Správa ktorá bola pripojená ku pac: URI ktorá sa uchová spolu s transakciou pre vašu referenciu. Poznámka: Táto správa nebude poslaná cez sieť pacprotocol.</translation>
+        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the datosdrive network.</source>
+        <translation>Správa ktorá bola pripojená ku pac: URI ktorá sa uchová spolu s transakciou pre vašu referenciu. Poznámka: Táto správa nebude poslaná cez sieť datosdrive.</translation>
     </message>
     <message>
         <source>This is an unauthenticated payment request.</source>
@@ -3479,12 +3479,12 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>&amp;Podpísať Správu</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive pacprotocol sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Môžete podpísať správy/dohody svojou adresou aby ste dokázali, že na ňu prijať pacprotocol. Buďte opatrní a nepodpisuje nič vágne alebo náhodné, nakoľko útoky typu "phishing" vás môžu lákať k ich podpísaniu vašej identity. Podpisujte iba vyhlásenia s úplnými detailami s ktorými súhlasíte.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive datosdrive sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Môžete podpísať správy/dohody svojou adresou aby ste dokázali, že na ňu prijať datosdrive. Buďte opatrní a nepodpisuje nič vágne alebo náhodné, nakoľko útoky typu "phishing" vás môžu lákať k ich podpísaniu vašej identity. Podpisujte iba vyhlásenia s úplnými detailami s ktorými súhlasíte.</translation>
     </message>
     <message>
-        <source>The pacprotocol address to sign the message with</source>
-        <translation>pacprotocol adresa na podpísanie správy</translation>
+        <source>The datosdrive address to sign the message with</source>
+        <translation>datosdrive adresa na podpísanie správy</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -3515,8 +3515,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Kopírovať práve zvolenú adresu do systémovej schránky</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this pacprotocol address</source>
-        <translation>Podpísať spravu aby ste dokázali, že vlastníte túto pacprotocol adresu</translation>
+        <source>Sign the message to prove you own this datosdrive address</source>
+        <translation>Podpísať spravu aby ste dokázali, že vlastníte túto datosdrive adresu</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -3539,8 +3539,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Vložte adresu príjemcu, správu (uistite sa, že presne kopírujete ukončenia riadkov, medzery, odrážky, atď.) a podpis pre potvrdenie správy. Buďte opatrní a nedomýšľajte si viac než je uvedené v samotnej podpísanej správe a môžete sa tak vyhnúť podvodu MITM útokom. Toto len potvrdzuje, že podpisujúca strana môže prijímať na tejto adrese, nepotvrdzuje to vlastníctvo žiadnej transakcie!</translation>
     </message>
     <message>
-        <source>The pacprotocol address the message was signed with</source>
-        <translation>Adresa pacprotocol s ktorou bola podpísaná správa</translation>
+        <source>The datosdrive address the message was signed with</source>
+        <translation>Adresa datosdrive s ktorou bola podpísaná správa</translation>
     </message>
     <message>
         <source>The signed message to verify</source>
@@ -3551,8 +3551,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Podpis daný pri podpise správy</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified pacprotocol address</source>
-        <translation>Overiť správu pre uistenie, že bola podpísaná zadanou pacprotocol adresou</translation>
+        <source>Verify the message to ensure it was signed with the specified datosdrive address</source>
+        <translation>Overiť správu pre uistenie, že bola podpísaná zadanou datosdrive adresou</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
