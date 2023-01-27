@@ -73,7 +73,7 @@
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-//pacprotocol only features
+//datosdrive only features
 bool fMasternodeMode = false;
 bool fDisableGovernance = false;
 const std::string gCoinJoinName = "CoinJoin";
@@ -87,7 +87,7 @@ const std::string gCoinJoinName = "CoinJoin";
 */
 int nWalletBackups = 10;
 
-const char * const BITCOIN_CONF_FILENAME = "pacprotocol.conf";
+const char * const BITCOIN_CONF_FILENAME = "datosdrive.conf";
 
 ArgsManager gArgs;
 
@@ -238,7 +238,7 @@ public:
         std::pair<bool,std::string> found_result(false, std::string());
 
         // We pass "true" to GetArgHelper in order to return the last
-        // argument value seen from the command line (so "pacprotocold -foo=bar
+        // argument value seen from the command line (so "datosdrived -foo=bar
         // -foo=baz" gives GetArg(am,"foo")=={true,"baz"}
         found_result = GetArgHelper(am.m_override_args, arg, true);
         if (found_result.first) {
@@ -402,7 +402,7 @@ bool ArgsManager::ParseParameters(int argc, const char* const argv[], std::strin
 
     for (int i = 1; i < argc; i++) {
         std::string key(argv[i]);
-        if (key == "-") break; //pacprotocol-tx using stdin
+        if (key == "-") break; //datosdrive-tx using stdin
 
 #ifdef MAC_OSX
         // At the first time when a user gets the "App downloaded from the
@@ -740,13 +740,13 @@ void PrintExceptionContinue(const std::exception_ptr pex, const char* pszExcepti
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\pacprotocol
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\pacprotocol
-    // Mac: ~/Library/Application Support/pacprotocol
-    // Unix: ~/.pacprotocol
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\datosdrive
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\datosdrive
+    // Mac: ~/Library/Application Support/datosdrive
+    // Unix: ~/.datosdrive
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "pacprotocol";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "datosdrive";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -756,10 +756,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/pacprotocol";
+    return pathRet / "Library/Application Support/datosdrive";
 #else
     // Unix
-    return pathRet / ".pacprotocol";
+    return pathRet / ".datosdrive";
 #endif
 #endif
 }
@@ -986,7 +986,7 @@ bool ArgsManager::ReadConfigFiles(std::string& error, bool ignore_invalid_keys)
             }
         }
     } else {
-        // Create an empty pacprotocol.conf if it does not exist
+        // Create an empty datosdrive.conf if it does not exist
         FILE* configFile = fopen(GetConfigFile(confPath).string().c_str(), "a");
         if (configFile != nullptr)
             fclose(configFile);
@@ -1300,8 +1300,8 @@ std::string CopyrightHolders(const std::string& strPrefix, unsigned int nStartYe
     const auto copyright_devs = strprintf(_(COPYRIGHT_HOLDERS).translated, COPYRIGHT_HOLDERS_SUBSTITUTION);
     std::string strCopyrightHolders = strPrefix + strprintf(" %u-%u ", nStartYear, nEndYear) + copyright_devs;
 
-    // Check for untranslated substitution to make sure pacprotocol copyright is not removed by accident
-    if (copyright_devs.find("pacprotocol") == std::string::npos) {
+    // Check for untranslated substitution to make sure datosdrive copyright is not removed by accident
+    if (copyright_devs.find("datosdrive") == std::string::npos) {
         strCopyrightHolders += "\n" + strPrefix + strprintf(" %u-%u ", 2014, nEndYear) + "The Dash Core developers";
     }
     // Check for untranslated substitution to make sure Bitcoin Core copyright is not removed by accident

@@ -16,14 +16,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "pacprotocol"
-            VALUE "FileDescription",    "pacprotocol-wallet (CLI tool for " PACKAGE_NAME " wallets)"
+            VALUE "CompanyName",        "datosdrive"
+            VALUE "FileDescription",    "datosdrive-wallet (CLI tool for " PACKAGE_NAME " wallets)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "pacprotocol-wallet"
+            VALUE "InternalName",       "datosdrive-wallet"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "pacprotocol-wallet.exe"
-            VALUE "ProductName",        "pacprotocol-wallet"
+            VALUE "OriginalFilename",   "datosdrive-wallet.exe"
+            VALUE "ProductName",        "datosdrive-wallet"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

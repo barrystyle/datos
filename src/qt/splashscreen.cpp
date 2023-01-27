@@ -23,6 +23,7 @@
 
 #include <QApplication>
 #include <QCloseEvent>
+#include <QDesktopWidget>
 #include <QPainter>
 #include <QScreen>
 
@@ -30,105 +31,58 @@
 SplashScreen::SplashScreen(interfaces::Node& node, Qt::WindowFlags f, const NetworkStyle *networkStyle) :
     QWidget(nullptr, f), curAlignment(0), m_node(node)
 {
-
-    // transparent background
-    setAttribute(Qt::WA_TranslucentBackground);
-    setStyleSheet("background:transparent;");
-
-    // no window decorations
-    setWindowFlags(Qt::FramelessWindowHint);
-
-    // Geometries of splashscreen
-    int width = 380;
-    int height = 460;
-    int logoWidth = 270;
-    int logoHeight = 270;
+    setWindowFlags(Qt::FramelessWindowHint| Qt::WindowSystemMenuHint);
 
     // set reference point, paddings
-    int paddingTop = 10;
-    int titleVersionVSpace = 25;
-
-    float fontFactor            = 1.0;
-    float scale = qApp->devicePixelRatio();
+    int paddingLeft = 390;
+    int paddingTop = 410;
+    int titleCopyrightVSpace = 32;
+    float fontFactor = 1.0;
+    float devicePixelRatio = 1.0;
+    QString font = QApplication::font().toString();
 
     // define text to place
-    QString titleText       = PACKAGE_NAME;
-    QString versionText = QString::fromStdString(FormatFullVersion()).remove(0, 1);
-    QString titleAddText    = networkStyle->getTitleAddText();
+    QString copyrightText = QChar(0xA9) + QString("2023 ") + QString(tr("DatosDrive"));
+    QString titleAddText = networkStyle->getTitleAddText();
 
-    QFont fontNormal = GUIUtil::getFontNormal();
-    QFont fontBold = GUIUtil::getFontBold();
-
-    QPixmap pixmapLogo = networkStyle->getSplashImage();
-    pixmapLogo.setDevicePixelRatio(scale);
-
-    // Adjust logo color based on the current theme
-    QImage imgLogo = pixmapLogo.toImage().convertToFormat(QImage::Format_ARGB32);
-    QColor logoColor = GUIUtil::getThemedQColor(GUIUtil::ThemedColor::BLUE);
-    for (int x = 0; x < imgLogo.width(); ++x) {
-        for (int y = 0; y < imgLogo.height(); ++y) {
-            const QRgb rgb = imgLogo.pixel(x, y);
-            imgLogo.setPixel(x, y, qRgba(logoColor.red(), logoColor.green(), logoColor.blue(), qAlpha(rgb)));
-        }
-    }
-    pixmapLogo.convertFromImage(imgLogo);
-
-    pixmap = QPixmap(width * scale, height * scale);
-    pixmap.setDevicePixelRatio(scale);
-    pixmap.fill(GUIUtil::getThemedQColor(GUIUtil::ThemedColor::BORDER_WIDGET));
-
+    // create a bitmap according to device pixelratio
+    QSize splashSize(500*devicePixelRatio,500*devicePixelRatio);
+    pixmap = QPixmap(splashSize);
     QPainter pixPaint(&pixmap);
+    pixPaint.setPen(QColor(0,0,0));
 
-    QRect rect = QRect(1, 1, width - 2, height - 2);
-    pixPaint.fillRect(rect, GUIUtil::getThemedQColor(GUIUtil::ThemedColor::BACKGROUND_WIDGET));
+    // draw a slightly radial gradient
+    QRect rectIcon(QPoint(10,0), QSize(500,500));
+    const QSize requiredSize(500,500);
+    QPixmap icon(networkStyle->getSplashImage());
+    QRadialGradient gradient(QPoint(0,0), splashSize.width()/devicePixelRatio);
+    gradient.setColorAt(0, Qt::white);
+    gradient.setColorAt(1, QColor(247,247,247));
+    QRect rGradient(QPoint(0,0), splashSize);
+    pixPaint.fillRect(rGradient, gradient);
+    pixPaint.drawPixmap(rectIcon, icon);
 
-    pixPaint.drawPixmap((width / 2) - (logoWidth / 2), (height / 2) - (logoHeight / 2) + 20, pixmapLogo.scaled(logoWidth * scale, logoHeight * scale, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    pixPaint.setPen(GUIUtil::getThemedQColor(GUIUtil::ThemedColor::DEFAULT));
-
-    // check font size and drawing with
-    fontBold.setPointSize(50 * fontFactor);
-    pixPaint.setFont(fontBold);
-    QFontMetrics fm = pixPaint.fontMetrics();
-    int titleTextWidth = GUIUtil::TextWidth(fm, titleText);
-    if (titleTextWidth > width * 0.8) {
-        fontFactor = 0.75;
-    }
-
-    fontBold.setPointSize(50 * fontFactor);
-    pixPaint.setFont(fontBold);
-    fm = pixPaint.fontMetrics();
-    titleTextWidth  = GUIUtil::TextWidth(fm, titleText);
-    int titleTextHeight = fm.height();
-    pixPaint.drawText((width / 2) - (titleTextWidth / 2), titleTextHeight + paddingTop, titleText);
-
-    fontNormal.setPointSize(16 * fontFactor);
-    pixPaint.setFont(fontNormal);
-    fm = pixPaint.fontMetrics();
-    int versionTextWidth = GUIUtil::TextWidth(fm, versionText);
-    pixPaint.drawText((width / 2) - (versionTextWidth / 2), titleTextHeight + paddingTop + titleVersionVSpace, versionText);
+    // copyright information
+    pixPaint.setFont(QFont(font, 8 * fontFactor));
+    pixPaint.drawText(paddingLeft, paddingTop + titleCopyrightVSpace + 48, copyrightText);
 
     // draw additional text if special network
-    if(!titleAddText.isEmpty()) {
-        fontBold.setPointSize(10 * fontFactor);
-        pixPaint.setFont(fontBold);
-        fm = pixPaint.fontMetrics();
-        int titleAddTextWidth = GUIUtil::TextWidth(fm, titleAddText);
-        // Draw the badge background with the network-specific color
-        QRect badgeRect = QRect(width - titleAddTextWidth - 20, 5, width, fm.height() + 10);
-        QColor badgeColor = networkStyle->getBadgeColor();
-        pixPaint.fillRect(badgeRect, badgeColor);
-        // Draw the text itself using white color, regardless of the current theme
-        pixPaint.setPen(QColor(255, 255, 255));
-        pixPaint.drawText(width - titleAddTextWidth - 10, paddingTop + 10, titleAddText);
+    if (!titleAddText.isEmpty()) {
+        QFont boldFont = QFont(font, 10 * fontFactor);
+        boldFont.setWeight(QFont::Bold);
+        pixPaint.setFont(boldFont);
+        QFontMetrics fm = pixPaint.fontMetrics();
+        int titleAddTextWidth = fm.width(titleAddText);
+        pixPaint.drawText(pixmap.width() - titleAddTextWidth - 10, pixmap.height() - 25, titleAddText);
     }
 
     pixPaint.end();
 
     // Resize window and move to center of desktop, disallow resizing
-    QRect r(QPoint(), QSize(width, height));
+    QRect r(QPoint(), QSize(pixmap.size().width()/devicePixelRatio,pixmap.size().height()/devicePixelRatio));
     resize(r.size());
     setFixedSize(r.size());
-    move(QGuiApplication::primaryScreen()->geometry().center() - r.center());
+    move(QApplication::desktop()->screenGeometry().center() - r.center());
 
     subscribeToCoreSignals();
     installEventFilter(this);

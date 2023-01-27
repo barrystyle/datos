@@ -109,18 +109,18 @@ TESTS =
 BENCHMARKS =
 
 if BUILD_BITCOIND
-  bin_PROGRAMS += pacprotocold
+  bin_PROGRAMS += datosdrived
 endif
 
 if BUILD_BITCOIN_CLI
-  bin_PROGRAMS += pacprotocol-cli
+  bin_PROGRAMS += datosdrive-cli
 endif
 if BUILD_BITCOIN_TX
-  bin_PROGRAMS += pacprotocol-tx
+  bin_PROGRAMS += datosdrive-tx
 endif
 if ENABLE_WALLET
 if BUILD_BITCOIN_WALLET
-  bin_PROGRAMS += pacprotocol-wallet
+  bin_PROGRAMS += datosdrive-wallet
 endif
 endif
 
@@ -791,18 +791,18 @@ nodist_libdash_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
 # dashd binary #
-pacprotocold_SOURCES = dashd.cpp
-pacprotocold_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-pacprotocold_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-pacprotocold_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+datosdrived_SOURCES = dashd.cpp
+datosdrived_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+datosdrived_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+datosdrived_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-pacprotocold_SOURCES += dashd-res.rc
+datosdrived_SOURCES += dashd-res.rc
 endif
 
 # Libraries below may be listed more than once to resolve circular dependencies (see
 # https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking#circular-dependency)
-pacprotocold_LDADD = \
+datosdrived_LDADD = \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
   $(LIBBITCOIN_SERVER) \
@@ -817,37 +817,37 @@ pacprotocold_LDADD = \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
-pacprotocold_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(NATPMP_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS) $(GMP_LIBS)
+datosdrived_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(NATPMP_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(ZMQ_LIBS) $(BLS_LIBS) $(GMP_LIBS)
 
 # dash-cli binary #
-pacprotocol_cli_SOURCES = dash-cli.cpp
-pacprotocol_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-pacprotocol_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-pacprotocol_cli_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+datosdrive_cli_SOURCES = dash-cli.cpp
+datosdrive_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
+datosdrive_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+datosdrive_cli_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-pacprotocol_cli_SOURCES += dash-cli-res.rc
+datosdrive_cli_SOURCES += dash-cli-res.rc
 endif
 
-pacprotocol_cli_LDADD = \
+datosdrive_cli_LDADD = \
   $(LIBBITCOIN_CLI) \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_UTIL) \
   $(LIBBITCOIN_CRYPTO)
-pacprotocol_cli_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS) $(GMP_LIBS)
+datosdrive_cli_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS) $(BLS_LIBS) $(GMP_LIBS)
 #
 
 # dash-tx binary #
-pacprotocol_tx_SOURCES = dash-tx.cpp
-pacprotocol_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-pacprotocol_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-pacprotocol_tx_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+datosdrive_tx_SOURCES = dash-tx.cpp
+datosdrive_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+datosdrive_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+datosdrive_tx_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-pacprotocol_tx_SOURCES += dash-tx-res.rc
+datosdrive_tx_SOURCES += dash-tx-res.rc
 endif
 
-pacprotocol_tx_LDADD = \
+datosdrive_tx_LDADD = \
   $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
@@ -855,22 +855,22 @@ pacprotocol_tx_LDADD = \
   $(LIBBITCOIN_CRYPTO) \
   $(LIBSECP256K1)
 
-pacprotocol_tx_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS) $(GMP_LIBS)
+datosdrive_tx_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(CRYPTO_LIBS) $(BLS_LIBS) $(GMP_LIBS)
 #
 
 # dash-wallet binary #
-pacprotocol_wallet_SOURCES = dash-wallet.cpp
-pacprotocol_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-pacprotocol_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-pacprotocol_wallet_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+datosdrive_wallet_SOURCES = dash-wallet.cpp
+datosdrive_wallet_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
+datosdrive_wallet_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+datosdrive_wallet_LDFLAGS = $(LDFLAGS_WRAP_EXCEPTIONS) $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-pacprotocol_wallet_SOURCES += dash-wallet-res.rc
+datosdrive_wallet_SOURCES += dash-wallet-res.rc
 endif
 
 # Libraries below may be listed more than once to resolve circular dependencies (see
 # https://eli.thegreenplace.net/2013/07/09/library-order-in-static-linking#circular-dependency)
-pacprotocol_wallet_LDADD = \
+datosdrive_wallet_LDADD = \
   $(LIBBITCOIN_WALLET_TOOL) \
   $(LIBBITCOIN_SERVER) \
   $(LIBBITCOIN_WALLET) \
@@ -886,7 +886,7 @@ pacprotocol_wallet_LDADD = \
   $(LIBSECP256K1) \
   $(LIBUNIVALUE)
 
-pacprotocol_wallet_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(NATPMP_LIBS) $(ZMQ_LIBS) $(BLS_LIBS) $(GMP_LIBS)
+datosdrive_wallet_LDADD += $(BACKTRACE_LIB) $(BOOST_LIBS) $(BDB_LIBS) $(CRYPTO_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS) $(MINIUPNPC_LIBS) $(NATPMP_LIBS) $(ZMQ_LIBS) $(BLS_LIBS) $(GMP_LIBS)
 #
 
 # dashconsensus library #

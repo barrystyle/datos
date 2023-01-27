@@ -117,7 +117,7 @@ struct Params {
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
 
-    /** pacprotocol consensus parameters */
+    /** datosdrive consensus parameters */
     uint256 posLimit;
     CAmount mnCollateral{0};
     int nLastPoWBlock{0};

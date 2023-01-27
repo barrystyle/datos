@@ -22,7 +22,7 @@ static void ResetArgs(const std::string& strArg)
       boost::split(vecArg, strArg, IsSpace, boost::token_compress_on);
 
     // Insert dummy executable name:
-    vecArg.insert(vecArg.begin(), "testpacprotocol");
+    vecArg.insert(vecArg.begin(), "testdatosdrive");
 
     // Convert to char*:
     std::vector<const char*> vecChar;
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(intarg)
     BOOST_CHECK_EQUAL(gArgs.GetArg("-bar", 11), 0);
 }
 
-BOOST_AUTO_TEST_CASE(doublepacprotocol)
+BOOST_AUTO_TEST_CASE(doubledatosdrive)
 {
     const auto foo = std::make_pair("-foo", ArgsManager::ALLOW_ANY);
     const auto bar = std::make_pair("-bar", ArgsManager::ALLOW_ANY);

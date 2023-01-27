@@ -104,9 +104,9 @@ static int AppInitRawTx(int argc, char* argv[])
 
     if (argc < 2 || HelpRequested(gArgs)) {
         // First part of help message is specific to this utility
-        std::string strUsage = PACKAGE_NAME " pacprotocol-tx utility version " + FormatFullVersion() + "\n\n" +
-            "Usage:  pacprotocol-tx [options] <hex-tx> [commands]  Update hex-encoded pacprotocol transaction\n" +
-            "or:     pacprotocol-tx [options] -create [commands]   Create hex-encoded pacprotocol transaction\n" +
+        std::string strUsage = PACKAGE_NAME " datosdrive-tx utility version " + FormatFullVersion() + "\n\n" +
+            "Usage:  datosdrive-tx [options] <hex-tx> [commands]  Update hex-encoded datosdrive transaction\n" +
+            "or:     datosdrive-tx [options] -create [commands]   Create hex-encoded datosdrive transaction\n" +
             "\n";
         strUsage += gArgs.GetHelpMessage();
 
@@ -748,7 +748,7 @@ static int CommandLineRawTx(int argc, char* argv[])
             if (argc < 2)
                 throw std::runtime_error("too few parameters");
 
-            // param: hex-encoded pacprotocol transaction
+            // param: hex-encoded datosdrive transaction
             std::string strHexTx(argv[1]);
             if (strHexTx == "-")                 // "-" implies standard input
                 strHexTx = readStdin();
