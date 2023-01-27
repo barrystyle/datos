@@ -1,14 +1,12 @@
-pacprotocol staging tree 18.x
-=============================
+datosdrive staging tree 18.x
+============================
 
 
 
-What is PAC Protocol?
----------------------
+What is DatosDrive?
+--------------------
 
-PAC Protocol is built on the foundation of a first-of-its-kind blockchain technology; utilizing both proof-of-stake (PoSv3, environmentally friendly) in addition to deterministic masternodes - to offer a large globally decentralized network.
-
-Other features include a custom second layer token environment, in addition to the digital architecture required for decentralized data storage, content management and more using IPFS software - all the while using the most recent cutting-edge release of Dash.
+DatosDrive sets the standard for cutting-edge masternode technology, being the first to combine proof of stake consensus with deterministic masternodes, along with distributed high-speed storage, allowing users to be compensated for storage space they provide to the network.
 
 
 
@@ -17,8 +15,8 @@ How do I build the software?
 
 The most troublefree and reproducable method of building the repository is via the depends method:
 
-    git clone https://github.com/pacprotocol/pacprotocol
-    cd pacprotocol/depends
+    git clone https://github.com/datosdrive/datosdrive
+    cd datosdrive/depends
     make HOST=x86_64-pc-linux-gnu
     cd ..
     ./autogen.sh
@@ -30,16 +28,13 @@ The most troublefree and reproducable method of building the repository is via t
 License
 -------
 
-pacprotocol is released under the terms of the MIT license. See [COPYING](COPYING) for more information or see https://opensource.org/licenses/MIT.
+datosdrive is released under the terms of the MIT license. See [COPYING](COPYING) for more information or see https://opensource.org/licenses/MIT.
 
 
 
 Development Process
 -------------------
 
-The `18.x` branch is meant to be stable. Development is normally done in separate branches. [Tags](https://github.com/pacprotocol/pacprotocol/tags) are created to indicate new official, stable release versions of pacprotocol.
+The `18.x` branch is meant to be stable. Development is normally done in separate branches. [Tags](https://github.com/datosdrive/datosdrive/tags) are created to indicate new official, stable release versions of datosdrive.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
-
-
-
