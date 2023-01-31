@@ -8,6 +8,9 @@
 #include <qt/guiutil.h>
 #include <netbase.h>
 #include <qt/walletmodel.h>
+#include <validation.h>
+
+#include <storage/behavior.h>
 
 #include <univalue.h>
 
@@ -34,7 +37,10 @@ class CMasternodeListWidgetItem : public QTableWidgetItem
 public:
     explicit CMasternodeListWidgetItem(const QString& text, const T& data, int type = Type) :
         QTableWidgetItem(text, type),
-        itemData(data) {}
+        itemData(data)
+    {
+        setTextAlignment(Qt::AlignCenter);
+    }
 
     bool operator<(const QTableWidgetItem& other) const override
     {
@@ -48,34 +54,28 @@ MasternodeList::MasternodeList(QWidget* parent) :
 {
     ui->setupUi(this);
 
-    GUIUtil::setFont({ui->label_count_2,
-                      ui->countLabelDIP3
-                     }, GUIUtil::FontWeight::Bold, 14);
+    GUIUtil::setFont({ui->label_count_2, ui->countLabelDIP3}, GUIUtil::FontWeight::Bold, 14);
     GUIUtil::setFont({ui->label_filter_2}, GUIUtil::FontWeight::Normal, 15);
 
     int columnAddressWidth = 200;
     int columnStatusWidth = 80;
     int columnPoSeScoreWidth = 80;
+    int columnStorageScoreWidth = 80;
+    int columnStorageSpaceWidth = 80;
     int columnRegisteredWidth = 80;
     int columnLastPaidWidth = 80;
     int columnNextPaymentWidth = 100;
-    int columnPayeeWidth = 130;
-    int columnOperatorRewardWidth = 130;
     int columnCollateralWidth = 130;
-    int columnOwnerWidth = 130;
-    int columnVotingWidth = 130;
 
     ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_SERVICE, columnAddressWidth);
     ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_STATUS, columnStatusWidth);
     ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_POSE, columnPoSeScoreWidth);
+    ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_SCORE, columnStorageScoreWidth);
+    ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_SPACE, columnStorageSpaceWidth);
     ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_REGISTERED, columnRegisteredWidth);
     ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_LAST_PAYMENT, columnLastPaidWidth);
     ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_NEXT_PAYMENT, columnNextPaymentWidth);
-    ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_PAYOUT_ADDRESS, columnPayeeWidth);
-    ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_OPERATOR_REWARD, columnOperatorRewardWidth);
     ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_COLLATERAL_ADDRESS, columnCollateralWidth);
-    ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_OWNER_ADDRESS, columnOwnerWidth);
-    ui->tableWidgetMasternodesDIP3->setColumnWidth(COLUMN_VOTING_ADDRESS, columnVotingWidth);
 
     // dummy column for proTxHash
     // TODO use a proper table model for the MN list
@@ -172,6 +172,10 @@ void MasternodeList::updateDIP3List()
         return;
     }
 
+    if (::ChainstateActive().IsInitialBlockDownload()) {
+        return;
+    }
+
     auto mnList = clientModel->getMasternodeList();
     std::map<uint256, CTxDestination> mapCollateralDests;
 
@@ -222,6 +226,7 @@ void MasternodeList::updateDIP3List()
                 walletModel->wallet().isSpendable(dmn.pdmnState->scriptOperatorPayout);
             if (!fMyMasternode) return;
         }
+
         // populate list
         // Address, Protocol, Status, Active Seconds, Last Seen, Pub Key
         auto addr_key = dmn.pdmnState->addr.GetKey();
@@ -231,6 +236,13 @@ void MasternodeList::updateDIP3List()
         QTableWidgetItem* PoSeScoreItem = new CMasternodeListWidgetItem<int>(QString::number(dmn.pdmnState->nPoSePenalty), dmn.pdmnState->nPoSePenalty);
         QTableWidgetItem* registeredItem = new CMasternodeListWidgetItem<int>(QString::number(dmn.pdmnState->nRegisteredHeight), dmn.pdmnState->nRegisteredHeight);
         QTableWidgetItem* lastPaidItem = new CMasternodeListWidgetItem<int>(QString::number(dmn.pdmnState->nLastPaidHeight), dmn.pdmnState->nLastPaidHeight);
+
+        // fetch storage data
+        int score, space;
+        CService nodeAddr(dmn.pdmnState->addr);
+        scoreManager.GetNodeScore(nodeAddr, score, space);
+        QTableWidgetItem* StorageScoreItem = new CMasternodeListWidgetItem<int>(QString::number(score), score);
+        QTableWidgetItem* StorageSpaceItem = new CMasternodeListWidgetItem<int>(QString::number(space), space);
 
         QString strNextPayment = "UNKNOWN";
         int nNextPayment = 0;
@@ -283,14 +295,12 @@ void MasternodeList::updateDIP3List()
             strToFilter = addressItem->text() + " " +
                           statusItem->text() + " " +
                           PoSeScoreItem->text() + " " +
+                          StorageScoreItem->text() + " " +
+                          StorageSpaceItem->text() + " " +
                           registeredItem->text() + " " +
                           lastPaidItem->text() + " " +
                           nextPaymentItem->text() + " " +
-                          payeeItem->text() + " " +
-                          operatorRewardItem->text() + " " +
                           collateralItem->text() + " " +
-                          ownerItem->text() + " " +
-                          votingItem->text() + " " +
                           proTxHashItem->text();
             if (!strToFilter.contains(strCurrentFilterDIP3)) return;
         }
@@ -299,19 +309,17 @@ void MasternodeList::updateDIP3List()
         ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_SERVICE, addressItem);
         ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_STATUS, statusItem);
         ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_POSE, PoSeScoreItem);
+        ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_SCORE, StorageScoreItem);
+        ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_SPACE, StorageSpaceItem);
         ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_REGISTERED, registeredItem);
         ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_LAST_PAYMENT, lastPaidItem);
         ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_NEXT_PAYMENT, nextPaymentItem);
-        ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_PAYOUT_ADDRESS, payeeItem);
-        ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_OPERATOR_REWARD, operatorRewardItem);
         ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_COLLATERAL_ADDRESS, collateralItem);
-        ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_OWNER_ADDRESS, ownerItem);
-        ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_VOTING_ADDRESS, votingItem);
         ui->tableWidgetMasternodesDIP3->setItem(0, COLUMN_PROTX_HASH, proTxHashItem);
     });
 
     ui->countLabelDIP3->setText(QString::number(ui->tableWidgetMasternodesDIP3->rowCount()));
-    ui->tableWidgetMasternodesDIP3->setSortingEnabled(true);
+    ui->tableWidgetMasternodesDIP3->setSortingEnabled(false);
 }
 
 void MasternodeList::on_filterLineEditDIP3_textChanged(const QString& strFilterIn)

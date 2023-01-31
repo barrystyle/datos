@@ -691,8 +691,8 @@ void BitcoinGUI::createToolBars()
         QSettings settings;
         if (settings.value("fShowMasternodesTab").toBool()) {
             masternodeButton = new QToolButton(this);
-            masternodeButton->setText(tr("&Masternodes"));
-            masternodeButton->setStatusTip(tr("Browse masternodes"));
+            masternodeButton->setText(tr("&Datosnodes"));
+            masternodeButton->setStatusTip(tr("Browse datosnodes"));
             tabGroup->addButton(masternodeButton);
             connect(masternodeButton, &QToolButton::clicked, this, &BitcoinGUI::gotoMasternodePage);
             masternodeButton->setEnabled(true);
