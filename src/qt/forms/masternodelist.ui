@@ -61,17 +61,17 @@
          <item>
           <widget class="QLineEdit" name="filterLineEditDIP3">
            <property name="toolTip">
-            <string>Filter masternode list</string>
+            <string>Filter datosnode list</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QCheckBox" name="checkBoxMyMasternodesOnly">
            <property name="toolTip">
-            <string>Show only masternodes this wallet has keys for.</string>
+            <string>Show only datosnodes this wallet has keys for.</string>
            </property>
            <property name="text">
-            <string>My masternodes only</string>
+            <string>My datosnodes only</string>
            </property>
           </widget>
          </item>
@@ -136,7 +136,17 @@
          </column>
          <column>
           <property name="text">
-           <string>PoSe Score</string>
+           <string>PoSe</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Health</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>GiB</string>
           </property>
          </column>
          <column>
@@ -156,27 +166,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Payout Address</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Operator Reward</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
            <string>Collateral Address</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Owner Address</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Voting Address</string>
           </property>
          </column>
         </widget>

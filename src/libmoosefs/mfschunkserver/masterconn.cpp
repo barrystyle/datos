@@ -1114,6 +1114,9 @@ void masterconn_connected(masterconn* eptr)
 
 int masterconn_initconnect(masterconn* eptr)
 {
+    MasterHost = strdup(node_info.getnexthostname().c_str());
+    syslog(LOG_NOTICE, "using %s", MasterHost);
+
     int status;
     if (eptr->masteraddrvalid == 0) {
         uint32_t mip, bip;
@@ -1618,7 +1621,6 @@ int masterconn_init(void)
     ReconnectionDelay = MASTER_RECONNECTION_DELAY;
     Timeout = MASTER_TIMEOUT;
 
-    MasterHost = strdup(localnode.masterhost);
     MasterPort = strdup(localnode.masterport);
     BindHost = strdup(localnode.bindhost);
 

@@ -16,6 +16,7 @@
 
 #include <mutex>
 #include <thread>
+#include <vector>
 
 #include "mfscommon/mainthread.h"
 
@@ -29,9 +30,11 @@ const uint32_t get_node_version();
 
 struct
 node_identity {
+private:
+    int mastertry = 0;
     bool ready = false;
-    char hostname[256];
-    char masterhost[256];
+public:
+    std::vector<std::string> masterhost;
     char masterport[256];
     char bindhost[256];
     char listenhost[256];
@@ -40,6 +43,12 @@ node_identity {
     char basepath[128];
     char datapath[256];
     char chunkpath[256];
+    std::string getnexthostname()
+    {
+        std::string hostname = masterhost[mastertry++];
+        if (mastertry >= masterhost.size()) mastertry = 0;
+        return hostname;
+    }
 };
 
 bool get_quit_signal();

@@ -78,7 +78,7 @@ struct NodeHistory CNodeBehavior::ReturnNode(uint32_t ipaddr)
 bool CNodeBehavior::ReplaceNode(struct NodeHistory in)
 {
     for (auto& l : nodes) {
-        if (l.ipaddr = in.ipaddr) {
+        if (l.ipaddr == in.ipaddr) {
             l = in;
             return true;
         }
@@ -127,8 +127,8 @@ void CNodeBehavior::AddProof(const CNetworkProof& netproof)
 
         if (HaveNode(in.ip)) {
             in2 = ReturnNode(in.ip);
-            seen_nodes.push_back(in.ip);
             if (in.mode > 0 && in.stat > 0 && in.reg > 0) {
+                seen_nodes.push_back(in.ip);
                 in2.health += SCORE_INCREASE;
             }
             if (in.space != in2.space) {
