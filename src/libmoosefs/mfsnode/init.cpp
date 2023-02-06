@@ -58,10 +58,15 @@ void create_storagedir(char* extrapath, bool net_type)
 
 bool set_local_node(bool net_type)
 {
-    if (net_type)
-        sprintf(node_info.masterhost, "mfsmain.datosdrive.com");
-    else
-        sprintf(node_info.masterhost, "mfstest.datosdrive.com");
+    if (net_type) {
+        node_info.masterhost.push_back("mfsmain0.datosdrive.com");
+        node_info.masterhost.push_back("mfsmain1.datosdrive.com");
+        node_info.masterhost.push_back("mfsmain2.datosdrive.com");
+    } else {
+        node_info.masterhost.push_back("mfstest0.datosdrive.com");
+        node_info.masterhost.push_back("mfstest1.datosdrive.com");
+        node_info.masterhost.push_back("mfstest2.datosdrive.com");
+    }
 
     sprintf(node_info.masterport, "9420");
     sprintf(node_info.bindhost, "*");
@@ -79,8 +84,6 @@ bool set_local_node(bool net_type)
     create_storagedir("data", net_type);
     sprintf(node_info.chunkpath, "%s/chunks", node_info.basepath);
     create_storagedir("chunks", net_type);
-
-    node_info.ready = true;
 
     return true;
 }
