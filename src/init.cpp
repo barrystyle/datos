@@ -1640,6 +1640,12 @@ bool AppInitMain(InitInterfaces& interfaces)
             LogInstance().m_file_path.string()));
     }
 
+    // Limit client to testnet
+    if (chainparams.NetworkIDString() != "test") {
+        StartShutdown();
+        return false;
+    }
+
     if (!LogInstance().m_log_timestamps)
         LogPrintf("Startup time: %s\n", FormatISO8601DateTime(GetTime()));
     LogPrintf("Default data directory %s\n", GetDefaultDataDir().string());
