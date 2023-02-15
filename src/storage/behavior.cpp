@@ -121,13 +121,13 @@ void CNodeBehavior::AddProof(const CNetworkProof& netproof)
         if (!HaveNode(in.ip)) {
             in2.ipaddr = in.ip;
             in2.space = in.space;
-            in2.health = 100;
+            in2.health = 0;
             AddNode(in2);
         }
 
         if (HaveNode(in.ip)) {
             in2 = ReturnNode(in.ip);
-            if (in.mode > 0 && in.stat > 0 && in.reg > 0) {
+            if (in.mode > 0 && in.stat > 0 && in.reg > 0 && in.chunks > 0) {
                 seen_nodes.push_back(in.ip);
                 in2.health += SCORE_INCREASE;
             }
