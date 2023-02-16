@@ -363,10 +363,10 @@ public:
         consensus.nMasternodePaymentsIncreasePeriod = std::numeric_limits<int>::max();
         consensus.nInstantSendConfirmationsRequired = 6;
         consensus.nInstantSendKeepLock = 24;
-        consensus.nBudgetPaymentsStartBlock = 1540;
+        consensus.nBudgetPaymentsStartBlock = 250;
         consensus.nBudgetPaymentsCycleBlocks = 50;
         consensus.nBudgetPaymentsWindowBlocks = 10;
-        consensus.nSuperblockStartBlock = 1550;
+        consensus.nSuperblockStartBlock = 250;
         consensus.nSuperblockStartHash = uint256(); // do not check this on testnet
         consensus.nSuperblockCycle = 24; // Superblocks can be issued hourly on testnet
         consensus.nGovernanceMinQuorum = 1;
@@ -472,18 +472,18 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256();
 
-        pchMessageStart[0] = 0xc0;
-        pchMessageStart[1] = 0xe7;
-        pchMessageStart[2] = 0x92;
-        pchMessageStart[3] = 0xa0;
+        pchMessageStart[0] = 0xc1;
+        pchMessageStart[1] = 0x47;
+        pchMessageStart[2] = 0x93;
+        pchMessageStart[3] = 0xb0;
         nDefaultPort = 8890;
         nPruneAfterHeight = 1000;
         m_assumed_blockchain_size = 4;
         m_assumed_chain_state_size = 1;
 
-        genesis = CreateGenesisBlock(1659283201, 113827, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1676542106, 14592, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x000019420d5245057742e9fc3a2115f675720440d129b1aa67a60dcd12c704a3"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000c1d5a99b9ff92241651f40efea1baf99c26edc202c025f62fa084a59d4d3"));
         assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
 
         vFixedSeeds.clear();

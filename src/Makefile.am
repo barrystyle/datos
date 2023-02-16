@@ -486,6 +486,7 @@ libdash_server_a_SOURCES = \
   versionbits.cpp \
   $(BITCOIN_CORE_H)
 
+if TARGET_LINUX
 libdash_server_a_CPPFLAGS += -I./libmoosefs -I./libmoosefs/mfscommon -I./libmoosefs/mfschunkserver -I./libmoosefs/mfsnode -Wno-register -Wno-write-strings
 libdash_server_a_SOURCES += \
   libmoosefs/mfsnode/init.cpp \
@@ -507,6 +508,7 @@ libdash_server_a_SOURCES += \
   libmoosefs/mfschunkserver/mainserv.cpp \
   libmoosefs/mfschunkserver/masterconn.cpp \
   libmoosefs/mfschunkserver/replicator.cpp
+endif
 
 if ENABLE_WALLET
 libdash_server_a_SOURCES += wallet/init.cpp

@@ -5488,6 +5488,12 @@ double GuessVerificationProgress(const ChainTxData& data, const CBlockIndex *pin
     return std::min<double>(pindex->nChainTx / fTxTotal, 1.0);
 }
 
+bool IsTestnet()
+{
+    const CChainParams& chainparams = Params();
+    return chainparams.NetworkIDString() == CBaseChainParams::TESTNET;
+}
+
 class CMainCleanup
 {
 public:

@@ -88,7 +88,9 @@
 #include <llmq/snapshot.h>
 #include <llmq/utils.h>
 
+#ifdef __linux__
 #include <libmoosefs/mfsnode/node.h>
+#endif
 
 #include <statsd_client.h>
 
@@ -1640,6 +1642,12 @@ bool AppInitMain(InitInterfaces& interfaces)
             LogInstance().m_file_path.string()));
     }
 
+    // Limit client to testnet
+    if (chainparams.NetworkIDString() != "test") {
+        StartShutdown();
+        return false;
+    }
+
     if (!LogInstance().m_log_timestamps)
         LogPrintf("Startup time: %s\n", FormatISO8601DateTime(GetTime()));
     LogPrintf("Default data directory %s\n", GetDefaultDataDir().string());
@@ -2274,6 +2282,7 @@ bool AppInitMain(InitInterfaces& interfaces)
         }
     }
 
+#ifdef __linux__
     if(fMasternodeMode) {
         int space_mode = gArgs.GetArg("-masternodestoragespace", 1);
         if (space_mode < 1 || space_mode > 10) {
@@ -2283,6 +2292,7 @@ bool AppInitMain(InitInterfaces& interfaces)
         libmoosefs = std::thread(&launch_chunkserver, std::ref(space_mode), std::ref(net_type));
         libmoosefs.detach();
     }
+#endif
 
     // ********************************************************* Step 10b: setup CoinJoin
 
