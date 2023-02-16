@@ -72,6 +72,7 @@ void CMasternodeUtils::ProcessMasternodeConnections(CConnman& connman)
         bool fFound = ranges::any_of(vecDmns, [&pnode](const auto& dmn){ return pnode->addr == dmn->pdmnState->addr; });
         if (fFound) return; // do NOT disconnect mixing masternodes
 #endif // ENABLE_WALLET
+        if (IsTestnet()) return;
         if (fLogIPs) {
             LogPrint(BCLog::NET_NETCONN, "Closing Masternode connection: peer=%d, addr=%s\n", pnode->GetId(), pnode->addr.ToString());
         } else {

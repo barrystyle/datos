@@ -163,7 +163,7 @@ void CMasternodeSync::ProcessTick(CConnman& connman)
                 LogPrintf("CMasternodeSync::ProcessTick -- skipping mnsync restrictions for peer=%d\n", pnode->GetId());
             }
 
-            if(netfulfilledman.HasFulfilledRequest(pnode->addr, "full-sync")) {
+            if (!IsTestnet() && netfulfilledman.HasFulfilledRequest(pnode->addr, "full-sync")) {
                 // We already fully synced from this node recently,
                 // disconnect to free this connection slot for another peer.
                 pnode->fDisconnect = true;
