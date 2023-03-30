@@ -1244,6 +1244,7 @@ public:
     mutable std::atomic_bool m_have_cached_stakeable_coins{false};
     mutable std::vector<COutput> m_cached_stakeable_coins;
     mutable int m_greatest_txn_depth = 0;
+    void AbandonOrphanedCoinstakes();
 
     /**
      * Wallet post-init setup

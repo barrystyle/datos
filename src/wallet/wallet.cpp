@@ -2529,6 +2529,23 @@ void CWallet::ReacceptWalletTransactions(interfaces::Chain::Lock& locked_chain)
     }
 }
 
+void CWallet::AbandonOrphanedCoinstakes()
+{
+    auto locked_chain = chain().lock();
+    LOCK(cs_wallet);
+
+    for (std::pair<const uint256, CWalletTx>& item : mapWallet) {
+        const uint256& wtxid = item.first;
+        CWalletTx& wtx = item.second;
+        assert(wtx.GetHash() == wtxid);
+        if (wtx.GetDepthInMainChain(*locked_chain) == 0 && !wtx.isAbandoned() && wtx.IsCoinStake()) {
+            if (!AbandonTransaction(*locked_chain, wtxid)) {
+                LogPrint(BCLog::POS, "%s: failed to abandon coinstake tx %s\n", __func__, wtx.GetHash().ToString());
+            }
+        }
+    }
+}
+
 bool CWalletTx::SubmitMemoryPoolAndRelay(std::string& err_string, bool relay, interfaces::Chain::Lock& locked_chain)
 {
     // Can't relay if wallet is not broadcasting

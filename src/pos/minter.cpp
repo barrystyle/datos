@@ -236,6 +236,9 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
             continue;
         }
 
+        // abandon orphaned stakes
+        wallet.AbandonOrphanedCoinstakes();
+
         std::unique_ptr<CBlockTemplate> pblocktemplate;
 
         size_t i = 0;
