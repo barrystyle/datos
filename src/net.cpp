@@ -299,6 +299,15 @@ bool IsLocal(const CService& addr)
     return mapLocalHost.count(addr) > 0;
 }
 
+void CConnman::AskForProofByHeight(int nHeight)
+{
+    LOCK(cs_vNodes);
+    for (CNode* pnode : vNodes) {
+         const CNetMsgMaker msgMaker(pnode->GetSendVersion());
+         PushMessage(pnode, msgMaker.Make(NetMsgType::ASKPROOF, nHeight));
+    }
+}
+
 CNode* CConnman::FindNode(const CNetAddr& ip, bool fExcludeDisconnecting)
 {
     LOCK(cs_vNodes);

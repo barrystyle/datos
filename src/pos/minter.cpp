@@ -289,6 +289,7 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
                 CNetworkProof netproof;
                 if (!proofManager.GetProofByHeight(nHeight, netproof)) {
                     LogPrint(BCLog::POS, "%s: proof not found for new block\n", __func__);
+                    g_connman->AskForProofByHeight(nHeight);
                     condWaitFor(nThreadID, 15000);
                     continue;
                 }

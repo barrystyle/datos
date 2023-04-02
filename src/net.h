@@ -426,6 +426,8 @@ public:
     bool DisconnectNode(const CNetAddr& addr);
     bool DisconnectNode(NodeId id);
 
+    void AskForProofByHeight(int nHeight);
+
     //! Used to convey which local services we are offering peers during node
     //! connection.
     //!

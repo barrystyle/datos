@@ -4003,6 +4003,24 @@ bool static ProcessMessage(CNode* pfrom, const std::string& msg_type, CDataStrea
         return true;
     }
 
+    if (msg_type == NetMsgType::ASKPROOF) {
+        int askheight;
+        vRecv >> askheight;
+
+        LOCK(cs_main);
+
+        CNetworkProof netproof;
+        if (!proofManager.GetProofByHeight(askheight, netproof)) {
+            // if we dont have this proof, easiest to simply not respond
+            return false;
+        }
+
+        connman->PushMessage(pfrom, msgMaker.Make(NetMsgType::NETPROOF, netproof));
+        LogPrint(BCLog::NET, "sent netproof for height %d to peer=%d\n", askheight, pfrom->GetId());
+
+        return true;
+    }
+
     if (msg_type == NetMsgType::NOTFOUND) {
         // Remove the NOTFOUND transactions from the peer
         LOCK(cs_main);

@@ -304,6 +304,7 @@ extern const char *QUORUMROTATIONINFO;
 
 // Datosdrive message types
 extern const char *NETPROOF;
+extern const char *ASKPROOF;
 };
 
 /* Get a vector of all valid message types (see above) */
@@ -472,7 +473,8 @@ enum GetDataMsg {
     MSG_ISLOCK = 30,
     MSG_ISDLOCK = 31,
     /* STORAGE LAYER */
-    MSG_NETPROOF = 40
+    MSG_NETPROOF = 40,
+    MSG_ASKPROOF = 41
 };
 
 /** inv message data */
