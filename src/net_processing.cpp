@@ -3989,10 +3989,11 @@ bool static ProcessMessage(CNode* pfrom, const std::string& msg_type, CDataStrea
     }
 
     if (msg_type == NetMsgType::NETPROOF) {
-        LOCK(cs_main);
-
         CNetworkProof netproof;
         vRecv >> netproof;
+
+        LOCK(cs_main);
+
         if (!proofManager.Validate(netproof)) {
             Misbehaving(pfrom->GetId(), 0, strprintf("invalid netproof. peer=%d", pfrom->GetId()));
             return false;
