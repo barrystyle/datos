@@ -236,6 +236,9 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
             continue;
         }
 
+        // abandon orphaned stakes
+        wallet.AbandonOrphanedCoinstakes();
+
         std::unique_ptr<CBlockTemplate> pblocktemplate;
 
         size_t i = 0;
@@ -286,6 +289,7 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
                 CNetworkProof netproof;
                 if (!proofManager.GetProofByHeight(nHeight, netproof)) {
                     LogPrint(BCLog::POS, "%s: proof not found for new block\n", __func__);
+                    g_connman->AskForProofByHeight(nHeight);
                     condWaitFor(nThreadID, 15000);
                     continue;
                 }
