@@ -16,3 +16,12 @@ void uint32_to_ip(uint32_t address, char* straddress, int port)
     else
         snprintf(straddress, 16, "%u.%u.%u.%u", bytes[3], bytes[2], bytes[1], bytes[0]);
 }
+
+std::string string_with_padding(std::string& in, int max_sz)
+{
+    while (in.size() < max_sz) {
+        in = in + " ";
+    }
+
+    return in;
+}

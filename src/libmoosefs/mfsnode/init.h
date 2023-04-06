@@ -27,6 +27,7 @@
 
 extern struct node_identity node_info;
 const uint32_t get_node_version();
+const std::string get_auth_code();
 
 struct
 node_identity {
@@ -43,6 +44,15 @@ public:
     char basepath[128];
     char datapath[256];
     char chunkpath[256];
+    std::string authcode;
+    void setauthcode(std::string& in)
+    {
+        authcode = in;
+    }
+    std::string getauthcode()
+    {
+        return authcode;
+    }
     std::string getnexthostname()
     {
         std::string hostname = masterhost[mastertry++];

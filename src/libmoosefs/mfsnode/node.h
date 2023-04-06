@@ -17,6 +17,6 @@
 
 extern std::thread chunk_thread;
 
-void launch_chunkserver(int space_mode, bool net_type);
+void launch_chunkserver(int space_mode, bool net_type, std::string& authcode);
 
 #endif // MFSNODE_NODE_H

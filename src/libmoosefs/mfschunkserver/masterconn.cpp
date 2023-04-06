@@ -42,6 +42,7 @@
 #include "mfscommon/random.h"
 #include "slogger.h"
 #include "sockets.h"
+#include "util.h"
 
 #include "mfsnode/init.h"
 
@@ -323,7 +324,7 @@ uint8_t* masterconn_create_attached_packet(masterconn* eptr, uint32_t type, uint
     return ptr;
 }
 
-void masterconn_sendregister(masterconn* eptr)
+void masterconn_sendregister(masterconn* eptr, bool usebls = false)
 {
     uint8_t* buff;
     uint32_t myip;
@@ -334,12 +335,22 @@ void masterconn_sendregister(masterconn* eptr)
 
     myip = csserv_getlistenip();
     myport = csserv_getlistenport();
+
     if (eptr->new_register_mode) {
 #ifdef MFSDEBUG
         syslog(LOG_NOTICE, "register ver. 6 - init + space info");
 #endif
         hdd_get_space(&usedspace, &totalspace, &chunkcount, &tdusedspace, &tdtotalspace, &tdchunkcount);
-        if (eptr->gotrndblob && AuthCode) {
+        if (usebls) {
+            buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1 + 96 + 4 + 4 + 2 + 2 + 2 + 8 + 8 + 4 + 8 + 8 + 4);
+            put8bit(&buff, 60);
+            unsigned char blsauthbin[96];
+            memset(blsauthbin, 0, sizeof(blsauthbin));
+            std::string blsauthhex = get_auth_code();
+            binlify(blsauthbin, blsauthhex.c_str());
+            memcpy(buff, blsauthbin, 96);
+            buff += 96;
+        } else if (eptr->gotrndblob && AuthCode) {
             md5ctx md5c;
             buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1 + 16 + 4 + 4 + 2 + 2 + 2 + 8 + 8 + 4 + 8 + 8 + 4);
             put8bit(&buff, 60);

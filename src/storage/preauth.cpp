@@ -1,0 +1,74 @@
+// Copyright (c) 2023 datosdrive/barrystyle
+// Distributed under the MIT software license, see the accompanying
+// file COPYING or http://www.opensource.org/licenses/mit-license.php.
+
+#include <storage/preauth.h>
+
+uint256 GenerateAuthHash(std::string pubKeyString, std::string& hostAddress)
+{
+    int64_t timePartition = GetAdjustedTime() / PREAUTH_PARTITION;
+    std::string partString = std::to_string(timePartition);
+    std::string authPhrase = string_with_padding(partString, 16) + string_with_padding(hostAddress, 16) + string_with_padding(pubKeyString, 96);
+
+    uint256 hash;
+    SHA256((const unsigned char*)authPhrase.c_str(), authPhrase.size(), hash.data());
+    return hash;
+}
+
+bool PreauthGenerate(std::string& hexsig)
+{
+    if (!fMasternodeMode) {
+        return false;
+    }
+
+    std::string hostAddress;
+    for (const std::string& strAddr : gArgs.GetArgs("-externalip")) {
+        hostAddress = strAddr;
+        break;
+    }
+
+    const auto& pubKey = activeMasternodeInfo.blsKeyOperator->GetPublicKey();
+    uint256 hash = GenerateAuthHash(pubKey.ToString(), hostAddress);
+
+    // generate signature
+    const CBLSSignature& signature = activeMasternodeInfo.blsKeyOperator->Sign(hash);
+    if (!signature.IsValid()) {
+        return false;
+    }
+
+    hexsig = signature.ToString();
+    return true;
+}
+
+bool PreauthVerify(std::string& hostAddress, std::string& hexsig)
+{
+    auto mnList = deterministicMNManager->GetListAtChainTip();
+    CService authService(LookupNumeric(hostAddress.c_str()));
+    CDeterministicMNCPtr dmn = mnList.GetMNByService(authService);
+    if (!dmn) {
+        // dmn doesnt exist
+        return false;
+    } else if (!mnList.IsMNValid(*dmn) || mnList.IsMNPoSeBanned(*dmn)) {
+        // dmn is banned/invalid
+        return false;
+    }
+
+    CBLSPublicKey pubKey = dmn->pdmnState->pubKeyOperator.Get();
+    uint256 hash = GenerateAuthHash(pubKey.ToString(), hostAddress);
+
+    // reserialize signature
+    CBLSSignature signature;
+    signature.SetHexStr(hexsig);
+    if (!signature.IsValid()) {
+        LogPrintf("%s: signature is invalid\n", __func__);
+        return false;
+    }
+
+    // verify signature
+    if (!signature.VerifyInsecure(pubKey, hash)) {
+        LogPrintf("%s: signature doesnt match\n", __func__);
+        return false;
+    }
+
+    return true;
+}
