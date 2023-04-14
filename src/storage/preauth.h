@@ -18,6 +18,7 @@
 const int PREAUTH_PARTITION = 300;
 
 bool PreauthGenerate(std::string& hexsig);
-bool PreauthVerify(std::string& hostAddress, std::string& hexsig);
+bool PreauthMockGenerate(std::string& hostAddress, CBLSSecretKey& sk, std::string& hexsig, CBLSPublicKey& pk);
+bool PreauthVerify(std::string& hostAddress, std::string& hexsig, CBLSPublicKey& pk);
 
 #endif // STORAGE_PREAUTH_H

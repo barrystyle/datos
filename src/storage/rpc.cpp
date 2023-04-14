@@ -10,6 +10,7 @@
 #include <rpc/util.h>
 #include <storage/manager.h>
 #include <storage/netproof.h>
+#include <storage/preauth.h>
 #include <storage/proof.h>
 #include <storage/serialize.h>
 #include <streams.h>
@@ -195,6 +196,86 @@ static UniValue parseproof(const JSONRPCRequest& request)
     return result;
 }
 
+static UniValue mockpreauth(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 1)
+        throw std::runtime_error(
+            RPCHelpMan{"mockpreauth",
+                "\nMock a preauth signed message from a nonexistent chunkserver.\n",
+                {
+                    {"hostaddress", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "the plaintext ip-address"},
+                },
+                RPCResult{
+                    RPCResult::Type::BOOL, "", "The result of the verify operation"},
+                RPCExamples{
+                    HelpExampleCli("verifypreauth", "1.1.1.1..")
+            + HelpExampleRpc("verifypreauth", "1.1.1.1..")
+                },
+            }.ToString());
+
+    UniValue result(UniValue::VOBJ);
+
+    std::string hostAddress = request.params[0].get_str();
+    if (hostAddress.size() < 7 || hostAddress.size() > 16) {
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Invalid ip address");
+    }
+
+    CBLSSecretKey sk;
+    sk.MakeNewKey();
+
+    CBLSPublicKey pk;
+    std::string hexsig;
+    PreauthMockGenerate(hostAddress, sk, hexsig, pk);
+
+    if (!PreauthVerify(hostAddress, hexsig, pk)) {
+        result.pushKV("result", false);
+    } else {
+        result.pushKV("result", true);
+    }
+
+    return result;
+}
+
+static UniValue verifypreauth(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 2)
+        throw std::runtime_error(
+            RPCHelpMan{"verifypreauth",
+                "\nVerify the preauth signed message from a registered chunkserver.\n",
+                {
+                    {"hostaddress", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "the plaintext ip-address"},
+                    {"hexsignature", RPCArg::Type::STR_HEX, RPCArg::Optional::NO, "the hexencoded bls-signature"},
+                },
+                RPCResult{
+                    RPCResult::Type::BOOL, "", "The result of the verify operation"},
+                RPCExamples{
+                    HelpExampleCli("verifypreauth", "1.1.1.1..")
+            + HelpExampleRpc("verifypreauth", "1.1.1.1..")
+                },
+            }.ToString());
+
+    UniValue result(UniValue::VOBJ);
+
+    std::string hostAddress = request.params[0].get_str();
+    if (hostAddress.size() < 7 || hostAddress.size() > 16) {
+        throw JSONRPCError(RPC_DESERIALIZATION_ERROR, "Invalid ip address");
+    }
+
+    std::string blsSignature = request.params[1].get_str();
+    if (blsSignature.size() != 192) {
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid bls signature");
+    }
+
+    CBLSPublicKey pk;
+    if (!PreauthVerify(hostAddress, blsSignature, pk)) {
+        result.pushKV("result", false);
+    } else {
+        result.pushKV("result", true);
+    }
+
+    return result;
+}
+
 // clang-format off
 static const CRPCCommand commands[] =
 { //  category              name                      actor (function)
@@ -203,6 +284,8 @@ static const CRPCCommand commands[] =
     { "storage",            "submitproof",            &submitproof,            {"hexstring", "privatekey"}  },
     { "storage",            "listproof",              &listproof,              {}  },
     { "storage",            "parseproof",             &parseproof,             {}  },
+    { "storage",            "mockpreauth",            &mockpreauth,            {"hostaddress"} },
+    { "storage",            "verifypreauth",          &verifypreauth,          {"hostaddress", "hexsignature"} },
 };
 
 // clang-format on

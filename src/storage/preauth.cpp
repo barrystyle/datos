@@ -33,6 +33,7 @@ bool PreauthGenerate(std::string& hexsig)
     // generate signature
     const CBLSSignature& signature = activeMasternodeInfo.blsKeyOperator->Sign(hash);
     if (!signature.IsValid()) {
+        LogPrint(BCLog::STORAGE, "%s: invalid signature\n", __func__);
         return false;
     }
 
@@ -40,33 +41,54 @@ bool PreauthGenerate(std::string& hexsig)
     return true;
 }
 
-bool PreauthVerify(std::string& hostAddress, std::string& hexsig)
+bool PreauthMockGenerate(std::string& hostAddress, CBLSSecretKey& sk, std::string& hexsig, CBLSPublicKey& pk)
+{
+    pk = sk.GetPublicKey();
+    uint256 hash = GenerateAuthHash(pk.ToString(), hostAddress);
+
+    // generate signature
+    const CBLSSignature& signature = sk.Sign(hash);
+    if (!signature.IsValid()) {
+        LogPrint(BCLog::STORAGE, "%s: invalid signature\n", __func__);
+        return false;
+    }
+
+    hexsig = signature.ToString();
+    return true;
+}
+
+bool PreauthVerify(std::string& hostAddress, std::string& hexsig, CBLSPublicKey& pk)
 {
     auto mnList = deterministicMNManager->GetListAtChainTip();
     CService authService(LookupNumeric(hostAddress.c_str()));
     CDeterministicMNCPtr dmn = mnList.GetMNByService(authService);
-    if (!dmn) {
-        // dmn doesnt exist
-        return false;
-    } else if (!mnList.IsMNValid(*dmn) || mnList.IsMNPoSeBanned(*dmn)) {
-        // dmn is banned/invalid
-        return false;
+    if (pk == CBLSPublicKey()) {
+        if (!dmn) {
+            LogPrint(BCLog::STORAGE, "%s: dmn doesn't exist\n", __func__);
+            return false;
+        } else if (!mnList.IsMNValid(*dmn) || mnList.IsMNPoSeBanned(*dmn)) {
+            LogPrint(BCLog::STORAGE, "%s: dmn is invalid or banned\n", __func__);
+            return false;
+        }
+    } else {
+        LogPrint(BCLog::STORAGE, "%s: mock pk detected\n", __func__);
     }
 
-    CBLSPublicKey pubKey = dmn->pdmnState->pubKeyOperator.Get();
+    // if pk is new uninit object, use dmn pubkey.. else use provided pk
+    CBLSPublicKey pubKey = pk == CBLSPublicKey() ? dmn->pdmnState->pubKeyOperator.Get() : pk;
     uint256 hash = GenerateAuthHash(pubKey.ToString(), hostAddress);
 
     // reserialize signature
     CBLSSignature signature;
     signature.SetHexStr(hexsig);
     if (!signature.IsValid()) {
-        LogPrintf("%s: signature is invalid\n", __func__);
+        LogPrint(BCLog::STORAGE, "%s: invalid signature\n", __func__);
         return false;
     }
 
     // verify signature
     if (!signature.VerifyInsecure(pubKey, hash)) {
-        LogPrintf("%s: signature doesnt match\n", __func__);
+        LogPrint(BCLog::STORAGE, "%s: signature doesnt match\n", __func__);
         return false;
     }
 
