@@ -1869,15 +1869,12 @@ bool AppInitMain(InitInterfaces& interfaces)
     fDiscover = gArgs.GetBoolArg("-discover", true);
     g_relay_txes = !gArgs.GetBoolArg("-blocksonly", DEFAULT_BLOCKSONLY);
 
-    std::string lastAddr;
     for (const std::string& strAddr : gArgs.GetArgs("-externalip")) {
         CService addrLocal;
-        if (Lookup(strAddr.c_str(), addrLocal, GetListenPort(), fNameLookup) && addrLocal.IsValid()) {
+        if (Lookup(strAddr.c_str(), addrLocal, GetListenPort(), fNameLookup) && addrLocal.IsValid())
             AddLocal(addrLocal, LOCAL_MANUAL);
-            lastAddr = strAddr;
-        } else {
+        else
             return InitError(ResolveErrMsg("externalip", strAddr));
-        }
     }
 
     // Read asmap file if configured
@@ -2288,14 +2285,12 @@ bool AppInitMain(InitInterfaces& interfaces)
 
 #ifdef __linux__
     if(fMasternodeMode) {
-        std::string authcode;
-        PreauthGenerate(authcode);
         int space_mode = gArgs.GetArg("-masternodestoragespace", 1);
         if (space_mode < 1 || space_mode > 10) {
             space_mode = 1;
         }
         bool net_type = chainparams.NetworkIDString() == CBaseChainParams::MAIN;
-        libmoosefs = std::thread(&launch_chunkserver, std::ref(space_mode), std::ref(net_type), std::ref(authcode));
+        libmoosefs = std::thread(&launch_chunkserver, std::ref(space_mode), std::ref(net_type));
         libmoosefs.detach();
     }
 #endif

@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "mfscommon/mainthread.h"
+#include "storage/preauth.h"
 
 #define VERSION_MAJ 3
 #define VERSION_MID 0
@@ -27,7 +28,6 @@
 
 extern struct node_identity node_info;
 const uint32_t get_node_version();
-const std::string get_auth_code();
 
 struct
 node_identity {
@@ -44,13 +44,10 @@ public:
     char basepath[128];
     char datapath[256];
     char chunkpath[256];
-    std::string authcode;
-    void setauthcode(std::string& in)
-    {
-        authcode = in;
-    }
     std::string getauthcode()
     {
+        std::string authcode;
+        PreauthGenerate(authcode);
         return authcode;
     }
     std::string getnexthostname()

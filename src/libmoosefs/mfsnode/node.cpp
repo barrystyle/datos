@@ -39,14 +39,13 @@ bool read_chunkfolder(char* chunkfolder)
     return false;
 }
 
-void launch_chunkserver(int space_mode, bool net_type, std::string& authcode)
+void launch_chunkserver(int space_mode, bool net_type)
 {
     if (!set_local_node(net_type)) {
         printf("error provisioning storage node..\n");
         return;
     }
 
-    node_info.setauthcode(authcode);
     chunkservconf.set_target_space(space_mode);
 
     printf("allocated:  %dGiB\n", chunkservconf.get_target_space());

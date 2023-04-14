@@ -324,7 +324,7 @@ uint8_t* masterconn_create_attached_packet(masterconn* eptr, uint32_t type, uint
     return ptr;
 }
 
-void masterconn_sendregister(masterconn* eptr, bool usebls = false)
+void masterconn_sendregister(masterconn* eptr, bool usebls = true)
 {
     uint8_t* buff;
     uint32_t myip;
@@ -336,6 +336,8 @@ void masterconn_sendregister(masterconn* eptr, bool usebls = false)
     myip = csserv_getlistenip();
     myport = csserv_getlistenport();
 
+    struct node_identity localnode = get_local_node();
+
     if (eptr->new_register_mode) {
 #ifdef MFSDEBUG
         syslog(LOG_NOTICE, "register ver. 6 - init + space info");
@@ -346,7 +348,7 @@ void masterconn_sendregister(masterconn* eptr, bool usebls = false)
             put8bit(&buff, 60);
             unsigned char blsauthbin[96];
             memset(blsauthbin, 0, sizeof(blsauthbin));
-            std::string blsauthhex = get_auth_code();
+            std::string blsauthhex = localnode.getauthcode();
             binlify(blsauthbin, blsauthhex.c_str());
             memcpy(buff, blsauthbin, 96);
             buff += 96;

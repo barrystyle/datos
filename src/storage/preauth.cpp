@@ -27,6 +27,8 @@ bool PreauthGenerate(std::string& hexsig)
         break;
     }
 
+    LogPrint(BCLog::STORAGE, "%s: regenerating preauth for node %s\n", __func__, hostAddress);
+
     const auto& pubKey = activeMasternodeInfo.blsKeyOperator->GetPublicKey();
     uint256 hash = GenerateAuthHash(pubKey.ToString(), hostAddress);
 
@@ -60,7 +62,7 @@ bool PreauthMockGenerate(std::string& hostAddress, CBLSSecretKey& sk, std::strin
 bool PreauthVerify(std::string& hostAddress, std::string& hexsig, CBLSPublicKey& pk)
 {
     auto mnList = deterministicMNManager->GetListAtChainTip();
-    CService authService(LookupNumeric(hostAddress.c_str()));
+    CService authService(LookupNumeric(hostAddress.c_str()), Params().GetDefaultPort());
     CDeterministicMNCPtr dmn = mnList.GetMNByService(authService);
     if (pk == CBLSPublicKey()) {
         if (!dmn) {
