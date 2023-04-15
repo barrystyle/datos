@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "mfscommon/mainthread.h"
+#include "storage/preauth.h"
 
 #define VERSION_MAJ 3
 #define VERSION_MID 0
@@ -43,6 +44,12 @@ public:
     char basepath[128];
     char datapath[256];
     char chunkpath[256];
+    std::string getauthcode()
+    {
+        std::string authcode;
+        PreauthGenerate(authcode);
+        return authcode;
+    }
     std::string getnexthostname()
     {
         std::string hostname = masterhost[mastertry++];

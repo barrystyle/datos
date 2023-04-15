@@ -48,6 +48,7 @@
 #include <script/sigcache.h>
 #include <script/standard.h>
 #include <storage/behavior.h>
+#include <storage/preauth.h>
 #include <storage/manager.h>
 #include <shutdown.h>
 #include <timedata.h>

@@ -285,6 +285,7 @@ BITCOIN_CORE_H = \
   streams.h \
   statsd_client.h \
   storage/behavior.h \
+  storage/preauth.h \
   storage/proof.h \
   storage/netproof.h \
   storage/manager.h \
@@ -464,6 +465,7 @@ libdash_server_a_SOURCES = \
   spork.cpp \
   storage/behavior.cpp \
   storage/manager.cpp \
+  storage/preauth.cpp \
   storage/serialize.cpp \
   storage/rewards.cpp \
   storage/rpc.cpp \
@@ -507,7 +509,8 @@ libdash_server_a_SOURCES += \
   libmoosefs/mfschunkserver/hddspacemgr.cpp \
   libmoosefs/mfschunkserver/mainserv.cpp \
   libmoosefs/mfschunkserver/masterconn.cpp \
-  libmoosefs/mfschunkserver/replicator.cpp
+  libmoosefs/mfschunkserver/replicator.cpp \
+  libmoosefs/mfschunkserver/util.cpp
 endif
 
 if ENABLE_WALLET

@@ -26,6 +26,11 @@ const uint32_t get_node_version()
     return (uint32_t)((VERSION_MAJ)*0x10000 + (VERSION_MID)*0x100 + (VERSION_MIN * 0x2));
 }
 
+const std::string get_auth_code()
+{
+    return node_info.getauthcode();
+}
+
 char* get_storagedir(bool net_type)
 {
 #ifdef __linux__

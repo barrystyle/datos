@@ -42,6 +42,7 @@
 #include "mfscommon/random.h"
 #include "slogger.h"
 #include "sockets.h"
+#include "util.h"
 
 #include "mfsnode/init.h"
 
@@ -334,54 +335,36 @@ void masterconn_sendregister(masterconn* eptr)
 
     myip = csserv_getlistenip();
     myport = csserv_getlistenport();
-    if (eptr->new_register_mode) {
-#ifdef MFSDEBUG
-        syslog(LOG_NOTICE, "register ver. 6 - init + space info");
-#endif
-        hdd_get_space(&usedspace, &totalspace, &chunkcount, &tdusedspace, &tdtotalspace, &tdchunkcount);
-        if (eptr->gotrndblob && AuthCode) {
-            md5ctx md5c;
-            buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1 + 16 + 4 + 4 + 2 + 2 + 2 + 8 + 8 + 4 + 8 + 8 + 4);
-            put8bit(&buff, 60);
-            md5_init(&md5c);
-            md5_update(&md5c, eptr->rndblob, 16);
-            md5_update(&md5c, (const uint8_t*)AuthCode, strlen(AuthCode));
-            md5_update(&md5c, eptr->rndblob + 16, 16);
-            md5_final(buff, &md5c);
-            buff += 16;
-        } else {
-            buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1 + 4 + 4 + 2 + 2 + 2 + 8 + 8 + 4 + 8 + 8 + 4);
-            put8bit(&buff, 60);
-        }
-        const uint32_t vershex = get_node_version();
-        put32bit(&buff, vershex);
-        put32bit(&buff, myip);
-        put16bit(&buff, myport);
-        put16bit(&buff, Timeout);
-        put16bit(&buff, masterconn_getcsid());
-        put64bit(&buff, usedspace);
-        put64bit(&buff, totalspace);
-        put32bit(&buff, chunkcount);
-        put64bit(&buff, tdusedspace);
-        put64bit(&buff, tdtotalspace);
-        put32bit(&buff, tdchunkcount);
-    } else {
-#ifdef MFSDEBUG
-        syslog(LOG_NOTICE, "register ver. 5 - init");
-#endif
-        buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1 + 4 + 4 + 2 + 2);
-        put8bit(&buff, 50);
 
-        const uint32_t vershex = get_node_version();
-        put32bit(&buff, vershex);
-        put32bit(&buff, myip);
-        put16bit(&buff, myport);
-        if (Timeout > 0) {
-            put16bit(&buff, Timeout);
-        } else {
-            put16bit(&buff, 10);
-        }
-    }
+    struct node_identity localnode = get_local_node();
+
+#ifdef MFSDEBUG
+    syslog(LOG_NOTICE, "register ver. 6 - init + space info");
+#endif
+    hdd_get_space(&usedspace, &totalspace, &chunkcount, &tdusedspace, &tdtotalspace, &tdchunkcount);
+
+    // now the only register method (blsauth)
+    buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1 + 96 + 4 + 4 + 2 + 2 + 2 + 8 + 8 + 4 + 8 + 8 + 4);
+    put8bit(&buff, 60);
+    unsigned char blsauthbin[96];
+    memset(blsauthbin, 0, sizeof(blsauthbin));
+    std::string blsauthhex = localnode.getauthcode();
+    binlify(blsauthbin, blsauthhex.c_str());
+    memcpy(buff, blsauthbin, 96);
+    buff += 96;
+
+    const uint32_t vershex = get_node_version();
+    put32bit(&buff, vershex);
+    put32bit(&buff, myip);
+    put16bit(&buff, myport);
+    put16bit(&buff, Timeout);
+    put16bit(&buff, masterconn_getcsid());
+    put64bit(&buff, usedspace);
+    put64bit(&buff, totalspace);
+    put32bit(&buff, chunkcount);
+    put64bit(&buff, tdusedspace);
+    put64bit(&buff, tdtotalspace);
+    put32bit(&buff, tdchunkcount);
 }
 
 void masterconn_sendchunksinfo(masterconn* eptr)
@@ -393,39 +376,20 @@ void masterconn_sendchunksinfo(masterconn* eptr)
     uint32_t chunkcount, tdchunkcount;
 
 #ifdef MFSDEBUG
-    syslog(LOG_NOTICE, "register ver. %u - chunks info", (unsigned int)((eptr->new_register_mode) ? 6 : 5));
+    syslog(LOG_NOTICE, "register ver. %u - chunks info", (unsigned int)6);
 #endif
     hdd_get_chunks_begin(0);
     while ((chunks = hdd_get_chunks_next_list_count(ChunksPerRegisterPacket))) {
         buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1 + chunks * (8 + 4));
-        if (eptr->new_register_mode) {
-            put8bit(&buff, 61);
-        } else {
-            put8bit(&buff, 51);
-        }
+        put8bit(&buff, 61);
         hdd_get_chunks_next_list_data(ChunksPerRegisterPacket, buff);
     }
     hdd_get_chunks_end();
-    if (eptr->new_register_mode) {
 #ifdef MFSDEBUG
-        syslog(LOG_NOTICE, "register ver. 6 - end");
+    syslog(LOG_NOTICE, "register ver. 6 - end");
 #endif
-        buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1);
-        put8bit(&buff, 62);
-    } else {
-#ifdef MFSDEBUG
-        syslog(LOG_NOTICE, "register ver. 5 - end + space info");
-#endif
-        hdd_get_space(&usedspace, &totalspace, &chunkcount, &tdusedspace, &tdtotalspace, &tdchunkcount);
-        buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1 + 8 + 8 + 4 + 8 + 8 + 4);
-        put8bit(&buff, 52);
-        put64bit(&buff, usedspace);
-        put64bit(&buff, totalspace);
-        put32bit(&buff, chunkcount);
-        put64bit(&buff, tdusedspace);
-        put64bit(&buff, tdtotalspace);
-        put32bit(&buff, tdchunkcount);
-    }
+    buff = masterconn_create_attached_packet(eptr, CSTOMA_REGISTER, 1);
+    put8bit(&buff, 62);
 }
 
 void masterconn_sendnextchunks(masterconn* eptr)
