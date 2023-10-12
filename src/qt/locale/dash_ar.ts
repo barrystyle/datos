@@ -74,11 +74,11 @@
         <translation>عناوين الاستقبال </translation>
     </message>
     <message>
-        <source>These are your datosdrive addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your Datos addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation>هذه هي عناوين داش التابعة لك من أجل إرسال الدفعات. تحقق دائما من المبلغ و عنوان المرسل المستقبل قبل إرسال العملات </translation>
     </message>
     <message>
-        <source>These are your datosdrive addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
+        <source>These are your Datos addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
         <translation>هذه هي عناوين داش الخاصة بك لتلقي المدفوعات. استخدم الزر "إنشاء عنوان استلام جديد" في علامة تبويب الاستلام لإنشاء عناوين جديدة.</translation>
     </message>
     <message>
@@ -324,7 +324,7 @@
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <source>A fatal error occurred. datosdrive can no longer continue safely and will quit.</source>
+        <source>A fatal error occurred. Datos can no longer continue safely and will quit.</source>
         <translation>خطأ فادح حدث . لا يمكن اتمام داش بامان سيتم الخروج</translation>
     </message>
     <message>
@@ -340,7 +340,7 @@
         <translation>إرسال</translation>
     </message>
     <message>
-        <source>Send coins to a datosdrive address</source>
+        <source>Send coins to a Datos address</source>
         <translation>إرسال عملات الى عنوان داش</translation>
     </message>
     <message>
@@ -492,7 +492,7 @@
         <translation>توقيع الرسالة</translation>
     </message>
     <message>
-        <source>Sign messages with your datosdrive addresses to prove you own them</source>
+        <source>Sign messages with your Datos addresses to prove you own them</source>
         <translation>وقَع الرسائل بواسطة اداش الخاص بك لإثبات امتلاكك لهم</translation>
     </message>
     <message>
@@ -500,7 +500,7 @@
         <translation>التحقق من الرسالة</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified datosdrive addresses</source>
+        <source>Verify messages to ensure they were signed with specified Datos addresses</source>
         <translation>تحقق من الرسائل للتأكد من أنَها وُقعت برسائل داش محدَدة</translation>
     </message>
     <message>
@@ -580,7 +580,7 @@
         <translation>خيارات سطر الأوامر</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible datosdrive command-line options</source>
+        <source>Show the %1 help message to get a list with possible Datos command-line options</source>
         <translation>عرض رسالة مساعدة %1 للحصول على قائمة مع خيارات سطر أوامر داش المحتملة</translation>
     </message>
     <message>
@@ -646,7 +646,7 @@
         <translation>عرض مقترحات الحوكمة</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to datosdrive network</source>
+        <source>%n active connection(s) to Datos network</source>
         <translation><numerusform>%n اتصالات نشطة بشبكة داش</numerusform><numerusform>%n اتصالات نشطة بشبكة داش</numerusform><numerusform>%n اتصالات نشطة بشبكة داش</numerusform><numerusform>%n اتصالات نشطة بشبكة داش</numerusform><numerusform>%n اتصالات نشطة بشبكة داش</numerusform><numerusform>%n اتصالات نشطة بشبكة داش</numerusform></translation>
     </message>
     <message>
@@ -1096,7 +1096,7 @@
         <translation>تعديل عنوان الارسال</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid datosdrive address.</source>
+        <source>The entered address "%1" is not a valid Datos address.</source>
         <translation>العنوان الذي تم إدخاله "%1" ليس عنوانًا صالحًا لداش.</translation>
     </message>
     <message>
@@ -1232,7 +1232,7 @@
         <translation>سيتم تخزين %1 جيجابايت تقريباً من البيانات في هذا الدليل.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the datosdrive block chain.</source>
+        <source>%1 will download and store a copy of the Datos block chain.</source>
         <translation>سيقوم %1 بتنزيل نسخة من سلسلة كتل بتكوين وتخزينها.</translation>
     </message>
     <message>
@@ -1386,11 +1386,11 @@
         <translation>نمودج</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the datosdrive network, as detailed below.</source>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Datos network, as detailed below.</source>
         <translation>قد لا تكون المعاملات الأخيرة مرئية بعد ، وبالتالي قد يكون رصيد محفظتك غير صحيح. ستكون هذه المعلومات صحيحة بمجرد انتهاء محفظتك من المزامنة مع شبكة داش ، كما هو مفصل أدناه.</translation>
     </message>
     <message>
-        <source>Attempting to spend datosdrive that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <source>Attempting to spend Datos that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
         <translation>لن تقبل الشبكة محاولة إنفاق داش المتأثرة بالمعاملات التي لم يتم عرضها بعد.</translation>
     </message>
     <message>
@@ -1587,7 +1587,7 @@
         <translation>الهدف رصيد</translation>
     </message>
     <message>
-        <source>Automatically open the datosdrive client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <source>Automatically open the Datos client port on the router. This only works when your router supports UPnP and it is enabled.</source>
         <translation>فتح منفذ عميل داش كور تلقائيًا على جهاز التوجيه. هذا يعمل فقط عندما يدعم جهاز التوجيه الخاص بك UPnP وتمكينه.</translation>
     </message>
     <message>
@@ -1607,7 +1607,7 @@
         <translation>السماح بالاتصالات الواردة</translation>
     </message>
     <message>
-        <source>Connect to the datosdrive network through a SOCKS5 proxy.</source>
+        <source>Connect to the Datos network through a SOCKS5 proxy.</source>
         <translation>الاتصال بشبكة داش من خلال وكيل SOCKS5.</translation>
     </message>
     <message>
@@ -1715,7 +1715,7 @@
         <translation>تور</translation>
     </message>
     <message>
-        <source>Connect to the datosdrive network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <source>Connect to the Datos network through a separate SOCKS5 proxy for Tor hidden services.</source>
         <translation>اتصل بشبكة داش من خلال وكيل SOCKS5 منفصل لخدمات المخفية.</translation>
     </message>
     <message>
@@ -1812,7 +1812,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>نمودج</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the datosdrive network after a connection is established, but this process has not completed yet.</source>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Datos network after a connection is established, but this process has not completed yet.</source>
         <translation>قد تكون المعلومات المعروضة قديمة. تتزامن محفظتك تلقائيًا مع شبكة داش بعد إنشاء الاتصال ، ولكن هذه العملية لم تكتمل بعد.</translation>
     </message>
     <message>
@@ -2059,7 +2059,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>عنوان الدفع غير صالح %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid datosdrive address or malformed URI parameters.</source>
+        <source>URI cannot be parsed! This can be caused by an invalid Datos address or malformed URI parameters.</source>
         <translation>لا يمكن تحليل العنوان! يمكن أن يكون ذلك بسبب عنوان داش غير صالح أو معلمات العنوان غير صحيحة.</translation>
     </message>
     <message>
@@ -2295,7 +2295,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>مبلغ</translation>
     </message>
     <message>
-        <source>Enter a datosdrive address (e.g. %1)</source>
+        <source>Enter a Datos address (e.g. %1)</source>
         <translation>أدخل عنوان داش (على سبيل المثال %1)</translation>
     </message>
     <message>
@@ -2878,7 +2878,7 @@ https://www.transifex.com/projects/p/pac/</translation>
 <context>
     <name>ReceiveCoinsDialog</name>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the datosdrive network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Datos network.</source>
         <translation>رسالة اختيارية لإرفاقها بطلب الدفع ، والتي سيتم عرضها عند فتح الطلب. ملاحظة: لن يتم إرسال الرسالة مع الدفع عبر شبكة داش.</translation>
     </message>
     <message>
@@ -2890,7 +2890,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>تسمية اختيارية لربطها بعنوان المستلم الجديد.</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the datosdrive network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Datos network.</source>
         <translation>رسالة اختيارية لإرفاقها بطلب الدفع ، والتي سيتم عرضها عند فتح الطلب.&lt;br&gt; ملاحظة: لن يتم إرسال الرسالة مع الدفع عبر شبكة داش.</translation>
     </message>
     <message>
@@ -3343,7 +3343,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform><numerusform>يقدر أن يبدأ التأكيد ضمن %n من الكتل.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid datosdrive address</source>
+        <source>Warning: Invalid Datos address</source>
         <translation>تحذير: عنوان داش غير صالح</translation>
     </message>
     <message>
@@ -3370,7 +3370,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>ادفع &amp;الى :</translation>
     </message>
     <message>
-        <source>The datosdrive address to send the payment to</source>
+        <source>The Datos address to send the payment to</source>
         <translation>عنوان داش لإرسال الدفعة إلى</translation>
     </message>
     <message>
@@ -3410,7 +3410,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>المبلغ المراد إرساله في الوحدة المختارة</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of datosdrive than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Datos than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
         <translation>سيتم خصم الرسوم من المبلغ الذي يتم إرساله. سوف يتلقى المستلم كمية أقل من الشرطة من إدخالها في حقل المبلغ. في حالة تحديد عدة مستلمين ، يتم تقسيم الرسوم بالتساوي.</translation>
     </message>
     <message>
@@ -3426,7 +3426,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>الرسائل</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the datosdrive network.</source>
+        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
         <translation>رسالة تم إرفاقها بخط العطف: عنوان الذي سيتم تخزينه مع المعاملة كمرجع لك. ملاحظة: لن يتم إرسال هذه الرسالة عبر شبكة داش.</translation>
     </message>
     <message>
@@ -3479,11 +3479,11 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>&amp;توقيع الرسالة</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive datosdrive sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Datos sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation>يمكنك توقيع الرسائل / الاتفاقيات مع العناوين الخاصة بك لإثبات أنك يمكن أن تتلقى داش المرسلة إليهم. احرص على عدم التوقيع على أي شيء غامض أو عشوائي ، حيث إن هجمات التصيد الاحتيالي قد تحاول خداعك لتوقيع هويتك عليها. توقيع فقط عبارات تفصيلية كاملة توافق على.</translation>
     </message>
     <message>
-        <source>The datosdrive address to sign the message with</source>
+        <source>The Datos address to sign the message with</source>
         <translation>عنوان داش للتوقيع على الرسالة</translation>
     </message>
     <message>
@@ -3515,7 +3515,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>نسخ التوقيع الحالي إلى حافظة النظام</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this datosdrive address</source>
+        <source>Sign the message to prove you own this Datos address</source>
         <translation>وقع على الرسالة لإثبات أنك تملك عنوان داش هذا</translation>
     </message>
     <message>
@@ -3539,7 +3539,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>أدخل عنوان المتلقي ، رسالة (تأكد من نسخ فواصل الأسطر والمسافات وعلامات التبويب وما إلى ذلك تمامًا) والتوقيع أدناه للتحقق من الرسالة. يجب الحرص على عدم قراءة المزيد في التوقيع أكثر مما هو موجود في الرسالة الموقّعة نفسها ، لتجنب التعرض للخداع من خلال هجوم رجل في الوسط. لاحظ أن هذا يثبت فقط أن الطرف المتلقي يتلقى العنوان ، فلا يمكنه إثبات إرسال أي معاملة!</translation>
     </message>
     <message>
-        <source>The datosdrive address the message was signed with</source>
+        <source>The Datos address the message was signed with</source>
         <translation>عنوان داش الذي تم توقيع الرسالة به</translation>
     </message>
     <message>
@@ -3551,7 +3551,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>التوقيع المعطى عند توقيع الرسالة</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified datosdrive address</source>
+        <source>Verify the message to ensure it was signed with the specified Datos address</source>
         <translation>تحقق من الرسالة للتأكد من توقيعها باستخدام عنوان داش المحدد</translation>
     </message>
     <message>

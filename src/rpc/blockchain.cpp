@@ -488,7 +488,7 @@ static UniValue getposdifficulty(const JSONRPCRequest& request)
 static std::string EntryDescriptionString()
 {
     return "    \"vsize\" : n,                (numeric) virtual transaction size. This can be different from actual serialized size for high-sigop transactions.\n"
-           "    \"size\" : n,                 (numeric) (DEPRECATED) same as vsize. Only returned if datosdrived is started with -deprecatedrpc=size\n"
+           "    \"size\" : n,                 (numeric) (DEPRECATED) same as vsize. Only returned if datosd is started with -deprecatedrpc=size\n"
            "                                  size will be completely removed in v0.20.\n"
            "    \"fee\" : n,                  (numeric) transaction fee in " + CURRENCY_UNIT + " (DEPRECATED)\n"
            "    \"modifiedfee\" : n,          (numeric) transaction fee with fee deltas used for mining priority (DEPRECATED)\n"
@@ -894,7 +894,7 @@ static UniValue getblockheader(const JSONRPCRequest& request)
             "  \"difficulty\" : x.xxx,  (numeric) The difficulty\n"
             "  \"chainwork\" : \"0000...1f3\"     (string) Expected number of hashes required to produce the current chain (in hex)\n"
             "  \"nTx\" : n,             (numeric) The number of transactions in the block.\n"
-            "  \"moneysupply\": xxxxxxx,        (numeric) the total amount of datosdrive in the chain at this block\n"
+            "  \"moneysupply\": xxxxxxx,        (numeric) the total amount of Datos in the chain at this block\n"
             "  \"previousblockhash\" : \"hash\",  (string) The hash of the previous block\n"
             "  \"nextblockhash\" : \"hash\",      (string) The hash of the next block\n"
             "}\n"
@@ -1349,8 +1349,8 @@ static UniValue gettxout(const JSONRPCRequest& request)
             "     \"hex\" : \"hex\",        (string) \n"
             "     \"reqSigs\" : n,          (numeric) Number of required signatures\n"
             "     \"type\" : \"pubkeyhash\", (string) The type, eg pubkeyhash\n"
-            "     \"addresses\" : [          (array of string) array of datosdrive addresses\n"
-            "        \"address\"     (string) datosdrive address\n"
+            "     \"addresses\" : [          (array of string) array of Datos addresses\n"
+            "        \"address\"     (string) Datos address\n"
             "        ,...\n"
             "     ]\n"
             "  },\n"

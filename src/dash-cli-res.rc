@@ -16,14 +16,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "datosdrive"
-            VALUE "FileDescription",    "datosdrive-cli (JSON-RPC client for " PACKAGE_NAME ")"
+            VALUE "CompanyName",        "datos"
+            VALUE "FileDescription",    "datos-cli (JSON-RPC client for " PACKAGE_NAME ")"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "datosdrive-cli"
+            VALUE "InternalName",       "datos-cli"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "datosdrive-cli.exe"
-            VALUE "ProductName",        "datosdrive-cli"
+            VALUE "OriginalFilename",   "datos-cli.exe"
+            VALUE "ProductName",        "datos-cli"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

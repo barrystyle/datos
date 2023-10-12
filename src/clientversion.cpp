@@ -9,10 +9,10 @@
 
 /**
  * Name of client reported in the 'version' message. Report the same name
- * for both datosdrived and datosdrive-qt, to make it harder for attackers to
+ * for both datosd and datos-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("datosdrive");
+const std::string CLIENT_NAME("datos");
 
 
 #ifdef HAVE_BUILD_INFO

@@ -8,10 +8,10 @@
 #else
 #define UNUSED
 #endif
-static const char UNUSED *datosdrive_strings[] = {
+static const char UNUSED *datos_strings[] = {
 QT_TRANSLATE_NOOP("pac-core", "The %s developers"),
 QT_TRANSLATE_NOOP("pac-core", ""
-"%s corrupt. Try using the wallet tool datosdrive-wallet to salvage or restoring a "
+"%s corrupt. Try using the wallet tool datos-wallet to salvage or restoring a "
 "backup."),
 QT_TRANSLATE_NOOP("pac-core", ""
 "%s file contains all private keys from this wallet. Do not share it with "

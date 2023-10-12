@@ -247,7 +247,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
-        // datosdrive consensus parameters
+        // datos consensus parameters
         consensus.nLastPoWBlock = 1000;
         consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
@@ -291,18 +291,18 @@ public:
         // release ASAP to avoid it where possible.
         vSeeds.emplace_back("seed.pacglobal.io");
 
-        // datosdrive addresses start with 'P'
+        // datos addresses start with 'P'
         base58Prefixes[PUBKEY_ADDRESS] = {0x37};
-        // datosdrive script addresses start with '5'
+        // datos script addresses start with '5'
         base58Prefixes[SCRIPT_ADDRESS] = {0x0a};
-        // datosdrive private keys start with '7' or 'X'
+        // datos private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] = {0xcc};
-        // datosdrive BIP32 pubkeys start with 'pacp'
+        // datos BIP32 pubkeys start with 'pacp'
         base58Prefixes[EXT_PUBLIC_KEY] = {0x03, 0xdd, 0x3e, 0x31};
-        // datosdrive BIP32 prvkeys start with 'pacv'
+        // datos BIP32 prvkeys start with 'pacv'
         base58Prefixes[EXT_SECRET_KEY] = {0x03, 0xdd, 0x3e, 0x5a};
 
-        // datosdrive BIP44 coin type is '8192'
+        // datos BIP44 coin type is '8192'
         nExtCoinType = 8192;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
@@ -454,7 +454,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
-        // datosdrive consensus parameters
+        // datos consensus parameters
         consensus.nLastPoWBlock = 250;
         consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 28
@@ -490,15 +490,15 @@ public:
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
         vSeeds.clear();
 
-        // datosdrive addresses start with 'P'
+        // datos addresses start with 'P'
         base58Prefixes[PUBKEY_ADDRESS] = {0x37};
-        // datosdrive script addresses start with '5'
+        // datos script addresses start with '5'
         base58Prefixes[SCRIPT_ADDRESS] = {0x0a};
-        // datosdrive private keys start with '7' or 'X'
+        // datos private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] = {0xcc};
-        // datosdrive BIP32 pubkeys start with 'pacp'
+        // datos BIP32 pubkeys start with 'pacp'
         base58Prefixes[EXT_PUBLIC_KEY] = {0x03, 0xdd, 0x3e, 0x31};
-        // datosdrive BIP32 prvkeys start with 'pacv'
+        // datos BIP32 prvkeys start with 'pacv'
         base58Prefixes[EXT_SECRET_KEY] = {0x03, 0xdd, 0x3e, 0x5a};
 
         // Testnet Dash BIP44 coin type is '8192' (same as mainnet, why change it?)
@@ -652,7 +652,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
-        // datosdrive consensus parameters
+        // datos consensus parameters
         consensus.nLastPoWBlock = 1000;
         consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
@@ -923,7 +923,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
 
-        // datosdrive consensus parameters
+        // datos consensus parameters
         consensus.nLastPoWBlock = 1000;
         consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32

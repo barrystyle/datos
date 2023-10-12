@@ -65,7 +65,7 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, He
         ui->helpMessage->setVisible(false);
     } else if (helpMode == cmdline) {
         setWindowTitle(tr("Command-line options"));
-        QString header = "Usage:  datosdrive-qt [command-line options]                     \n";
+        QString header = "Usage:  datos-qt [command-line options]                     \n";
         QTextCursor cursor(ui->helpMessage->document());
         cursor.insertText(version);
         cursor.insertBlock();
@@ -118,7 +118,7 @@ HelpMessageDialog::HelpMessageDialog(interfaces::Node& node, QWidget *parent, He
         ui->aboutMessage->setText(tr("\
 <h3>%1 Basics</h3> \
 %1 gives you true financial privacy by obscuring the origins of your funds. \
-All the datosdrive in your wallet is comprised of different \"inputs\" which you can think of as separate, discrete coins.<br> \
+All the datos in your wallet is comprised of different \"inputs\" which you can think of as separate, discrete coins.<br> \
 %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. \
 You retain control of your money at all times.<hr> \
 <b>The %1 process works like this:</b>\
@@ -144,7 +144,7 @@ For more information, see the <a style=\"%2\" href=\"%3\">%1 documentation</a>."
         )
         .arg(strCoinJoinName)
         .arg(GUIUtil::getThemedStyleQString(GUIUtil::ThemedStyle::TS_COMMAND))
-        .arg("https://docs.datosdrive.org/en/stable/wallets/datosdrivecore/coinjoin-instantsend.html")
+        .arg("https://docs.datos.org/en/stable/wallets/datoscore/coinjoin-instantsend.html")
         );
         ui->aboutMessage->setWordWrap(true);
         ui->helpMessage->setVisible(false);

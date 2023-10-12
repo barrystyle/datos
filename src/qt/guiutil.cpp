@@ -269,7 +269,7 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent, bool fAllow
 
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter a datosdrive address (e.g. %1)").arg(
+    widget->setPlaceholderText(QObject::tr("Enter a Datos address (e.g. %1)").arg(
         QString::fromStdString(DummyAddress(Params()))));
     widget->setValidator(new BitcoinAddressEntryValidator(parent, fAllowURI));
     widget->setCheckValidator(new BitcoinAddressCheckValidator(parent));
@@ -605,7 +605,7 @@ void openConfigfile()
 {
     fs::path pathConfig = GetConfigFile(gArgs.GetArg("-conf", BITCOIN_CONF_FILENAME));
 
-    /* Open datosdrive.conf with the associated application */
+    /* Open datos.conf with the associated application */
     if (fs::exists(pathConfig)) {
         // Workaround for macOS-specific behavior; see #15409.
         if (!QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathConfig)))) {
@@ -795,15 +795,15 @@ fs::path static StartupShortcutPath()
 {
     std::string chain = gArgs.GetChainName();
     if (chain == CBaseChainParams::MAIN)
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "datosdrive.lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "datos.lnk";
     if (chain == CBaseChainParams::TESTNET) // Remove this special case when CBaseChainParams::TESTNET = "testnet4"
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "datosdrive (testnet).lnk";
-    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("datosdrive (%s).lnk", chain);
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "datos (testnet).lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("datos (%s).lnk", chain);
 }
 
 bool GetStartOnSystemStartup()
 {
-    // check for "datosdrive*.lnk"
+    // check for "datos*.lnk"
     return fs::exists(StartupShortcutPath());
 }
 
@@ -878,8 +878,8 @@ fs::path static GetAutostartFilePath()
 {
     std::string chain = gArgs.GetChainName();
     if (chain == CBaseChainParams::MAIN)
-        return GetAutostartDir() / "datosdrive.desktop";
-    return GetAutostartDir() / strprintf("datosdrivecore-%s.desktop", chain);
+        return GetAutostartDir() / "datos.desktop";
+    return GetAutostartDir() / strprintf("datoscore-%s.desktop", chain);
 }
 
 bool GetStartOnSystemStartup()
@@ -919,13 +919,13 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         if (!optionFile.good())
             return false;
         std::string chain = gArgs.GetChainName();
-        // Write a datosdrive.desktop file to the autostart directory:
+        // Write a datos.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
         if (chain == CBaseChainParams::MAIN)
-            optionFile << "Name=datosdrive\n";
+            optionFile << "Name=datos\n";
         else
-            optionFile << strprintf("Name=datosdrive (%s)\n", chain);
+            optionFile << strprintf("Name=datos (%s)\n", chain);
         optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", gArgs.GetBoolArg("-testnet", false), gArgs.GetBoolArg("-regtest", false));
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";

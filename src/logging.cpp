@@ -164,7 +164,7 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::ALL, "1"},
     {BCLog::ALL, "all"},
 
-    //Start datosdrive
+    //Start datos
     {BCLog::CHAINLOCKS, "chainlocks"},
     {BCLog::GOBJECT, "gobject"},
     {BCLog::INSTANTSEND, "instantsend"},
@@ -176,11 +176,11 @@ const CLogCategoryDesc LogCategories[] =
     {BCLog::COINJOIN, "coinjoin"},
     {BCLog::SPORK, "spork"},
     {BCLog::NETCONN, "netconn"},
-    {BCLog::DASH, "datosdrive"},
+    {BCLog::DASH, "datos"},
     {BCLog::POS, "pos"},
     {BCLog::STORAGE, "storage"},
 
-    //End datosdrive
+    //End datos
 };
 
 bool GetLogCategory(BCLog::LogFlags& flag, const std::string& str)
@@ -301,7 +301,7 @@ void BCLog::Logger::LogPrintStr(const std::string& str)
     std::string str_prefixed = LogEscapeMessage(str);
 
     if (m_log_threadnames && m_started_new_line) {
-        // 16 chars total, "datosdrive-" is 5 of them and another 1 is a NUL terminator
+        // 16 chars total, "datos-" is 5 of them and another 1 is a NUL terminator
         str_prefixed.insert(0, "[" + strprintf("%10s", util::ThreadGetInternalName()) + "] ");
     }
 

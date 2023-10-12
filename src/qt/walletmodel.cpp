@@ -218,7 +218,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         }
         else
 #endif
-        {   // User-entered datosdrive address / amount:
+        {   // User-entered Datos address / amount:
             if(!validateAddress(rcp.address))
             {
                 return InvalidAddress;

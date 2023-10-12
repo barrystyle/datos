@@ -16,14 +16,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "datosdrive"
-            VALUE "FileDescription",    "datosdrive-wallet (CLI tool for " PACKAGE_NAME " wallets)"
+            VALUE "CompanyName",        "datos"
+            VALUE "FileDescription",    "datos-wallet (CLI tool for " PACKAGE_NAME " wallets)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "datosdrive-wallet"
+            VALUE "InternalName",       "datos-wallet"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "datosdrive-wallet.exe"
-            VALUE "ProductName",        "datosdrive-wallet"
+            VALUE "OriginalFilename",   "datos-wallet.exe"
+            VALUE "ProductName",        "datos-wallet"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END
