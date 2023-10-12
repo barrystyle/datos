@@ -296,7 +296,7 @@
         <translation>P&amp;rimeşte</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
         <translation>Cereţi plăţi (generează coduri QR şi datos-uri: URls)</translation>
     </message>
     <message>
@@ -484,7 +484,7 @@
         <translation>Deschide &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
+        <source>Open a datos: URI or payment request</source>
         <translation>Deschidere datos: o adresa URI sau o cerere de plată</translation>
     </message>
     <message>
@@ -1605,7 +1605,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Eroare la cererea de plată</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
+        <source>Cannot start datos: click-to-pay handler</source>
         <translation>datos nu poate porni: click-to-pay handler</translation>
     </message>
     <message>
@@ -2450,7 +2450,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Dacă taxa vamală este stabilită la 1000 de duffi și tranzacția are doar 250 de octeți, atunci "per kilobyte" plătește doar 250 de duffi în taxă,&lt;br /&gt;în timp ce "cel puțin" plătește 1000 de duffi. Pentru tranzacțiile mai mari decât un kilobyte, ambele plătesc cu kilobyte.</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>Plata numai a taxei minime este ok, atâta timp cât există un volum mai mic de tranzacții decât spațiul din block-uri.&lt;br /&gt;Dar trebuie să știi că acest lucru se poate încheia într-o tranzacție care nu se confirmă odată ce există mai multă cerere pentru tranzacții pac decât poate procesa rețeaua.</translation>
     </message>
     <message>
@@ -2713,7 +2713,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Mesaj:</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
         <translation>un mesaj a fost ataşat la datos: URI care va fi stocat cu tranzacţia pentru referinţa dvs. Notă: Acest mesaj nu va fi trimis către reţeaua datos.</translation>
     </message>
     <message>
@@ -3413,7 +3413,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
     </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>Eroare: Ascultarea conexiunilor de intrare nu a reuşit (ascultarea a reurnat eroarea %s)</translation>

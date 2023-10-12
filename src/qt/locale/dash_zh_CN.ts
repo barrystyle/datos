@@ -348,7 +348,7 @@
         <translation>接收(&amp;R)</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
         <translation>请求付款(生成二维码和datos付款协议的URI)</translation>
     </message>
     <message>
@@ -572,7 +572,7 @@
         <translation>打开 &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
+        <source>Open a datos: URI or payment request</source>
         <translation>打开一个datos协议的URI或付款请求</translation>
     </message>
     <message>
@@ -2035,7 +2035,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>支付请求出错</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
+        <source>Cannot start datos: click-to-pay handler</source>
         <translation>无法启动datos程序：click-to-pay handler</translation>
     </message>
     <message>
@@ -2043,8 +2043,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>URI 处理</translation>
     </message>
     <message>
-        <source>'pac://' is not a valid URI. Use 'pac:' instead.</source>
-        <translation>'pac://' 不是一个有效链接. 请使用'pac:'</translation>
+        <source>'datos://' is not a valid URI. Use 'datos:' instead.</source>
+        <translation>'datos://' 不是一个有效链接. 请使用'datos:'</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -3127,7 +3127,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>如果自定手续费设定为1000 duffs，而交易信息只有250字节的话，那么选择"每千字节"就只会支付250 duffs的手续费，&lt;br /&gt;而"至少"会支付1000 duffs。但如果交易信息大于一千字节,那么两者都要按每千字节付费。</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>当交易量少于区块可容纳的空间时，只需支付最低手续费。&lt;br /&gt;但当交易量的需求增长到超过总体网络可处理的量时，可能会造成一笔一直不被确认的交易。</translation>
     </message>
     <message>
@@ -3426,7 +3426,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>消息：</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
         <translation>附加在datos付款协议URI中的信息，会和交易内容一并存储，可供您参考。提示：此信息不会发送到datos网络上。</translation>
     </message>
     <message>
@@ -4249,7 +4249,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>错误：监听外来连接失败(监听回馈错误 %s)</translation>

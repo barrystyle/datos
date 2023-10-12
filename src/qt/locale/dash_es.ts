@@ -348,7 +348,7 @@
         <translation>&amp;Recibir</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
         <translation>Solicitar pagos (genera códigos QR y URIs de datos)</translation>
     </message>
     <message>
@@ -572,8 +572,8 @@
         <translation>Abrir &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
-        <translation>Abrir un pac: URI o petición de pago</translation>
+        <source>Open a datos: URI or payment request</source>
+        <translation>Abrir un datos: URI o petición de pago</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -2035,16 +2035,16 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Error en solicitud de pago</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
-        <translation>No se pudo iniciar pac: manejador de pago-por-clic</translation>
+        <source>Cannot start datos: click-to-pay handler</source>
+        <translation>No se pudo iniciar datos: manejador de pago-por-clic</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>Gestión de URI</translation>
     </message>
     <message>
-        <source>'pac://' is not a valid URI. Use 'pac:' instead.</source>
-        <translation>'pac://' no es un URI válido. Usa 'pac:'.</translation>
+        <source>'datos://' is not a valid URI. Use 'datos:' instead.</source>
+        <translation>'datos://' no es un URI válido. Usa 'datos:'.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -3127,7 +3127,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Si la comisión personalizada se establece en 1000 duffs y la transacción sólo ocupa 250 bytes, entonces "por kilobyte" sólo se pagan 250 duffs de comisión,&lt;br /&gt;mientras que "como mínimo" paga 1000 duffs. Para transacciones mayores de un kilobyte ambas pagan por kilobyte.</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>Pagar sólo la comisión mínima está bien mientras el volumen de transacciones sea menor al espacio en los bloques.&lt;br /&gt;No obstante, tenga en cuenta que esto puede acabar en una transacción que nunca se confirme una vez haya más demanda de transacciones datos que lo que la red puede procesar.</translation>
     </message>
     <message>
@@ -3426,7 +3426,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Mensaje:</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
         <translation>Un mensaje que se adjuntó al datos: URI que será almacenada con la transacción para su referencia. Nota: Este mensaje no se enviará a través de la red datos.</translation>
     </message>
     <message>
@@ -4249,7 +4249,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>Error: Ha fallado la "escucha" de conexiones entrantes ("Escucha" ha devuelto el error %s)</translation>
@@ -5061,8 +5061,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>La última cola se creó muy recientemente.</translation>
     </message>
     <message>
-        <source>%s corrupt. Try using the wallet tool pac-wallet to salvage or restoring a backup.</source>
-        <translation>%s corrupto. Intenta usar la herramienta de billetera pac-wallet para recuperar o restaurar una copia de seguridad.</translation>
+        <source>%s corrupt. Try using the wallet tool datos-wallet to salvage or restoring a backup.</source>
+        <translation>%s corrupto. Intenta usar la herramienta de billetera datos-wallet para recuperar o restaurar una copia de seguridad.</translation>
     </message>
     <message>
         <source>Can't generate a change-address key. No keys in the internal keypool and can't generate any keys.</source>

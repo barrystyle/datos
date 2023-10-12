@@ -348,8 +348,8 @@
         <translation>&amp;Empfangen</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
-        <translation>Zahlungen anfordern (erzeugt QR-Codes und "pac:"-URIs)</translation>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
+        <translation>Zahlungen anfordern (erzeugt QR-Codes und "datos:"-URIs)</translation>
     </message>
     <message>
         <source>&amp;Sending addresses</source>
@@ -572,8 +572,8 @@
         <translation>&amp;URI öffnen...</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
-        <translation>Eine "pac:"-URI oder Zahlungsanforderung öffnen</translation>
+        <source>Open a datos: URI or payment request</source>
+        <translation>Eine "datos:"-URI oder Zahlungsanforderung öffnen</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -2035,7 +2035,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Fehlerhafte Zahlungsanforderung</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
+        <source>Cannot start datos: click-to-pay handler</source>
         <translation>datos kann nicht gestartet werden: click-to-pay handler</translation>
     </message>
     <message>
@@ -2043,8 +2043,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>URI-Verarbeitung</translation>
     </message>
     <message>
-        <source>'pac://' is not a valid URI. Use 'pac:' instead.</source>
-        <translation>'pac://' ist keine gültige URI. Verwende 'pac:' stattdessen.</translation>
+        <source>'datos://' is not a valid URI. Use 'datos:' instead.</source>
+        <translation>'datos://' ist keine gültige URI. Verwende 'datos:' stattdessen.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -3127,7 +3127,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Wenn die benutzerdefinierten Gebühren auf 1000 duffs gesetzt sind und eine Transaktion hat nur 250 Bytes, dann kostet "pro Kilobyte" nur 250 duffs Gebühren,&lt;br/&gt; während "mindestens" 1000 duffs kostet. Transaktionen größer als 1 Kilobyte werden immer pro Kilobyte bezahlt.</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>Nur die minimalen Gebühren zu zahlen ist völlig ausreichend so lange in einem neuen Block der Blockkette noch genug Platz für neue Transaktionen ist.&lt;br /&gt; Bitte beachten Sie dass wenn dies in der Zukunft nicht mehr der Fall sein sollte Ihre Transaktion eventuell niemals in einen neuen Block aufgenommen werden wird, also niemals bestätigt wird.</translation>
     </message>
     <message>
@@ -3426,8 +3426,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Nachricht:</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
-        <translation>Eine an die "pac:"-URI angefügte Nachricht, die zusammen mit der Transaktion gespeichert wird. Hinweis: Diese Nachricht wird nicht über das datos-Netzwerk gesendet.</translation>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <translation>Eine an die "datos:"-URI angefügte Nachricht, die zusammen mit der Transaktion gespeichert wird. Hinweis: Diese Nachricht wird nicht über das datos-Netzwerk gesendet.</translation>
     </message>
     <message>
         <source>This is an unauthenticated payment request.</source>
@@ -4249,7 +4249,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>Fehler: Abhören nach eingehenden Verbindungen fehlgeschlagen (Fehler %s)</translation>

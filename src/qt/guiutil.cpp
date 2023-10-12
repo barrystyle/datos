@@ -320,7 +320,7 @@ void setupAppearance(QWidget* parent, OptionsModel* model)
 bool parseBitcoinURI(const QUrl &uri, SendCoinsRecipient *out)
 {
     // return if URI is not valid or is no datos: URI
-    if(!uri.isValid() || uri.scheme() != QString("pac"))
+    if(!uri.isValid() || uri.scheme() != QString("datos"))
         return false;
 
     SendCoinsRecipient rv;

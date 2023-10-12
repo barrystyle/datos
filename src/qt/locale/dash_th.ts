@@ -348,7 +348,7 @@
         <translation>&amp;รับ</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
         <translation>เรียกเก็บการชำระเงิน (สร้างคิว อาร์ โค้ด QR codes และแหล่งที่มาของ datos: URIs)</translation>
     </message>
     <message>
@@ -572,7 +572,7 @@
         <translation>เปิด &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
+        <source>Open a datos: URI or payment request</source>
         <translation>เปิด datos: URI หรือคำขอการชำระเงิน</translation>
     </message>
     <message>
@@ -2035,7 +2035,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>คำขอการชำระเงินผิดพลาด</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
+        <source>Cannot start datos: click-to-pay handler</source>
         <translation>ไม่สามารถเริ่มต้น datos: คลิกเพื่อจ่ายเงิน</translation>
     </message>
     <message>
@@ -2043,8 +2043,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>การจัดการ URI</translation>
     </message>
     <message>
-        <source>'pac://' is not a valid URI. Use 'pac:' instead.</source>
-        <translation>'pac://' ไม่ใช่ URI ที่ถูกต้องใช้ 'pac:' แทน</translation>
+        <source>'datos://' is not a valid URI. Use 'datos:' instead.</source>
+        <translation>'datos://' ไม่ใช่ URI ที่ถูกต้องใช้ 'datos:' แทน</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -3127,7 +3127,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>หากค่าธรรมเนียมที่กำหนดเองถูกตั้งค่าเป็น 1000 duffs และการทำธุรกรรมนี้มีเพียง 250 ไบต์   ซึ่ง "ต่อกิโลไบต์" จะจ่ายเพียง 250 duffs ในขณะที่ "อย่างน้อย" จ่าย 1000 duffs สำหรับธุรกรรมที่มีขนาดใหญ่กว่ากิโลไบต์จะต้องจ่ายเป็นกิโลไบต์</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>การจ่ายเงินเพียงค่าขั้นต่ำก็ทำได้ดีตราบเท่าที่ปริมาณธุรกรรมมีน้อยกว่าพื้นที่ในบล็อก&lt;br /&gt; แต่โปรดทราบว่าการจ่ายนี้จะสิ้นสุดลงในธุรกรรมที่ไม่เคยมีการยืนยัน ความต้องการใช้การทำธุรกรรมแบบ datos มีมากกว่าที่เครือข่ายสามารถดำเนินการได้</translation>
     </message>
     <message>
@@ -3426,7 +3426,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>ข้อความ: </translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
         <translation>ข้อความที่แนบมาไปยัง datos: URI ซึ่งจะถูกเก็บไว้กับธุรกรรมเพื่อเป็นข้อมูลอ้างอิงของคุณ  หมายเหตุ: ข้อความนี้จะถูกส่งไปยังเครือข่าย datos </translation>
     </message>
     <message>
@@ -4249,7 +4249,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>ข้อผิดพลาด: ฟังการเชื่อมต่อขาเข้าล้มเหลว (ฟังข้อผิดพลาด %s)</translation>
@@ -5055,8 +5055,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>คิวสุดท้ายถูกสร้างขึ้นเร็วเกินไป</translation>
     </message>
     <message>
-        <source>%s corrupt. Try using the wallet tool pac-wallet to salvage or restoring a backup.</source>
-        <translation>%s ทุจริต ลองใช้ wallet tool pac-wallet เพื่อกอบกู้หรือกู้คืนการสำรองข้อมูล</translation>
+        <source>%s corrupt. Try using the wallet tool datos-wallet to salvage or restoring a backup.</source>
+        <translation>%s ทุจริต ลองใช้ wallet tool datos-wallet เพื่อกอบกู้หรือกู้คืนการสำรองข้อมูล</translation>
     </message>
     <message>
         <source>Can't generate a change-address key. No keys in the internal keypool and can't generate any keys.</source>

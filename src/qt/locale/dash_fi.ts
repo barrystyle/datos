@@ -348,7 +348,7 @@
         <translation>&amp;Vastaanota</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
         <translation>Pyydä maksuja (Luo QR koodit ja datos: URIt)</translation>
     </message>
     <message>
@@ -572,7 +572,7 @@
         <translation>Avaa &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
+        <source>Open a datos: URI or payment request</source>
         <translation>Avaa datos: URI tai maksupyyntö</translation>
     </message>
     <message>
@@ -2035,7 +2035,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Maksupyyntövirhe</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
+        <source>Cannot start datos: click-to-pay handler</source>
         <translation>Ei voi käynnistää datosia: click-to-pay handler</translation>
     </message>
     <message>
@@ -2043,8 +2043,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>URI käsittely</translation>
     </message>
     <message>
-        <source>'pac://' is not a valid URI. Use 'pac:' instead.</source>
-        <translation>'pac://' ei ole validi URI. Käytä sen sijaan 'pac:'.</translation>
+        <source>'datos://' is not a valid URI. Use 'datos:' instead.</source>
+        <translation>'datos://' ei ole validi URI. Käytä sen sijaan 'datos:'.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -3130,7 +3130,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Jos mukautettu siirtomaksu on asetettu 1000 duff ja siirtotapahtuma on vain 250 tavua,&lt;br /&gt;tällöin "per kilotavu" maksaa vain 250 duffs siirtomaksun, kun taas "vähintään" maksaa 1000 duffs.&lt;br /&gt;Siirtotapahtumat jotka ovat isompia kuin kilotavu, molemmat maksaa "per kilotavu".</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>Minimi siirtomaksun maksaminen on ok niin kauan kun siirtotapahtumien määrä on pienempi kuin tila lohkoissa.&lt;br /&gt;Mutta ota huomioon että tämä voi johtaa siirtotapahtumaan jota ei vahvisteta koskaan, jos siirtotapahtumia on enemmän kuin verkko voi käsitellä.</translation>
     </message>
     <message>
@@ -3429,7 +3429,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Viesti:</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
         <translation>Viesti joka liitettiin datos: URI joka tallenetaan siirtotapahtuman kanssa viitteeksi sinulle. Huomio: Tätä viestiä ei lähetetä datos verkkoon.</translation>
     </message>
     <message>
@@ -4252,7 +4252,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>Virhe: Sisääntulevien yhteyksien kuuntelu epäonnistui (kuuntelu palautti virheen %s)</translation>
@@ -5065,8 +5065,8 @@ Vähennä uakommenttien määrää tai kokoa.</translation>
         <translation>Viimeisin jono on luotu liian äskettäin.</translation>
     </message>
     <message>
-        <source>%s corrupt. Try using the wallet tool pac-wallet to salvage or restoring a backup.</source>
-        <translation> %s vioittunut. Yritä käyttää lompakkotyökalua pac-wallet pelastaaksesi tai palauttaaksesi varmuuskopion.</translation>
+        <source>%s corrupt. Try using the wallet tool datos-wallet to salvage or restoring a backup.</source>
+        <translation> %s vioittunut. Yritä käyttää lompakkotyökalua datos-wallet pelastaaksesi tai palauttaaksesi varmuuskopion.</translation>
     </message>
     <message>
         <source>Can't generate a change-address key. No keys in the internal keypool and can't generate any keys.</source>

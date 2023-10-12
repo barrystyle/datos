@@ -348,7 +348,7 @@
         <translation>&amp;Ontvangen</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
         <translation>Vraag betaling aan (genereert QR-codes en datos: URI's)</translation>
     </message>
     <message>
@@ -572,8 +572,8 @@
         <translation>Open &amp;URI</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
-        <translation>Open een pac: URI of betalingsaanvraag</translation>
+        <source>Open a datos: URI or payment request</source>
+        <translation>Open een datos: URI of betalingsaanvraag</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -2036,7 +2036,7 @@ Om te mixen moeten andere gebruikers exact dezelfde denominaties inbrengen.</tra
         <translation>Fout bij betalingsverzoek</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
+        <source>Cannot start datos: click-to-pay handler</source>
         <translation>Kan datos niet starten: click-to-pay handler</translation>
     </message>
     <message>
@@ -2044,8 +2044,8 @@ Om te mixen moeten andere gebruikers exact dezelfde denominaties inbrengen.</tra
         <translation>URI-afhandeling</translation>
     </message>
     <message>
-        <source>'pac://' is not a valid URI. Use 'pac:' instead.</source>
-        <translation>'pac://' is geen geldige URI. Gebruik in plaats daarvan 'pac:'.</translation>
+        <source>'datos://' is not a valid URI. Use 'datos:' instead.</source>
+        <translation>'datos://' is geen geldige URI. Gebruik in plaats daarvan 'datos:'.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -3129,7 +3129,7 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het datos netwe
         <translation>Als de aangepaste vergoeding is ingesteld op 1000 duffs en de transactie is maar 250 bytes, dan wordt bij "per kilobyte" 250 duffs aan toeslag berekend, &lt;br /&gt;terwijl er bij "tenminste" 1000 duffs worden berekend. Voor transacties die groter zijn dan een kilobyte, wordt in beide gevallen per kilobyte de toeslag berekend.</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>Het betalen van de minimale vergoeding is prima zo lang er minder transactie volume is dan ruimte in de blocks. &lt;br /&gt;Maar houd er rekening mee dat dit kan eindigen in een nooit bevestigde transactie zodra er meer vraag is voor datos transacties fdan het netwerk kan verwerken.</translation>
     </message>
     <message>
@@ -3428,8 +3428,8 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het datos netwe
         <translation>Bericht:</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
-        <translation>Een boodschap die was bijgevoegd aan de pac: URI die met de transactie voor uw referentie wordt opgeslagen. Opmerking: Dit bericht zal niet over het datos netwerk worden verzonden.</translation>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <translation>Een boodschap die was bijgevoegd aan de datos: URI die met de transactie voor uw referentie wordt opgeslagen. Opmerking: Dit bericht zal niet over het datos netwerk worden verzonden.</translation>
     </message>
     <message>
         <source>This is an unauthenticated payment request.</source>
@@ -4251,7 +4251,7 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het datos netwe
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>Fout: luisteren naar binnenkomende verbindingen mislukt (luisteren gaf foutmelding %s)</translation>
@@ -5063,7 +5063,7 @@ Nota: Het bericht zal niet verzonden worden met de betaling over het datos netwe
         <translation>Vorige wachtrij is te recent gecreëerd.</translation>
     </message>
     <message>
-        <source>%s corrupt. Try using the wallet tool pac-wallet to salvage or restoring a backup.</source>
+        <source>%s corrupt. Try using the wallet tool datos-wallet to salvage or restoring a backup.</source>
         <translation>%s corrupt. Probeer de portemonnee tool te gebruiken om een back-up te redden of te herstellen.</translation>
     </message>
     <message>

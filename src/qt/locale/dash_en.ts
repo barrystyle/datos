@@ -447,8 +447,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
-        <translation>Request payments (generates QR codes and pac: URIs)</translation>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
+        <translation>Request payments (generates QR codes and datos: URIs)</translation>
     </message>
     <message>
         <location line="+70"/>
@@ -727,8 +727,8 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Open a pac: URI or payment request</source>
-        <translation>Open a pac: URI or payment request</translation>
+        <source>Open a datos: URI or payment request</source>
+        <translation>Open a datos: URI or payment request</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2586,8 +2586,8 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
     <message>
         <location line="-529"/>
-        <source>Cannot start pac: click-to-pay handler</source>
-        <translation>Cannot start pac: click-to-pay handler</translation>
+        <source>Cannot start datos: click-to-pay handler</source>
+        <translation>Cannot start datos: click-to-pay handler</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -2600,8 +2600,8 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
     <message>
         <location line="-55"/>
-        <source>&apos;pac://&apos; is not a valid URI. Use &apos;pac:&apos; instead.</source>
-        <translation>&apos;pac://&apos; is not a valid URI. Use &apos;pac:&apos; instead.</translation>
+        <source>&apos;datos://&apos; is not a valid URI. Use &apos;datos:&apos; instead.</source>
+        <translation>&apos;datos://&apos; is not a valid URI. Use &apos;datos:&apos; instead.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -4022,8 +4022,8 @@ https://www.transifex.com/projects/p/pac/</translation>
     <message>
         <location line="+30"/>
         <location line="+13"/>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
-        <translation>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</translation>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
+        <translation>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</translation>
     </message>
     <message>
         <location line="-40"/>
@@ -4411,8 +4411,8 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
     <message>
         <location line="+10"/>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
-        <translation>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</translation>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <translation>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</translation>
     </message>
     <message>
         <location line="+433"/>
@@ -5467,9 +5467,9 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
-        <location filename="../pacstrings.cpp" line="+41"/>
+        <location filename="../dashstrings.cpp" line="+41"/>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>Error: Listening for incoming connections failed (listen returned error %s)</translation>
     </message>
@@ -6482,8 +6482,8 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
     <message>
         <location line="-208"/>
-        <source>%s corrupt. Try using the wallet tool pac-wallet to salvage or restoring a backup.</source>
-        <translation>%s corrupt. Try using the wallet tool pac-wallet to salvage or restoring a backup.</translation>
+        <source>%s corrupt. Try using the wallet tool datos-wallet to salvage or restoring a backup.</source>
+        <translation>%s corrupt. Try using the wallet tool datos-wallet to salvage or restoring a backup.</translation>
     </message>
     <message>
         <location line="+12"/>

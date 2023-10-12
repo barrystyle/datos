@@ -348,7 +348,7 @@
         <translation>استقبل</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
         <translation>أطلب دفعات (يولد كودات الرمز المربع وبيت كوين: العناوين المعطاة)</translation>
     </message>
     <message>
@@ -572,7 +572,7 @@
         <translation>فتح URI</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
+        <source>Open a datos: URI or payment request</source>
         <translation>افتح شرطة: عنوان أوري أو طلب الدفع</translation>
     </message>
     <message>
@@ -2035,7 +2035,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>خطأ في طلب الدفع</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
+        <source>Cannot start datos: click-to-pay handler</source>
         <translation>لا يمكن بدء داش: معالج الدفع مقابل الدفع</translation>
     </message>
     <message>
@@ -2043,8 +2043,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>التعامل مع العنوان</translation>
     </message>
     <message>
-        <source>'pac://' is not a valid URI. Use 'pac:' instead.</source>
-        <translation>'pac: //' ليس URI صالحًا. استخدم "شرطة:" بدلاً من ذلك.</translation>
+        <source>'datos://' is not a valid URI. Use 'datos:' instead.</source>
+        <translation>'datos: //' ليس URI صالحًا. استخدم "شرطة:" بدلاً من ذلك.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -3127,7 +3127,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>إذا تم تعيين الرسوم الجمركية على 1000 دافع وكانت المعاملة 250 بايتًا فقط ، فإن "كل كيلوبايت" يدفع 250 جنيهًا فقط رسومًا ،&lt;br /&gt; بينما "على الأقل" يدفع 1000 دفين. لمعاملات أكبر من كيلوبايت تدفع كل من كيلوبايت.</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>إن دفع الحد الأدنى فقط من الرسوم يكون على ما يرام طالما أن حجم المعاملات أقل من المساحة الموجودة في الكتل.&lt;br /&gt; ولكن كن على علم بأن هذا يمكن أن ينتهي في معاملة تؤكد أبدا عندما يكون هناك المزيد من الطلب على معاملات اندفاعة مما يمكن أن تعالجه الشبكة.</translation>
     </message>
     <message>
@@ -3426,7 +3426,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>الرسائل</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
         <translation>رسالة تم إرفاقها بخط العطف: عنوان الذي سيتم تخزينه مع المعاملة كمرجع لك. ملاحظة: لن يتم إرسال هذه الرسالة عبر شبكة داش.</translation>
     </message>
     <message>
@@ -4249,7 +4249,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>خطأ: فشل الاستماع إلى الاتصالات الواردة (تم إرجاع الخطأ %s)</translation>

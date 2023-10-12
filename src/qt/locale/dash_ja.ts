@@ -348,8 +348,8 @@
         <translation>受取 (&amp;R)</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
-        <translation>送金を要求 (QRコードとpac:URIを生成)</translation>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
+        <translation>送金を要求 (QRコードとdatos:URIを生成)</translation>
     </message>
     <message>
         <source>&amp;Sending addresses</source>
@@ -572,8 +572,8 @@
         <translation>URIを開く… (&amp;U)</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
-        <translation>pac: URIまたは送金リクエストを開く</translation>
+        <source>Open a datos: URI or payment request</source>
+        <translation>datos: URIまたは送金リクエストを開く</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
@@ -2035,7 +2035,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>支払いリクエストのエラー</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
+        <source>Cannot start datos: click-to-pay handler</source>
         <translation>datos を起動できません: click-to-pay ハンドラー</translation>
     </message>
     <message>
@@ -2043,8 +2043,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>URI のハンドリング</translation>
     </message>
     <message>
-        <source>'pac://' is not a valid URI. Use 'pac:' instead.</source>
-        <translation>「pac://」は有効なURIではありません。代わりに「pac:」を使ってください。</translation>
+        <source>'datos://' is not a valid URI. Use 'datos:' instead.</source>
+        <translation>「datos://」は有効なURIではありません。代わりに「datos:」を使ってください。</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -3127,7 +3127,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>カスタマイズされた手数料が1000duffsに設定され、トランザクションが250 bytesしかなかった場合、キロバイトあたりでは250 duffsしか手数料を支払いませんが&lt;br /&gt;最低でも1000 duffs支払います。1キロバイト以上のトランザクションに対しては、1キロバイトあたり1000duffs支払います。</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>最低限の手数料しか支払わなくても、トランザクション量以上のスペースが対象ブロックにあれば問題ありません。&lt;br /&gt;しかし、ネットワークが処理できる以上のdatosのトランザクション需要があれば、処理されないトランザクションになり得ることに注意してください。</translation>
     </message>
     <message>
@@ -3426,7 +3426,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>メッセージ：</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
         <translation>datos: URIに添付されていたメッセージです。これは参照用としてトランザクションとともに保存されます。注意：このメッセージはdatosネットワークを経由して送信されるわけではありません。</translation>
     </message>
     <message>
@@ -4249,7 +4249,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>エラー： 受信中の接続をリッスンするのに失敗しました (エラー %s )</translation>
@@ -5060,8 +5060,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>直近のキューがかなり最近に作成されました。</translation>
     </message>
     <message>
-        <source>%s corrupt. Try using the wallet tool pac-wallet to salvage or restoring a backup.</source>
-        <translation>%sが破損しています。ウォレットツールのpac-walletを使用してサルベージするか、バックアップを復元してみてください。</translation>
+        <source>%s corrupt. Try using the wallet tool datos-wallet to salvage or restoring a backup.</source>
+        <translation>%sが破損しています。ウォレットツールのdatos-walletを使用してサルベージするか、バックアップを復元してみてください。</translation>
     </message>
     <message>
         <source>Can't generate a change-address key. No keys in the internal keypool and can't generate any keys.</source>
