@@ -289,21 +289,20 @@ public:
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        vSeeds.emplace_back("seed.pacglobal.io");
 
-        // datos addresses start with 'P'
-        base58Prefixes[PUBKEY_ADDRESS] = {0x37};
-        // datos script addresses start with '5'
-        base58Prefixes[SCRIPT_ADDRESS] = {0x0a};
-        // datos private keys start with '7' or 'X'
+        // Datos addresses start with 'd'
+        base58Prefixes[PUBKEY_ADDRESS] = {0x5a};
+        // Datos script addresses start with 'e' or 'f'
+        base58Prefixes[SCRIPT_ADDRESS] = {0x5e};
+        // Datos private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] = {0xcc};
-        // datos BIP32 pubkeys start with 'pacp'
-        base58Prefixes[EXT_PUBLIC_KEY] = {0x03, 0xdd, 0x3e, 0x31};
-        // datos BIP32 prvkeys start with 'pacv'
-        base58Prefixes[EXT_SECRET_KEY] = {0x03, 0xdd, 0x3e, 0x5a};
+        // Datos BIP32 pubkeys start with 'dtsp'
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x02, 0xff, 0x15, 0x66};
+        // Datos BIP32 prvkeys start with 'dtsv'
+        base58Prefixes[EXT_SECRET_KEY] = {0x02, 0xff, 0x15, 0x90};
 
-        // datos BIP44 coin type is '8192'
-        nExtCoinType = 8192;
+        // Datos BIP44 coin type is '6144'
+        nExtCoinType = 6144;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
@@ -490,19 +489,19 @@ public:
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
         vSeeds.clear();
 
-        // datos addresses start with 'P'
-        base58Prefixes[PUBKEY_ADDRESS] = {0x37};
-        // datos script addresses start with '5'
-        base58Prefixes[SCRIPT_ADDRESS] = {0x0a};
-        // datos private keys start with '7' or 'X'
+        // Datos addresses start with 'd'
+        base58Prefixes[PUBKEY_ADDRESS] = {0x5a};
+        // Datos script addresses start with 'e' or 'f'
+        base58Prefixes[SCRIPT_ADDRESS] = {0x5e};
+        // Datos private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] = {0xcc};
-        // datos BIP32 pubkeys start with 'pacp'
-        base58Prefixes[EXT_PUBLIC_KEY] = {0x03, 0xdd, 0x3e, 0x31};
-        // datos BIP32 prvkeys start with 'pacv'
-        base58Prefixes[EXT_SECRET_KEY] = {0x03, 0xdd, 0x3e, 0x5a};
+        // Datos BIP32 pubkeys start with 'dtsp'
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x02, 0xff, 0x15, 0x66};
+        // Datos BIP32 prvkeys start with 'dtsv'
+        base58Prefixes[EXT_SECRET_KEY] = {0x02, 0xff, 0x15, 0x90};
 
-        // Testnet Dash BIP44 coin type is '8192' (same as mainnet, why change it?)
-        nExtCoinType = 8192;
+        // Datos BIP44 coin type is '6144'
+        nExtCoinType = 6144;
 
         // long living quorum params
         AddLLMQ(Consensus::LLMQType::LLMQ_TEST);
