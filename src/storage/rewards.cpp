@@ -6,7 +6,7 @@
 
 CAmount GetBaseReward()
 {
-    return 8280 * COIN;
+    return 8824 * COIN;
 }
 
 CAmount CalculateNodeReward(CAmount& base_reward, int space_mode, int score)

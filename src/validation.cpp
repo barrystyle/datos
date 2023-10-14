@@ -1056,13 +1056,12 @@ NOTE:   unlike bitcoin we are using PREVIOUS block height here,
 */
 CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
-    CAmount nSubsidy = 110 * COIN;
-    CAmount nSuperblockPart = 10 * COIN;
+    CAmount nSubsidy = 30 * COIN;
+    CAmount nSuperblockPart = 0 * COIN;
 
-    // these blocks make up the pool for
-    // the initial chainswap from legacy pac
-    if (nPrevHeight < 50) {
-        nSubsidy = 400000000 * COIN;
+    // minted for company wallet
+    if (nPrevHeight <= 250) {
+        nSubsidy = 8000000 * COIN;
     }
 
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
