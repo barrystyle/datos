@@ -80,7 +80,7 @@ static CBlock CreateDevNetGenesisBlock(const uint256 &prevBlockHash, const std::
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "pacprotocol aug2022 ~ setting the standard for masternode technology";
+    const char* pszTimestamp = "datos oct2023 - decentralized masternode storage solution";
     const CScript genesisOutputScript = CScript() << ParseHex("040184710fa689ad5023690c80f3a49c8f13f8d45b8c857fbcbc8bc4a8e4d3eb4b10f4d4604fa08dce601aaf0f470216fe1b51850b4acf21b179c45070ac7b03a9") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -279,10 +279,10 @@ public:
         m_assumed_blockchain_size = 45;
         m_assumed_chain_state_size = 1;
 
-        genesis = CreateGenesisBlock(1659283200, 130758, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1697246000, 104464, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000b7688496a2e00c2cc77b07e58d7d167090a0705dff8514854df21be68f1a"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00005f2023f0c8d90e28c3f8c693f1f66d40c80854bb421fea9cd3325e6ca285"));
+        assert(genesis.hashMerkleRoot == uint256S("0xd1aa59f1847a4036dcdbd3c1c4015add886ab2bb16564bdaf873013cc792214f"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -330,7 +330,7 @@ public:
         nPoolMaxParticipants = 20;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
 
-        vSporkAddresses = {"PGtvidAAsW6a9tMBKmdh2tZ1B3SxFDpdXP"};
+        vSporkAddresses = {"dRrLXNGN9syvTHJxiABZWNJvXT2FLBre7n"};
         nMinSporkKeys = 1;
         fBIP9CheckMasternodesUpgraded = true;
 
@@ -341,10 +341,9 @@ public:
         };
 
         chainTxData = ChainTxData{
-            1660074878, // * UNIX timestamp of last known number of transactions (Block 1718597)
-            43702293,   // * total number of transactions between genesis and that timestamp
-                        //   (the tx=... number in the ChainStateFlushed debug.log lines)
-            0.175       // * estimated number of transactions per second after that timestamp
+            genesis.nTime,
+            0,
+            0
         };
     }
 };
@@ -480,10 +479,10 @@ public:
         m_assumed_blockchain_size = 4;
         m_assumed_chain_state_size = 1;
 
-        genesis = CreateGenesisBlock(1676542106, 14592, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1697247000, 47480, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000c1d5a99b9ff92241651f40efea1baf99c26edc202c025f62fa084a59d4d3"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000087ff71b163016abe9d17ad7685615cdd5a0d1822b64b1d2525b1528cfff9"));
+        assert(genesis.hashMerkleRoot == uint256S("0xd1aa59f1847a4036dcdbd3c1c4015add886ab2bb16564bdaf873013cc792214f"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
@@ -528,7 +527,7 @@ public:
         nPoolMaxParticipants = 20;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
 
-        vSporkAddresses = {"PGtvidAAsW6a9tMBKmdh2tZ1B3SxFDpdXP"};
+        vSporkAddresses = {"dRrLXNGN9syvTHJxiABZWNJvXT2FLBre7n"};
         nMinSporkKeys = 1;
         fBIP9CheckMasternodesUpgraded = true;
 
@@ -539,10 +538,9 @@ public:
         };
 
         chainTxData = ChainTxData{
-            1663887232, // * UNIX timestamp of last known number of transactions (Block 1592)
-            3406,       // * total number of transactions between genesis and that timestamp
-                        //   (the tx=... number in the ChainStateFlushed debug.log lines)
-            0.001       // * estimated number of transactions per second after that timestamp
+            genesis.nTime,
+            0,
+            0
         };
     }
 };
@@ -679,10 +677,10 @@ public:
         m_assumed_chain_state_size = 0;
 
         UpdateDevnetSubsidyAndDiffParametersFromArgs(args);
-        genesis = CreateGenesisBlock(1659283202, 44131, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1697248000, 2, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000c8fd84241870d62f9ba22bc8edc0df4edfa761d79998e3451883f13790a5"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
+        assert(consensus.hashGenesisBlock == uint256S("0x29714ed4d24d182dc4c9ea6cce414d87a4991d91cfe96cb18f629981d1a75c39"));
+        assert(genesis.hashMerkleRoot == uint256S("0xd1aa59f1847a4036dcdbd3c1c4015add886ab2bb16564bdaf873013cc792214f"));
 
         devnetGenesis = FindDevNetGenesisBlock(genesis, 50 * COIN);
         consensus.hashDevnetGenesisBlock = devnetGenesis.GetHash();
@@ -954,10 +952,10 @@ public:
         UpdateDIP8ParametersFromArgs(args);
         UpdateBudgetParametersFromArgs(args);
 
-        genesis = CreateGenesisBlock(1659283203, 1, 0x207fffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1697249000, 27180, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x6d6d2f2e08d83744359cbed961b941528fd85761faf501abbcdf11ff025fc0cc"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000d94cc68e7e6af6d6dd1b7898090373c87b357408971427a9420318a7f9e6"));
+        assert(genesis.hashMerkleRoot == uint256S("0xd1aa59f1847a4036dcdbd3c1c4015add886ab2bb16564bdaf873013cc792214f"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
