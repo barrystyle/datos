@@ -14,8 +14,8 @@ namespace Consensus {
 enum class LLMQType : uint8_t {
     LLMQ_NONE = 0xff,
 
-    LLMQ_50_60 = 1,  // 50 members, 30 (60%) threshold, one per hour
-    LLMQ_400_60 = 2, // 400 members, 240 (60%) threshold, one every 12 hours
+    LLMQ_DATOS_64 = 1,  // 64 members, 5 threshold, one per hour
+    LLMQ_DATOS_1024 = 2, // 1024 members, 5 threshold, one every 12 hours
     LLMQ_400_85 = 3, // 400 members, 340 (85%) threshold, one every 24 hours
     LLMQ_100_67 = 4, // 100 members, 67 (67%) threshold, one per hour
     LLMQ_60_75 = 5,  // 60 members, 45 (75%) threshold, one every 12 hours
@@ -259,28 +259,28 @@ static constexpr std::array<LLMQParams, 11> available_llmqs = {
     },
 
     /**
-     * llmq_50_60
+     * llmq_datos_64
      * This quorum is deployed on mainnet and requires
-     * 40 - 50 participants
+     * 5 - 64 participants
      *
      */
     LLMQParams{
-        .type = LLMQType::LLMQ_50_60,
-        .name = "llmq_50_60",
+        .type = LLMQType::LLMQ_DATOS_64,
+        .name = "llmq_datos_64",
         .useRotation = false,
-        .size = 50,
-        .minSize = 40,
-        .threshold = 30,
+        .size = 64,
+        .minSize = 5,
+        .threshold = 4,
 
         .dkgInterval = 24, // one DKG per hour
         .dkgPhaseBlocks = 2,
         .dkgMiningWindowStart = 10, // dkgPhaseBlocks * 5 = after finalization
         .dkgMiningWindowEnd = 18,
-        .dkgBadVotesThreshold = 40,
+        .dkgBadVotesThreshold = 5,
 
         .signingActiveQuorumCount = 24, // a full day worth of LLMQs
-        .keepOldConnections = 25,
-        .recoveryMembers = 25,
+        .keepOldConnections = 5,
+        .recoveryMembers = 4,
     },
 
     /**
@@ -309,29 +309,28 @@ static constexpr std::array<LLMQParams, 11> available_llmqs = {
     },
 
     /**
-     * llmq_400_60
+     * llmq_datos_1024
      * This quorum is deployed on mainnet and requires
-     * 300 - 400 participants
+     * 5 - 1024 participants
      *
      */
     LLMQParams{
-        .type = LLMQType::LLMQ_400_60,
-        .name = "llmq_400_60",
+        .type = LLMQType::LLMQ_DATOS_1024,
+        .name = "llmq_datos_1024",
         .useRotation = false,
-        .size = 400,
-        .minSize = 300,
-        .threshold = 240,
+        .size = 1024,
+        .minSize = 5,
+        .threshold = 4,
 
         .dkgInterval = 24 * 12, // one DKG every 12 hours
         .dkgPhaseBlocks = 4,
         .dkgMiningWindowStart = 20, // dkgPhaseBlocks * 5 = after finalization
         .dkgMiningWindowEnd = 28,
-        .dkgBadVotesThreshold = 300,
+        .dkgBadVotesThreshold = 5,
 
         .signingActiveQuorumCount = 4, // two days worth of LLMQs
-
         .keepOldConnections = 5,
-        .recoveryMembers = 100,
+        .recoveryMembers = 4,
     },
 
     /**

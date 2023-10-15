@@ -307,14 +307,12 @@ public:
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
         // long living quorum params
-        AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
-        AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
-        AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_64);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_1024);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_85);
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
-        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_400_60;
-        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_50_60;
-        consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
+        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_DATOS_1024;
+        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_DATOS_64;
         consensus.llmqTypePlatform = Consensus::LLMQType::LLMQ_100_67;
         consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_400_85;
 
@@ -504,14 +502,12 @@ public:
 
         // long living quorum params
         AddLLMQ(Consensus::LLMQType::LLMQ_TEST);
-        AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
-        AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
-        AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_64);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_1024);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_85);
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
         consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_TEST;
         consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_TEST;
-        consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
         consensus.llmqTypePlatform = Consensus::LLMQType::LLMQ_100_67;
         consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_TEST;
 
@@ -704,18 +700,18 @@ public:
         nExtCoinType = 1;
 
         // long living quorum params
-        AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_64);
         AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
-        AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_1024);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_85);
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
         AddLLMQ(Consensus::LLMQType::LLMQ_DEVNET);
         AddLLMQ(Consensus::LLMQType::LLMQ_DEVNET_DIP0024);
-        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_50_60;
-        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_50_60;
+        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_DATOS_64;
+        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_DATOS_64;
         consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
         consensus.llmqTypePlatform = Consensus::LLMQType::LLMQ_100_67;
-        consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_50_60;
+        consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_DATOS_64;
 
         UpdateDevnetLLMQChainLocksFromArgs(args);
         UpdateDevnetLLMQInstantSendFromArgs(args);

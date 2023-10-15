@@ -521,7 +521,7 @@ static bool EvalSpork(Consensus::LLMQType llmqType, int64_t spork_value)
     if (spork_value == 0) {
         return true;
     }
-    if (spork_value == 1 && llmqType != Consensus::LLMQType::LLMQ_100_67 && llmqType != Consensus::LLMQType::LLMQ_400_60 && llmqType != Consensus::LLMQType::LLMQ_400_85) {
+    if (spork_value == 1 && llmqType != Consensus::LLMQType::LLMQ_100_67 && llmqType != Consensus::LLMQType::LLMQ_DATOS_1024 && llmqType != Consensus::LLMQType::LLMQ_400_85) {
         return true;
     }
     return false;
@@ -822,7 +822,7 @@ bool CLLMQUtils::IsQuorumTypeEnabledInternal(Consensus::LLMQType llmqType, const
     {
         case Consensus::LLMQType::LLMQ_TEST_INSTANTSEND:
         case Consensus::LLMQType::LLMQ_DEVNET:
-        case Consensus::LLMQType::LLMQ_50_60: {
+        case Consensus::LLMQType::LLMQ_DATOS_64: {
             if (IsInstantSendLLMQTypeShared()) {
                 break;
             }
@@ -838,7 +838,7 @@ bool CLLMQUtils::IsQuorumTypeEnabledInternal(Consensus::LLMQType llmqType, const
             break;
         }
         case Consensus::LLMQType::LLMQ_TEST:
-        case Consensus::LLMQType::LLMQ_400_60:
+        case Consensus::LLMQType::LLMQ_DATOS_1024:
         case Consensus::LLMQType::LLMQ_400_85:
             break;
         case Consensus::LLMQType::LLMQ_100_67:
