@@ -74,12 +74,12 @@
         <translation>Адреса получения</translation>
     </message>
     <message>
-        <source>These are your datosdrive addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
-        <translation>Это ваши адреса datosdrive для отправки платежей. Всегда проверяйте количество и адрес получателя перед отправкой перевода.</translation>
+        <source>These are your Datos addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <translation>Это ваши адреса datos для отправки платежей. Всегда проверяйте количество и адрес получателя перед отправкой перевода.</translation>
     </message>
     <message>
-        <source>These are your datosdrive addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
-        <translation>Это ваши адреса datosdrive для получения платежей. Используйте кнопку 'Создать новый адрес для получения' на закладке получения для создания новых адресов.</translation>
+        <source>These are your Datos addresses for receiving payments. Use the 'Create new receiving address' button in the receive tab to create new addresses.</source>
+        <translation>Это ваши адреса datos для получения платежей. Используйте кнопку 'Создать новый адрес для получения' на закладке получения для создания новых адресов.</translation>
     </message>
     <message>
         <source>&amp;Copy Address</source>
@@ -324,8 +324,8 @@
 <context>
     <name>BitcoinGUI</name>
     <message>
-        <source>A fatal error occurred. datosdrive can no longer continue safely and will quit.</source>
-        <translation>Произошла критическая ошибка. Дальнейшая безопасная работа datosdrive невозможна, программа будет закрыта.</translation>
+        <source>A fatal error occurred. Datos can no longer continue safely and will quit.</source>
+        <translation>Произошла критическая ошибка. Дальнейшая безопасная работа datos невозможна, программа будет закрыта.</translation>
     </message>
     <message>
         <source>&amp;Overview</source>
@@ -340,16 +340,16 @@
         <translation>&amp;Отправить</translation>
     </message>
     <message>
-        <source>Send coins to a datosdrive address</source>
-        <translation>Отправить монеты на указанный адрес datosdrive</translation>
+        <source>Send coins to a Datos address</source>
+        <translation>Отправить монеты на указанный адрес datos</translation>
     </message>
     <message>
         <source>&amp;Receive</source>
         <translation>&amp;Получить</translation>
     </message>
     <message>
-        <source>Request payments (generates QR codes and pac: URIs)</source>
-        <translation>Запросить платежи (создать QR-коды и pac: URI)</translation>
+        <source>Request payments (generates QR codes and datos: URIs)</source>
+        <translation>Запросить платежи (создать QR-коды и datos: URI)</translation>
     </message>
     <message>
         <source>&amp;Sending addresses</source>
@@ -436,8 +436,8 @@
         <translation>&amp;О %1</translation>
     </message>
     <message>
-        <source>Send %1 funds to a datosdrive address</source>
-        <translation>Отправить %1 средства на datosdrive адрес</translation>
+        <source>Send %1 funds to a Datos address</source>
+        <translation>Отправить %1 средства на datos адрес</translation>
     </message>
     <message>
         <source>Modify configuration options for %1</source>
@@ -492,16 +492,16 @@
         <translation>П&amp;одписать сообщение...</translation>
     </message>
     <message>
-        <source>Sign messages with your datosdrive addresses to prove you own them</source>
-        <translation>Подписать сообщения вашими адресами datosdrive, чтобы доказать, что вы ими владеете</translation>
+        <source>Sign messages with your Datos addresses to prove you own them</source>
+        <translation>Подписать сообщения вашими адресами datos, чтобы доказать, что вы ими владеете</translation>
     </message>
     <message>
         <source>&amp;Verify message...</source>
         <translation>&amp;Проверить сообщение...</translation>
     </message>
     <message>
-        <source>Verify messages to ensure they were signed with specified datosdrive addresses</source>
-        <translation>Проверить сообщения, чтобы удостовериться, что они были подписаны определёнными адресами datosdrive</translation>
+        <source>Verify messages to ensure they were signed with specified Datos addresses</source>
+        <translation>Проверить сообщения, чтобы удостовериться, что они были подписаны определёнными адресами datos</translation>
     </message>
     <message>
         <source>&amp;Information</source>
@@ -572,15 +572,15 @@
         <translation>Открыть &amp;URI...</translation>
     </message>
     <message>
-        <source>Open a pac: URI or payment request</source>
-        <translation>Открыть pac: URI или запрос платежа</translation>
+        <source>Open a datos: URI or payment request</source>
+        <translation>Открыть datos: URI или запрос платежа</translation>
     </message>
     <message>
         <source>&amp;Command-line options</source>
         <translation>&amp;Параметры командной строки</translation>
     </message>
     <message>
-        <source>Show the %1 help message to get a list with possible datosdrive command-line options</source>
+        <source>Show the %1 help message to get a list with possible Datos command-line options</source>
         <translation>Показать справку по %1 со списком возможных параметров командной строки</translation>
     </message>
     <message>
@@ -646,8 +646,8 @@
         <translation>Посмотреть предложения по Управлению</translation>
     </message>
     <message numerus="yes">
-        <source>%n active connection(s) to datosdrive network</source>
-        <translation><numerusform>%n активное соединение с сетью datosdrive</numerusform><numerusform>%n активных соединения с сетью datosdrive</numerusform><numerusform>%n активных соединений с сетью datosdrive</numerusform><numerusform>%n активных соединений с сетью datosdrive</numerusform></translation>
+        <source>%n active connection(s) to Datos network</source>
+        <translation><numerusform>%n активное соединение с сетью datos</numerusform><numerusform>%n активных соединения с сетью datos</numerusform><numerusform>%n активных соединений с сетью datos</numerusform><numerusform>%n активных соединений с сетью datos</numerusform></translation>
     </message>
     <message>
         <source>Network activity disabled</source>
@@ -1096,8 +1096,8 @@
         <translation>Изменение адреса для отправки</translation>
     </message>
     <message>
-        <source>The entered address "%1" is not a valid datosdrive address.</source>
-        <translation>Введённый адрес "%1" не является правильным адресом datosdrive.</translation>
+        <source>The entered address "%1" is not a valid Datos address.</source>
+        <translation>Введённый адрес "%1" не является правильным адресом datos.</translation>
     </message>
     <message>
         <source>Address "%1" already exists as a receiving address with label "%2" and so cannot be added as a sending address.</source>
@@ -1185,8 +1185,8 @@
         <translation>Информация о %1</translation>
     </message>
     <message>
-        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the datosdrive in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 DTS, 0.01 DTS, 0.1 DTS, 1 DTS and 10 DTS -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
-        <translation>&lt;h3&gt;Основы %1&lt;/h3&gt;%1 позволяет Вам получить настоящую финансовую конфиденциальность за счет скрытия источников Ваших средств. Все datosdrive в  Вашем кошельке состоят из различных "входов", Вы можете думать о них как об отдельных монетах.&lt;br&gt;%1 использует инновационный процесс для перемешивания Ваших входов со входами еще двоих или более человек, но при этом Ваши монеты никогда не покидают Ваш кошелек. Вы сохраняете контроль над Вашими деньгами на протяжении всего времени.&lt;hr&gt; &lt;b&gt;%1 работает так:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 начинается с разбиения Ваших входов транзакций на стандартные номиналы. Такими номиналами являются 0.001 DTS, 0.01 DTS, 0.1 DTS, 1 DTS и 10 DTS -- что-то вроде купюр, которыми вы пользуетесь каждый день.&lt;/li&gt; &lt;li&gt;Ваш кошелек затем отправляет запросы к особым образом настроенным сетевым узлам, называемым "мастернодами". Эти мастерноды знают только то, что Вы хотите перемешать определенные номиналы. Никакой идентифицирующей информации мастернодам не отправляется, так что они не знают "кто" Вы конкретно.&lt;/li&gt; &lt;li&gt;Сессия перемешивания начинается тогда, когда еще двое или более человек отправляют схожее сообщение, подтверждающее, что они хотят перемешать точно такой же номинал. Мастернода перемешивает входы и просит кошельки всех пользователей осуществить платежи по ним. Ваш кошелек осуществляет выплату самому себе, но на другой адрес (тоже из вашего кошелька).&lt;/li&gt; &lt;li&gt;Для скрытия Ваших средств кошелек должен повторить этот процесс несколько раз с каждым номиналом. Каждый раз, когда такой процесс завершается, называется "раундом". С каждым раундом %1 становится экспоненциально сложнее определить откуда поступили средства.&lt;/li&gt; &lt;li&gt;Процесс перемешивания выполняется в фоне, без участия пользователя. Когда Вы захотите провести транзакцию, средства уже будут перемешаны. Дополнительно ждать не требуется.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;ВАЖНО:&lt;/b&gt; Ваш кошелек содержит 1000 адресов. Каждое перемешивание использует до 9 из этих адресов. Это означает, что 1000 адресов хватит примерно на 100 перемешиваний. Когда 900 адресов будут уже использованы, Ваш кошелек должен создать новые адреса. Однако, он может сделать это, только если у Вас включены автоматические резервные копии.&lt;br&gt;Соответственно, пользователям с отключенным резервным копированием %1 не доступен. &lt;hr&gt;Дополнительная информация доступна в &lt;a style="%2" href="%3"&gt; документации %1&lt;/a&gt;.</translation>
+        <source>&lt;h3&gt;%1 Basics&lt;/h3&gt; %1 gives you true financial privacy by obscuring the origins of your funds. All the datos in your wallet is comprised of different "inputs" which you can think of as separate, discrete coins.&lt;br&gt; %1 uses an innovative process to mix your inputs with the inputs of two or more other people, without having your coins ever leave your wallet. You retain control of your money at all times.&lt;hr&gt; &lt;b&gt;The %1 process works like this:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 begins by breaking your transaction inputs down into standard denominations. These denominations are 0.001 DTS, 0.01 DTS, 0.1 DTS, 1 DTS and 10 DTS -- sort of like the paper money you use every day.&lt;/li&gt; &lt;li&gt;Your wallet then sends requests to specially configured software nodes on the network, called "masternodes." These masternodes are informed then that you are interested in mixing a certain denomination. No identifiable information is sent to the masternodes, so they never know "who" you are.&lt;/li&gt; &lt;li&gt;When two or more other people send similar messages, indicating that they wish to mix the same denomination, a mixing session begins. The masternode mixes up the inputs and instructs all three users' wallets to pay the now-transformed input back to themselves. Your wallet pays that denomination directly to itself, but in a different address (called a change address).&lt;/li&gt; &lt;li&gt;In order to fully obscure your funds, your wallet must repeat this process a number of times with each denomination. Each time the process is completed, it's called a "round." Each round of %1 makes it exponentially more difficult to determine where your funds originated.&lt;/li&gt; &lt;li&gt;This mixing process happens in the background without any intervention on your part. When you wish to make a transaction, your funds will already be mixed. No additional waiting is required.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;IMPORTANT:&lt;/b&gt; Your wallet only contains 1000 of these "change addresses." Every time a mixing event happens, up to 9 of your addresses are used up. This means those 1000 addresses last for about 100 mixing events. When 900 of them are used, your wallet must create more addresses. It can only do this, however, if you have automatic backups enabled.&lt;br&gt; Consequently, users who have backups disabled will also have %1 disabled. &lt;hr&gt;For more information, see the &lt;a style="%2" href="%3"&gt;%1 documentation&lt;/a&gt;.</source>
+        <translation>&lt;h3&gt;Основы %1&lt;/h3&gt;%1 позволяет Вам получить настоящую финансовую конфиденциальность за счет скрытия источников Ваших средств. Все datos в  Вашем кошельке состоят из различных "входов", Вы можете думать о них как об отдельных монетах.&lt;br&gt;%1 использует инновационный процесс для перемешивания Ваших входов со входами еще двоих или более человек, но при этом Ваши монеты никогда не покидают Ваш кошелек. Вы сохраняете контроль над Вашими деньгами на протяжении всего времени.&lt;hr&gt; &lt;b&gt;%1 работает так:&lt;/b&gt;&lt;ol type="1"&gt; &lt;li&gt;%1 начинается с разбиения Ваших входов транзакций на стандартные номиналы. Такими номиналами являются 0.001 DTS, 0.01 DTS, 0.1 DTS, 1 DTS и 10 DTS -- что-то вроде купюр, которыми вы пользуетесь каждый день.&lt;/li&gt; &lt;li&gt;Ваш кошелек затем отправляет запросы к особым образом настроенным сетевым узлам, называемым "мастернодами". Эти мастерноды знают только то, что Вы хотите перемешать определенные номиналы. Никакой идентифицирующей информации мастернодам не отправляется, так что они не знают "кто" Вы конкретно.&lt;/li&gt; &lt;li&gt;Сессия перемешивания начинается тогда, когда еще двое или более человек отправляют схожее сообщение, подтверждающее, что они хотят перемешать точно такой же номинал. Мастернода перемешивает входы и просит кошельки всех пользователей осуществить платежи по ним. Ваш кошелек осуществляет выплату самому себе, но на другой адрес (тоже из вашего кошелька).&lt;/li&gt; &lt;li&gt;Для скрытия Ваших средств кошелек должен повторить этот процесс несколько раз с каждым номиналом. Каждый раз, когда такой процесс завершается, называется "раундом". С каждым раундом %1 становится экспоненциально сложнее определить откуда поступили средства.&lt;/li&gt; &lt;li&gt;Процесс перемешивания выполняется в фоне, без участия пользователя. Когда Вы захотите провести транзакцию, средства уже будут перемешаны. Дополнительно ждать не требуется.&lt;/li&gt; &lt;/ol&gt; &lt;hr&gt;&lt;b&gt;ВАЖНО:&lt;/b&gt; Ваш кошелек содержит 1000 адресов. Каждое перемешивание использует до 9 из этих адресов. Это означает, что 1000 адресов хватит примерно на 100 перемешиваний. Когда 900 адресов будут уже использованы, Ваш кошелек должен создать новые адреса. Однако, он может сделать это, только если у Вас включены автоматические резервные копии.&lt;br&gt;Соответственно, пользователям с отключенным резервным копированием %1 не доступен. &lt;hr&gt;Дополнительная информация доступна в &lt;a style="%2" href="%3"&gt; документации %1&lt;/a&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1232,8 +1232,8 @@
         <translation>Приблизительно %1 GB данных будет сохранено в этой папке.</translation>
     </message>
     <message>
-        <source>%1 will download and store a copy of the datosdrive block chain.</source>
-        <translation>%1 скачает и сохранит копию цепочки блоков datosdrive.</translation>
+        <source>%1 will download and store a copy of the Datos block chain.</source>
+        <translation>%1 скачает и сохранит копию цепочки блоков datos.</translation>
     </message>
     <message>
         <source>The wallet will also be stored in this directory.</source>
@@ -1386,11 +1386,11 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the datosdrive network, as detailed below.</source>
-        <translation>Последние транзакции пока что могут быть не видны и поэтому ваш баланс может отображаться некорректно. Информация будет корректироваться по мере синхронизации с сетью datosdrive, подробности о ходе синхронизации представлены ниже.</translation>
+        <source>Recent transactions may not yet be visible, and therefore your wallet's balance might be incorrect. This information will be correct once your wallet has finished synchronizing with the Datos network, as detailed below.</source>
+        <translation>Последние транзакции пока что могут быть не видны и поэтому ваш баланс может отображаться некорректно. Информация будет корректироваться по мере синхронизации с сетью datos, подробности о ходе синхронизации представлены ниже.</translation>
     </message>
     <message>
-        <source>Attempting to spend datosdrive that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
+        <source>Attempting to spend Datos that are affected by not-yet-displayed transactions will not be accepted by the network.</source>
         <translation>Попытка потратить средства из ещё не отображённых транзакций будет отвергнута сетью.</translation>
     </message>
     <message>
@@ -1587,12 +1587,12 @@
         <translation>Целевой баланс</translation>
     </message>
     <message>
-        <source>Automatically open the datosdrive client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Автоматически открыть порт для datosdrive на роутере. Работает только в том случае, если Ваш роутер поддерживает UPnP и данная функция включена.</translation>
+        <source>Automatically open the Datos client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Автоматически открыть порт для datos на роутере. Работает только в том случае, если Ваш роутер поддерживает UPnP и данная функция включена.</translation>
     </message>
     <message>
         <source>Automatically open the Bitcoin client port on the router. This only works when your router supports NAT-PMP and it is enabled. The external port could be random.</source>
-        <translation>Автоматически открыть порт для datosdrive на роутере. Работает только в том случае, если Ваш роутер поддерживает NAT-PMP и данная функция включена. Внешний порт может быть любым.</translation>
+        <translation>Автоматически открыть порт для datos на роутере. Работает только в том случае, если Ваш роутер поддерживает NAT-PMP и данная функция включена. Внешний порт может быть любым.</translation>
     </message>
     <message>
         <source>Map port using NA&amp;T-PMP</source>
@@ -1607,8 +1607,8 @@
         <translation>Принимать &amp;входящие подключения</translation>
     </message>
     <message>
-        <source>Connect to the datosdrive network through a SOCKS5 proxy.</source>
-        <translation>Подключаться к сети datosdrive через прокси SOCKS5.</translation>
+        <source>Connect to the Datos network through a SOCKS5 proxy.</source>
+        <translation>Подключаться к сети datos через прокси SOCKS5.</translation>
     </message>
     <message>
         <source>&amp;Connect through SOCKS5 proxy (default proxy):</source>
@@ -1715,8 +1715,8 @@
         <translation>Tor</translation>
     </message>
     <message>
-        <source>Connect to the datosdrive network through a separate SOCKS5 proxy for Tor hidden services.</source>
-        <translation>Подключаться к сети datosdrive через отдельный прокси SOCKS5 для скрытых сервисов Tor.</translation>
+        <source>Connect to the Datos network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <translation>Подключаться к сети datos через отдельный прокси SOCKS5 для скрытых сервисов Tor.</translation>
     </message>
     <message>
         <source>Show only a tray icon after minimizing the window.</source>
@@ -1812,8 +1812,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Форма</translation>
     </message>
     <message>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the datosdrive network after a connection is established, but this process has not completed yet.</source>
-        <translation>Отображаемая информация может быть устаревшей. Ваш кошелёк автоматически синхронизируется с сетью datosdrive после подключения, но этот процесс пока не завершён.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Datos network after a connection is established, but this process has not completed yet.</source>
+        <translation>Отображаемая информация может быть устаревшей. Ваш кошелёк автоматически синхронизируется с сетью datos после подключения, но этот процесс пока не завершён.</translation>
     </message>
     <message>
         <source>Available:</source>
@@ -2035,16 +2035,16 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Ошибка запроса платежа</translation>
     </message>
     <message>
-        <source>Cannot start pac: click-to-pay handler</source>
-        <translation>Не удаётся запустить обработчик pac: click-to-pay</translation>
+        <source>Cannot start datos: click-to-pay handler</source>
+        <translation>Не удаётся запустить обработчик datos: click-to-pay</translation>
     </message>
     <message>
         <source>URI handling</source>
         <translation>Обработка URI</translation>
     </message>
     <message>
-        <source>'pac://' is not a valid URI. Use 'pac:' instead.</source>
-        <translation>'pac://' не является валидным URI. Используйте 'pac:'.</translation>
+        <source>'datos://' is not a valid URI. Use 'datos:' instead.</source>
+        <translation>'datos://' не является валидным URI. Используйте 'datos:'.</translation>
     </message>
     <message>
         <source>Payment request fetch URL is invalid: %1</source>
@@ -2059,8 +2059,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Неверный адрес платежа %1</translation>
     </message>
     <message>
-        <source>URI cannot be parsed! This can be caused by an invalid datosdrive address or malformed URI parameters.</source>
-        <translation>Не удалось разобрать URI! Возможно указан некорректный адрес datosdrive либо параметры URI сформированы неверно.</translation>
+        <source>URI cannot be parsed! This can be caused by an invalid Datos address or malformed URI parameters.</source>
+        <translation>Не удалось разобрать URI! Возможно указан некорректный адрес datos либо параметры URI сформированы неверно.</translation>
     </message>
     <message>
         <source>Payment request file handling</source>
@@ -2295,8 +2295,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Сумма</translation>
     </message>
     <message>
-        <source>Enter a datosdrive address (e.g. %1)</source>
-        <translation>Введите адрес datosdrive (например, %1)</translation>
+        <source>Enter a Datos address (e.g. %1)</source>
+        <translation>Введите адрес datos (например, %1)</translation>
     </message>
     <message>
         <source>Appearance Setup</source>
@@ -2878,8 +2878,8 @@ https://www.transifex.com/projects/p/pac/</translation>
 <context>
     <name>ReceiveCoinsDialog</name>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the datosdrive network.</source>
-        <translation>Необязательное сообщение для запроса платежа, которое будет показано при открытии запроса. Обратите внимание: сообщение не будет отправлено вместе с платежом через сеть datosdrive.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Datos network.</source>
+        <translation>Необязательное сообщение для запроса платежа, которое будет показано при открытии запроса. Обратите внимание: сообщение не будет отправлено вместе с платежом через сеть datos.</translation>
     </message>
     <message>
         <source>&amp;Message:</source>
@@ -2890,8 +2890,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Необязательная метка для нового адреса получения.</translation>
     </message>
     <message>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the datosdrive network.</source>
-        <translation>Необязательное сообщение для запроса платежа, которое будет показано при открытии запроса.&lt;br&gt;Обратите внимание: сообщение не будет отправлено вместе с платежом через сеть datosdrive.</translation>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened.&lt;br&gt;Note: The message will not be sent with the payment over the Datos network.</source>
+        <translation>Необязательное сообщение для запроса платежа, которое будет показано при открытии запроса.&lt;br&gt;Обратите внимание: сообщение не будет отправлено вместе с платежом через сеть datos.</translation>
     </message>
     <message>
         <source>Use this form to request payments. All fields are &lt;b&gt;optional&lt;/b&gt;.</source>
@@ -3127,7 +3127,7 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Если ручная комиссия  установлена в 1000 duff, а транзакция по размеру только 250 байт, то плата "за килобайт" составит лишь 250 duff,&lt;br&gt;в то время как "минимум" будет равна 1000 duff. Для транзакций больше килобайта в любом случае идет расчет "за килобайт".</translation>
     </message>
     <message>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for pac transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks.&lt;br /&gt;But be aware that this can end up in a never confirming transaction once there is more demand for Datos transactions than the network can process.</source>
         <translation>Оплаты только минимальной комиссии должно быть достаточно во всех случаях, пока в блоках достаточно места.&lt;br&gt;Однако, будьте готовы к тому, что транзакция может вовсе не получить подтверждения,&lt;br&gt;если количество транзакций будет стабильно больше, чем сеть способна обработать.</translation>
     </message>
     <message>
@@ -3343,8 +3343,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation><numerusform>Будет подтверждено приблизительно в течение %n блока.</numerusform><numerusform>Будет подтверждено приблизительно в течение %n блоков.</numerusform><numerusform>Будет подтверждено приблизительно в течение %n блоков.</numerusform><numerusform>Будет подтверждено приблизительно в течение %n блоков.</numerusform></translation>
     </message>
     <message>
-        <source>Warning: Invalid datosdrive address</source>
-        <translation>Внимание: неверный адрес datosdrive</translation>
+        <source>Warning: Invalid Datos address</source>
+        <translation>Внимание: неверный адрес datos</translation>
     </message>
     <message>
         <source>Warning: Unknown change address</source>
@@ -3370,8 +3370,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Полу&amp;чатель:</translation>
     </message>
     <message>
-        <source>The datosdrive address to send the payment to</source>
-        <translation>Адрес datosdrive для отправки на него монет</translation>
+        <source>The Datos address to send the payment to</source>
+        <translation>Адрес datos для отправки на него монет</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -3410,8 +3410,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Сумма к отправке в выбранных единицах</translation>
     </message>
     <message>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of datosdrive than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
-        <translation>Комиссия будет вычтена из отправляемой суммы. Получателю придет меньше datosdrive, сем указано в поле "Сумма". Если указано несколько получателей, то комиссия будет разделена между ними поровну.</translation>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive a lower amount of Datos than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <translation>Комиссия будет вычтена из отправляемой суммы. Получателю придет меньше datos, сем указано в поле "Сумма". Если указано несколько получателей, то комиссия будет разделена между ними поровну.</translation>
     </message>
     <message>
         <source>S&amp;ubtract fee from amount</source>
@@ -3426,8 +3426,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Сообщение:</translation>
     </message>
     <message>
-        <source>A message that was attached to the pac: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the datosdrive network.</source>
-        <translation>К pac: URI было прикреплено сообщение, которое будет сохранено вместе с транзакцией для вашего сведения. Обратите внимание: сообщение не будет отправлено через сеть datosdrive.</translation>
+        <source>A message that was attached to the datos: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Datos network.</source>
+        <translation>К datos: URI было прикреплено сообщение, которое будет сохранено вместе с транзакцией для вашего сведения. Обратите внимание: сообщение не будет отправлено через сеть datos.</translation>
     </message>
     <message>
         <source>This is an unauthenticated payment request.</source>
@@ -3479,12 +3479,12 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>&amp;Подписать сообщение</translation>
     </message>
     <message>
-        <source>You can sign messages/agreements with your addresses to prove you can receive datosdrive sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
-        <translation>Вы можете подписывать сообщения своими адресами, чтобы доказать, что Вы можете получать datosdrive на них. Будьте осторожны, не подписывайте что-то неопределённое, так как фишинговые атаки могут обманным путём заставить вас подписать нежелательные сообщения. Подписывайте только те сообщения, с которыми вы согласны вплоть до мелочей.</translation>
+        <source>You can sign messages/agreements with your addresses to prove you can receive Datos sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <translation>Вы можете подписывать сообщения своими адресами, чтобы доказать, что Вы можете получать datos на них. Будьте осторожны, не подписывайте что-то неопределённое, так как фишинговые атаки могут обманным путём заставить вас подписать нежелательные сообщения. Подписывайте только те сообщения, с которыми вы согласны вплоть до мелочей.</translation>
     </message>
     <message>
-        <source>The datosdrive address to sign the message with</source>
-        <translation>Адрес datosdrive, которым Вы хотите подписать сообщение</translation>
+        <source>The Datos address to sign the message with</source>
+        <translation>Адрес datos, которым Вы хотите подписать сообщение</translation>
     </message>
     <message>
         <source>Choose previously used address</source>
@@ -3515,8 +3515,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Скопировать текущую подпись в системный буфер обмена</translation>
     </message>
     <message>
-        <source>Sign the message to prove you own this datosdrive address</source>
-        <translation>Подписать сообщение, чтобы доказать владение этим адресом datosdrive</translation>
+        <source>Sign the message to prove you own this Datos address</source>
+        <translation>Подписать сообщение, чтобы доказать владение этим адресом datos</translation>
     </message>
     <message>
         <source>Sign &amp;Message</source>
@@ -3539,8 +3539,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Введите ниже адрес для подписи, сообщение (убедитесь, что переводы строк, пробелы, табы и т.п. в точности скопированы) и подпись, чтобы проверить сообщение. Убедитесь, что не скопировали лишнего в подпись, кроме самого подписываемого сообщения, чтобы не стать жертвой атаки "man-in-the-middle". Обратите внимание, что это лишь подтверждает, что подписывающий может получить средства на этот адрес, это не подтверждает, что он является отправителем какой-либо транзакции!</translation>
     </message>
     <message>
-        <source>The datosdrive address the message was signed with</source>
-        <translation>Адрес datosdrive, которым было подписано сообщение</translation>
+        <source>The Datos address the message was signed with</source>
+        <translation>Адрес datos, которым было подписано сообщение</translation>
     </message>
     <message>
         <source>The signed message to verify</source>
@@ -3551,8 +3551,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Подпись, полученная при подписании сообщения</translation>
     </message>
     <message>
-        <source>Verify the message to ensure it was signed with the specified datosdrive address</source>
-        <translation>Проверить сообщение, чтобы убедиться, что оно было подписано указанным адресом datosdrive</translation>
+        <source>Verify the message to ensure it was signed with the specified Datos address</source>
+        <translation>Проверить сообщение, чтобы убедиться, что оно было подписано указанным адресом datos</translation>
     </message>
     <message>
         <source>Verify &amp;Message</source>
@@ -4249,7 +4249,7 @@ https://www.transifex.com/projects/p/pac/</translation>
     </message>
 </context>
 <context>
-    <name>pac-core</name>
+    <name>datos-core</name>
     <message>
         <source>Error: Listening for incoming connections failed (listen returned error %s)</source>
         <translation>Ошибка: не удалось начать прослушивание входящих подключений (прослушивание вернуло ошибку %s)</translation>
@@ -5061,8 +5061,8 @@ https://www.transifex.com/projects/p/pac/</translation>
         <translation>Последняя очередь была создана слишком недавно.</translation>
     </message>
     <message>
-        <source>%s corrupt. Try using the wallet tool pac-wallet to salvage or restoring a backup.</source>
-        <translation>%s поврежден. Попробуете воспользоваться утилитой pac-wallet для восстановления.</translation>
+        <source>%s corrupt. Try using the wallet tool datos-wallet to salvage or restoring a backup.</source>
+        <translation>%s поврежден. Попробуете воспользоваться утилитой datos-wallet для восстановления.</translation>
     </message>
     <message>
         <source>Can't generate a change-address key. No keys in the internal keypool and can't generate any keys.</source>

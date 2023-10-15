@@ -16,14 +16,14 @@ BEGIN
     BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
-            VALUE "CompanyName",        "datosdrive"
-            VALUE "FileDescription",    "datosdrive-tx (CLI datosdrive transaction editor utility)"
+            VALUE "CompanyName",        "datos"
+            VALUE "FileDescription",    "datos-tx (CLI datos transaction editor utility)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
-            VALUE "InternalName",       "datosdrive-tx"
+            VALUE "InternalName",       "datos-tx"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
-            VALUE "OriginalFilename",   "datosdrive-tx.exe"
-            VALUE "ProductName",        "datosdrive-tx"
+            VALUE "OriginalFilename",   "datos-tx.exe"
+            VALUE "ProductName",        "datos-tx"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

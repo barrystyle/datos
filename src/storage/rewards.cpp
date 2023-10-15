@@ -1,4 +1,4 @@
-// Copyright (c) 2023 datosdrive/barrystyle
+// Copyright (c) 2023 datos
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -6,7 +6,7 @@
 
 CAmount GetBaseReward()
 {
-    return 8280 * COIN;
+    return 8824 * COIN;
 }
 
 CAmount CalculateNodeReward(CAmount& base_reward, int space_mode, int score)

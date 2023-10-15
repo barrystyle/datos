@@ -52,7 +52,7 @@ static bool AppInit(int argc, char* argv[])
     //
     // Parameters
     //
-    // If Qt is used, parameters/datosdrive.conf are parsed in qt/datosdrive.cpp's main()
+    // If Qt is used, parameters/datos.conf are parsed in qt/datos.cpp's main()
     SetupServerArgs();
     std::string error;
     if (!gArgs.ParseParameters(argc, argv, error)) {
@@ -74,7 +74,7 @@ static bool AppInit(int argc, char* argv[])
         }
         else
         {
-            strUsage += "\nUsage:  datosdrived [options]                     Start " PACKAGE_NAME " Daemon\n";
+            strUsage += "\nUsage:  datosd [options]                     Start " PACKAGE_NAME " Daemon\n";
             strUsage += "\n" + gArgs.GetHelpMessage();
         }
 
@@ -107,11 +107,11 @@ static bool AppInit(int argc, char* argv[])
         // Error out when loose non-argument tokens are encountered on command line
         for (int i = 1; i < argc; i++) {
             if (!IsSwitchChar(argv[i][0])) {
-                return InitError(Untranslated(strprintf("Command line contains unexpected token '%s', see datosdrived -h for a list of options.\n", argv[i])));
+                return InitError(Untranslated(strprintf("Command line contains unexpected token '%s', see datosd -h for a list of options.\n", argv[i])));
             }
         }
 
-        // -server defaults to true for datosdrived but not for the GUI so do this here
+        // -server defaults to true for datosd but not for the GUI so do this here
         gArgs.SoftSetBoolArg("-server", true);
         // Set this early so that parameter interactions go to console
         InitLogging();
@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
 #endif
     SetupEnvironment();
 
-    // Connect datosdrived signal handlers
+    // Connect datosd signal handlers
     noui_connect();
 
     return (AppInit(argc, argv) ? EXIT_SUCCESS : EXIT_FAILURE);

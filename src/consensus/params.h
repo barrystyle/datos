@@ -117,7 +117,7 @@ struct Params {
     uint256 nMinimumChainWork;
     uint256 defaultAssumeValid;
 
-    /** datosdrive consensus parameters */
+    /** Datos consensus parameters */
     uint256 posLimit;
     CAmount mnCollateral{0};
     int nLastPoWBlock{0};

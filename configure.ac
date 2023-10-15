@@ -6,18 +6,18 @@ define(_CLIENT_VERSION_RC, 0)
 define(_CLIENT_VERSION_IS_RELEASE, true)
 define(_COPYRIGHT_YEAR, 2022)
 define(_COPYRIGHT_HOLDERS,[The %s developers])
-define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[datosdrive]])
-AC_INIT([DatosDrive],m4_join([.], _CLIENT_VERSION_MAJOR, _CLIENT_VERSION_MINOR, _CLIENT_VERSION_BUILD)m4_if(_CLIENT_VERSION_RC, [0], [], [rc]_CLIENT_VERSION_RC),[https://github.com/datosdrive/datosdrive/issues],[DatosDrive],[https://datosdrive.com/])
+define(_COPYRIGHT_HOLDERS_SUBSTITUTION,[[Datos]])
+AC_INIT([Datos],m4_join([.], _CLIENT_VERSION_MAJOR, _CLIENT_VERSION_MINOR, _CLIENT_VERSION_BUILD)m4_if(_CLIENT_VERSION_RC, [0], [], [rc]_CLIENT_VERSION_RC),[https://github.com/datosdrive/datos/issues],[Datos],[https://datosdrive.com/])
 AC_CONFIG_SRCDIR([src/validation.cpp])
 AC_CONFIG_HEADERS([src/config/dash-config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([build-aux/m4])
 
-BITCOIN_DAEMON_NAME=datosdrived
-BITCOIN_GUI_NAME=datosdrive-qt
-BITCOIN_CLI_NAME=datosdrive-cli
-BITCOIN_TX_NAME=datosdrive-tx
-BITCOIN_WALLET_TOOL_NAME=datosdrive-wallet
+BITCOIN_DAEMON_NAME=datosd
+BITCOIN_GUI_NAME=datos-qt
+BITCOIN_CLI_NAME=datos-cli
+BITCOIN_TX_NAME=datos-tx
+BITCOIN_WALLET_TOOL_NAME=datos-wallet
 
 dnl Unless the user specified ARFLAGS, force it to be cr
 AC_ARG_VAR(ARFLAGS, [Flags for the archiver, defaults to <cr> if not set])

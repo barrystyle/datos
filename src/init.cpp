@@ -152,7 +152,7 @@ static const char* DEFAULT_ASMAP_FILENAME="ip_asn.map";
  * The PID file facilities.
  */
 #ifndef WIN32
-static const char* BITCOIN_PID_FILENAME = "datosdrived.pid";
+static const char* BITCOIN_PID_FILENAME = "datosd.pid";
 
 static fs::path GetPidFile()
 {
@@ -723,7 +723,7 @@ void SetupServerArgs()
     gArgs.AddArg("-llmq-qvvec-sync=<quorum_name>:<mode>", strprintf("Defines from which LLMQ type the masternode should sync quorum verification vectors. Can be used multiple times with different LLMQ types. <mode>: %d (sync always from all quorums of the type defined by <quorum_name>), %d (sync from all quorums of the type defined by <quorum_name> if a member of any of the quorums)", (int32_t)llmq::QvvecSyncMode::Always, (int32_t)llmq::QvvecSyncMode::OnlyIfTypeMember), ArgsManager::ALLOW_ANY, OptionsCategory::MASTERNODE);
     gArgs.AddArg("-masternodeblsprivkey=<hex>", "Set the masternode BLS private key and enable the client to act as a masternode", ArgsManager::ALLOW_ANY, OptionsCategory::MASTERNODE);
     gArgs.AddArg("-masternodestoragespace=<n>", "Storage space to provide to the network in multiples of 25GiB (default: 1)", ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::DEBUG_TEST);
-    gArgs.AddArg("-platform-user=<user>", "Set the username for the \"platform user\", a restricted user intended to be used by datosdrive Platform, to the specified username.", ArgsManager::ALLOW_ANY, OptionsCategory::MASTERNODE);
+    gArgs.AddArg("-platform-user=<user>", "Set the username for the \"platform user\", a restricted user intended to be used by datos Platform, to the specified username.", ArgsManager::ALLOW_ANY, OptionsCategory::MASTERNODE);
 
     gArgs.AddArg("-acceptnonstdtxn", strprintf("Relay and mine \"non-standard\" transactions (%sdefault: %u)", "testnet/regtest only; ", !testnetChainParams->RequireStandard()), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::NODE_RELAY);
     gArgs.AddArg("-dustrelayfee=<amt>", strprintf("Fee rate (in %s/kB) used to define dust, the value of an output such that it will cost more than its value in fees at this fee rate to spend it. (default: %s)", CURRENCY_UNIT, FormatMoney(DUST_RELAY_TX_FEE)), ArgsManager::ALLOW_ANY | ArgsManager::DEBUG_ONLY, OptionsCategory::NODE_RELAY);
@@ -771,8 +771,8 @@ void SetupServerArgs()
 
 std::string LicenseInfo()
 {
-    const std::string URL_SOURCE_CODE = "<https://github.com/datosdrive/datosdrive>";
-    const std::string URL_WEBSITE = "<https://datosdrive.org>";
+    const std::string URL_SOURCE_CODE = "<https://github.com/datosdrive/datos>";
+    const std::string URL_WEBSITE = "<https://datosdrive.com>";
 
     return CopyrightHolders(_("Copyright (C)").translated, 2014, COPYRIGHT_YEAR) + "\n" +
            "\n" +
@@ -1044,7 +1044,7 @@ void PeriodicStats()
 }
 
 /** Sanity checks
- *  Ensure that datosdrive is running in a usable environment with all
+ *  Ensure that datos is running in a usable environment with all
  *  necessary library support.
  */
 static bool InitSanityCheck()
@@ -1577,7 +1577,7 @@ bool AppInitParameterInteraction()
 
 static bool LockDataDirectory(bool probeOnly)
 {
-    // Make sure only a single datosdrive process is using the data directory.
+    // Make sure only a single datos process is using the data directory.
     fs::path datadir = GetDataDir();
     if (!DirIsWritable(datadir)) {
         return InitError(strprintf(_("Cannot write to data directory '%s'; check permissions."), datadir.string()));
@@ -1643,12 +1643,6 @@ bool AppInitMain(InitInterfaces& interfaces)
             LogInstance().m_file_path.string()));
     }
 
-    // Limit client to testnet
-    if (chainparams.NetworkIDString() != "test") {
-        StartShutdown();
-        return false;
-    }
-
     if (!LogInstance().m_log_timestamps)
         LogPrintf("Startup time: %s\n", FormatISO8601DateTime(GetTime()));
     LogPrintf("Default data directory %s\n", GetDefaultDataDir().string());
@@ -1671,9 +1665,9 @@ bool AppInitMain(InitInterfaces& interfaces)
     // Warn about relative -datadir path.
     if (gArgs.IsArgSet("-datadir") && !fs::path(gArgs.GetArg("-datadir", "")).is_absolute()) {
         LogPrintf("Warning: relative datadir option '%s' specified, which will be interpreted relative to the " /* Continued */
-                  "current working directory '%s'. This is fragile, because if datosdrive is started in the future "
+                  "current working directory '%s'. This is fragile, because if datos is started in the future "
                   "from a different location, it will be unable to locate the current data files. There could "
-                  "also be data loss if datosdrive is started while in a temporary directory.\n",
+                  "also be data loss if datos is started while in a temporary directory.\n",
             gArgs.GetArg("-datadir", ""), fs::current_path().string());
     }
 
@@ -2018,7 +2012,7 @@ bool AppInitMain(InitInterfaces& interfaces)
                 }
 
                 if (!fDisableGovernance && !gArgs.GetBoolArg("-txindex", DEFAULT_TXINDEX)
-                   && chainparams.NetworkIDString() != CBaseChainParams::REGTEST) { // TODO remove this when pruning is fixed. See https://github.com/datosdrive/datosdrive/pull/1817 and https://github.com/datosdrive/datosdrive/pull/1743
+                   && chainparams.NetworkIDString() != CBaseChainParams::REGTEST) { // TODO remove this when pruning is fixed. See https://github.com/datos/datos/pull/1817 and https://github.com/datos/datos/pull/1743
                     return InitError(_("Transaction index can't be disabled with governance validation enabled. Either start with -disablegovernance command line switch or enable transaction index."));
                 }
 
@@ -2357,7 +2351,7 @@ bool AppInitMain(InitInterfaces& interfaces)
         }
     }
 
-    // ********************************************************* Step 10c: schedule datosdrive-specific tasks
+    // ********************************************************* Step 10c: schedule datos-specific tasks
 
     scheduler.scheduleEvery(std::bind(&CNetFulfilledRequestManager::DoMaintenance, std::ref(netfulfilledman)), 60 * 1000);
     scheduler.scheduleEvery(std::bind(&CMasternodeSync::DoMaintenance, std::ref(masternodeSync), std::ref(*g_connman)), 1 * 1000);

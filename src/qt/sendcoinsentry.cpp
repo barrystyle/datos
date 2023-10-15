@@ -33,7 +33,7 @@ SendCoinsEntry::SendCoinsEntry(QWidget* parent) :
 
     setButtonIcons();
 
-    // normal datosdrive address field
+    // normal Datos address field
     GUIUtil::setupAddressWidget(ui->payTo, this, true);
 
     GUIUtil::setFont({ui->payToLabel,

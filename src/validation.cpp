@@ -68,7 +68,7 @@
 #include <boost/thread.hpp> // Required for boost::this_thread::interruption_point();
 
 #if defined(NDEBUG)
-# error "datosdrive cannot be compiled without assertions."
+# error "datos cannot be compiled without assertions."
 #endif
 
 #define MICRO 0.000001
@@ -617,7 +617,7 @@ static bool AcceptToMemoryPoolWorker(const CChainParams& chainparams, CTxMemPool
             const CTransaction* ptxConflicting = pool.GetConflictTx(txin.prevout);
             if (ptxConflicting)
             {
-                // Transaction conflicts with mempool and RBF doesn't exist in datosdrive
+                // Transaction conflicts with mempool and RBF doesn't exist in datos
                 return state.Invalid(false, REJECT_DUPLICATE, "txn-mempool-conflict");
             }
         }
@@ -1056,13 +1056,12 @@ NOTE:   unlike bitcoin we are using PREVIOUS block height here,
 */
 CAmount GetBlockSubsidy(int nPrevBits, int nPrevHeight, const Consensus::Params& consensusParams, bool fSuperblockPartOnly)
 {
-    CAmount nSubsidy = 110 * COIN;
-    CAmount nSuperblockPart = 10 * COIN;
+    CAmount nSubsidy = 30 * COIN;
+    CAmount nSuperblockPart = 0 * COIN;
 
-    // these blocks make up the pool for
-    // the initial chainswap from legacy pac
-    if (nPrevHeight < 50) {
-        nSubsidy = 400000000 * COIN;
+    // minted for company wallet
+    if (nPrevHeight <= 250) {
+        nSubsidy = 8000000 * COIN;
     }
 
     return fSuperblockPartOnly ? nSuperblockPart : nSubsidy - nSuperblockPart;
@@ -2363,7 +2362,7 @@ bool CChainState::ConnectBlock(const CBlock& block, CValidationState& state, CBl
     LogPrint(BCLog::BENCHMARK, "      - IsBlockPayeeValid: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5_4 - nTime5_3), nTimePayeeValid * MICRO, nTimePayeeValid * MILLI / nBlocksTotal);
 
     int64_t nTime5 = GetTimeMicros(); nTimeDashSpecific += nTime5 - nTime4;
-    LogPrint(BCLog::BENCHMARK, "    - datosdrive specific: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5 - nTime4), nTimeDashSpecific * MICRO, nTimeDashSpecific * MILLI / nBlocksTotal);
+    LogPrint(BCLog::BENCHMARK, "    - datos specific: %.2fms [%.2fs (%.2fms/blk)]\n", MILLI * (nTime5 - nTime4), nTimeDashSpecific * MICRO, nTimeDashSpecific * MILLI / nBlocksTotal);
 
     // END DASH
 

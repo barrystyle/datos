@@ -80,7 +80,7 @@ static CBlock CreateDevNetGenesisBlock(const uint256 &prevBlockHash, const std::
  */
 static CBlock CreateGenesisBlock(uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
-    const char* pszTimestamp = "pacprotocol aug2022 ~ setting the standard for masternode technology";
+    const char* pszTimestamp = "datos oct2023 - decentralized masternode storage solution";
     const CScript genesisOutputScript = CScript() << ParseHex("040184710fa689ad5023690c80f3a49c8f13f8d45b8c857fbcbc8bc4a8e4d3eb4b10f4d4604fa08dce601aaf0f470216fe1b51850b4acf21b179c45070ac7b03a9") << OP_CHECKSIG;
     return CreateGenesisBlock(pszTimestamp, genesisOutputScript, nTime, nNonce, nBits, nVersion, genesisReward);
 }
@@ -156,22 +156,22 @@ public:
         consensus.nMasternodePaymentsIncreasePeriod = std::numeric_limits<int>::max();
         consensus.nInstantSendConfirmationsRequired = 6;
         consensus.nInstantSendKeepLock = 24;
-        consensus.nBudgetPaymentsStartBlock = 328008; // actual historical value
+        consensus.nBudgetPaymentsStartBlock = std::numeric_limits<int>::max();
         consensus.nBudgetPaymentsCycleBlocks = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nBudgetPaymentsWindowBlocks = 100;
-        consensus.nSuperblockStartBlock = 614820; // The block at which 12.1 goes live (end of final 12.0 budget cycle)
+        consensus.nSuperblockStartBlock = std::numeric_limits<int>::max();
         consensus.nSuperblockStartHash = uint256();
         consensus.nSuperblockCycle = 16616; // ~(60*24*30)/2.6, actual number of blocks per month is 200700 / 12 = 16725
         consensus.nGovernanceMinQuorum = 10;
         consensus.nGovernanceFilterElements = 20000;
-        consensus.nMasternodeMinimumConfirmations = 15;
+        consensus.nMasternodeMinimumConfirmations = 5;
         consensus.BIP34Height = std::numeric_limits<int>::max();
         consensus.BIP34Hash = uint256();
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.DIP0001Height = 0;
-        consensus.DIP0003Height = 1000;
-        consensus.DIP0003EnforcementHeight = std::numeric_limits<int>::max();
+        consensus.DIP0003Height = 350;
+        consensus.DIP0003EnforcementHeight = 750;
         consensus.DIP0003EnforcementHash = uint256();
         consensus.DIP0008Height = std::numeric_limits<int>::max();
         consensus.BRRHeight = std::numeric_limits<int>::max();
@@ -231,8 +231,8 @@ public:
 
         // Deployment of DIP0020, DIP0021 and LLMQ_100_67 quorums
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].bit = 6;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nStartTime = 1625097600; // July 1st, 2021
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nTimeout = 1656633600; // July 1st, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nStartTime = std::numeric_limits<int>::max();
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nTimeout = std::numeric_limits<int>::max();
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0020].nThresholdMin = 2420; // 60% of 4032
@@ -240,20 +240,20 @@ public:
 
         // Deployment of Quorum Rotation DIP and decreased proposal fee (Values to be determined)
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].bit = 7;
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 1660521600; // Tuesday, August 15, 2022 12:00:00 AM
-        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 1692057600;   // Tuesday, August 15, 2023 12:00:00 AM
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nStartTime = 999999999999ULL; // TODO ENABLE BEFORE FINAL RELEASE
+        consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nTimeout = 999999999999ULL;   // TODO ENABLE BEFORE FINAL RELEASE
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nWindowSize = 4032;
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdStart = 3226; // 80% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
-        // datosdrive consensus parameters
-        consensus.nLastPoWBlock = 1000;
-        consensus.mnCollateral = 500000 * COIN;
+        // datos consensus parameters
+        consensus.nLastPoWBlock = 350;
+        consensus.mnCollateral = 2500 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
-        consensus.nStakeMinValue = 0 * COIN;
+        consensus.nStakeMinValue = 150 * COIN;
         consensus.nStakeMaxValue = MAX_MONEY;
         consensus.nStakeMinAge = 10 * 60;
         consensus.nStakeMaxAge = 60 * 60 * 24 * 30;
@@ -279,43 +279,40 @@ public:
         m_assumed_blockchain_size = 45;
         m_assumed_chain_state_size = 1;
 
-        genesis = CreateGenesisBlock(1659283200, 130758, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1697246000, 104464, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000b7688496a2e00c2cc77b07e58d7d167090a0705dff8514854df21be68f1a"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00005f2023f0c8d90e28c3f8c693f1f66d40c80854bb421fea9cd3325e6ca285"));
+        assert(genesis.hashMerkleRoot == uint256S("0xd1aa59f1847a4036dcdbd3c1c4015add886ab2bb16564bdaf873013cc792214f"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
         // This is fine at runtime as we'll fall back to using them as a oneshot if they don't support the
         // service bits we want, but we should get them updated to support all service bits wanted by any
         // release ASAP to avoid it where possible.
-        vSeeds.emplace_back("seed.pacglobal.io");
 
-        // datosdrive addresses start with 'P'
-        base58Prefixes[PUBKEY_ADDRESS] = {0x37};
-        // datosdrive script addresses start with '5'
-        base58Prefixes[SCRIPT_ADDRESS] = {0x0a};
-        // datosdrive private keys start with '7' or 'X'
+        // Datos addresses start with 'd'
+        base58Prefixes[PUBKEY_ADDRESS] = {0x5a};
+        // Datos script addresses start with 'e' or 'f'
+        base58Prefixes[SCRIPT_ADDRESS] = {0x5e};
+        // Datos private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] = {0xcc};
-        // datosdrive BIP32 pubkeys start with 'pacp'
-        base58Prefixes[EXT_PUBLIC_KEY] = {0x03, 0xdd, 0x3e, 0x31};
-        // datosdrive BIP32 prvkeys start with 'pacv'
-        base58Prefixes[EXT_SECRET_KEY] = {0x03, 0xdd, 0x3e, 0x5a};
+        // Datos BIP32 pubkeys start with 'dtsp'
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x02, 0xff, 0x15, 0x66};
+        // Datos BIP32 prvkeys start with 'dtsv'
+        base58Prefixes[EXT_SECRET_KEY] = {0x02, 0xff, 0x15, 0x90};
 
-        // datosdrive BIP44 coin type is '8192'
-        nExtCoinType = 8192;
+        // Datos BIP44 coin type is '6144'
+        nExtCoinType = 6144;
 
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_main, pnSeed6_main + ARRAYLEN(pnSeed6_main));
 
         // long living quorum params
-        AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
-        AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
-        AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_64);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_1024);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_85);
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
-        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_400_60;
-        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_50_60;
-        consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
+        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_DATOS_1024;
+        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_DATOS_64;
         consensus.llmqTypePlatform = Consensus::LLMQType::LLMQ_100_67;
         consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_400_85;
 
@@ -331,7 +328,7 @@ public:
         nPoolMaxParticipants = 20;
         nFulfilledRequestExpireTime = 60*60; // fulfilled requests expire in 1 hour
 
-        vSporkAddresses = {"PGtvidAAsW6a9tMBKmdh2tZ1B3SxFDpdXP"};
+        vSporkAddresses = {"dRrLXNGN9syvTHJxiABZWNJvXT2FLBre7n"};
         nMinSporkKeys = 1;
         fBIP9CheckMasternodesUpgraded = true;
 
@@ -342,10 +339,9 @@ public:
         };
 
         chainTxData = ChainTxData{
-            1660074878, // * UNIX timestamp of last known number of transactions (Block 1718597)
-            43702293,   // * total number of transactions between genesis and that timestamp
-                        //   (the tx=... number in the ChainStateFlushed debug.log lines)
-            0.175       // * estimated number of transactions per second after that timestamp
+            genesis.nTime,
+            0,
+            0
         };
     }
 };
@@ -454,7 +450,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
-        // datosdrive consensus parameters
+        // datos consensus parameters
         consensus.nLastPoWBlock = 250;
         consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 28
@@ -481,39 +477,37 @@ public:
         m_assumed_blockchain_size = 4;
         m_assumed_chain_state_size = 1;
 
-        genesis = CreateGenesisBlock(1676542106, 14592, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1697247000, 47480, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000c1d5a99b9ff92241651f40efea1baf99c26edc202c025f62fa084a59d4d3"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
+        assert(consensus.hashGenesisBlock == uint256S("0x000087ff71b163016abe9d17ad7685615cdd5a0d1822b64b1d2525b1528cfff9"));
+        assert(genesis.hashMerkleRoot == uint256S("0xd1aa59f1847a4036dcdbd3c1c4015add886ab2bb16564bdaf873013cc792214f"));
 
         vFixedSeeds.clear();
         vFixedSeeds = std::vector<SeedSpec6>(pnSeed6_test, pnSeed6_test + ARRAYLEN(pnSeed6_test));
         vSeeds.clear();
 
-        // datosdrive addresses start with 'P'
-        base58Prefixes[PUBKEY_ADDRESS] = {0x37};
-        // datosdrive script addresses start with '5'
-        base58Prefixes[SCRIPT_ADDRESS] = {0x0a};
-        // datosdrive private keys start with '7' or 'X'
+        // Datos addresses start with 'd'
+        base58Prefixes[PUBKEY_ADDRESS] = {0x5a};
+        // Datos script addresses start with 'e' or 'f'
+        base58Prefixes[SCRIPT_ADDRESS] = {0x5e};
+        // Datos private keys start with '7' or 'X'
         base58Prefixes[SECRET_KEY] = {0xcc};
-        // datosdrive BIP32 pubkeys start with 'pacp'
-        base58Prefixes[EXT_PUBLIC_KEY] = {0x03, 0xdd, 0x3e, 0x31};
-        // datosdrive BIP32 prvkeys start with 'pacv'
-        base58Prefixes[EXT_SECRET_KEY] = {0x03, 0xdd, 0x3e, 0x5a};
+        // Datos BIP32 pubkeys start with 'dtsp'
+        base58Prefixes[EXT_PUBLIC_KEY] = {0x02, 0xff, 0x15, 0x66};
+        // Datos BIP32 prvkeys start with 'dtsv'
+        base58Prefixes[EXT_SECRET_KEY] = {0x02, 0xff, 0x15, 0x90};
 
-        // Testnet Dash BIP44 coin type is '8192' (same as mainnet, why change it?)
-        nExtCoinType = 8192;
+        // Datos BIP44 coin type is '6144'
+        nExtCoinType = 6144;
 
         // long living quorum params
         AddLLMQ(Consensus::LLMQType::LLMQ_TEST);
-        AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
-        AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
-        AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_64);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_1024);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_85);
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
         consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_TEST;
         consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_TEST;
-        consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
         consensus.llmqTypePlatform = Consensus::LLMQType::LLMQ_100_67;
         consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_TEST;
 
@@ -529,7 +523,7 @@ public:
         nPoolMaxParticipants = 20;
         nFulfilledRequestExpireTime = 5*60; // fulfilled requests expire in 5 minutes
 
-        vSporkAddresses = {"PGtvidAAsW6a9tMBKmdh2tZ1B3SxFDpdXP"};
+        vSporkAddresses = {"dRrLXNGN9syvTHJxiABZWNJvXT2FLBre7n"};
         nMinSporkKeys = 1;
         fBIP9CheckMasternodesUpgraded = true;
 
@@ -540,10 +534,9 @@ public:
         };
 
         chainTxData = ChainTxData{
-            1663887232, // * UNIX timestamp of last known number of transactions (Block 1592)
-            3406,       // * total number of transactions between genesis and that timestamp
-                        //   (the tx=... number in the ChainStateFlushed debug.log lines)
-            0.001       // * estimated number of transactions per second after that timestamp
+            genesis.nTime,
+            0,
+            0
         };
     }
 };
@@ -652,7 +645,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nThresholdMin = 2420;   // 60% of 4032
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
-        // datosdrive consensus parameters
+        // datos consensus parameters
         consensus.nLastPoWBlock = 1000;
         consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
@@ -680,10 +673,10 @@ public:
         m_assumed_chain_state_size = 0;
 
         UpdateDevnetSubsidyAndDiffParametersFromArgs(args);
-        genesis = CreateGenesisBlock(1659283202, 44131, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1697248000, 2, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x0000c8fd84241870d62f9ba22bc8edc0df4edfa761d79998e3451883f13790a5"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
+        assert(consensus.hashGenesisBlock == uint256S("0x29714ed4d24d182dc4c9ea6cce414d87a4991d91cfe96cb18f629981d1a75c39"));
+        assert(genesis.hashMerkleRoot == uint256S("0xd1aa59f1847a4036dcdbd3c1c4015add886ab2bb16564bdaf873013cc792214f"));
 
         devnetGenesis = FindDevNetGenesisBlock(genesis, 50 * COIN);
         consensus.hashDevnetGenesisBlock = devnetGenesis.GetHash();
@@ -707,18 +700,18 @@ public:
         nExtCoinType = 1;
 
         // long living quorum params
-        AddLLMQ(Consensus::LLMQType::LLMQ_50_60);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_64);
         AddLLMQ(Consensus::LLMQType::LLMQ_60_75);
-        AddLLMQ(Consensus::LLMQType::LLMQ_400_60);
+        AddLLMQ(Consensus::LLMQType::LLMQ_DATOS_1024);
         AddLLMQ(Consensus::LLMQType::LLMQ_400_85);
         AddLLMQ(Consensus::LLMQType::LLMQ_100_67);
         AddLLMQ(Consensus::LLMQType::LLMQ_DEVNET);
         AddLLMQ(Consensus::LLMQType::LLMQ_DEVNET_DIP0024);
-        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_50_60;
-        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_50_60;
+        consensus.llmqTypeChainLocks = Consensus::LLMQType::LLMQ_DATOS_64;
+        consensus.llmqTypeInstantSend = Consensus::LLMQType::LLMQ_DATOS_64;
         consensus.llmqTypeDIP0024InstantSend = Consensus::LLMQType::LLMQ_60_75;
         consensus.llmqTypePlatform = Consensus::LLMQType::LLMQ_100_67;
-        consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_50_60;
+        consensus.llmqTypeMnhf = Consensus::LLMQType::LLMQ_DATOS_64;
 
         UpdateDevnetLLMQChainLocksFromArgs(args);
         UpdateDevnetLLMQInstantSendFromArgs(args);
@@ -923,7 +916,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
 
-        // datosdrive consensus parameters
+        // datos consensus parameters
         consensus.nLastPoWBlock = 1000;
         consensus.mnCollateral = 500000 * COIN;
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
@@ -955,10 +948,10 @@ public:
         UpdateDIP8ParametersFromArgs(args);
         UpdateBudgetParametersFromArgs(args);
 
-        genesis = CreateGenesisBlock(1659283203, 1, 0x207fffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1697249000, 27180, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x6d6d2f2e08d83744359cbed961b941528fd85761faf501abbcdf11ff025fc0cc"));
-        assert(genesis.hashMerkleRoot == uint256S("0x48b9285e25338049ee22d57d2f6363b8ee9c14ee9cbbbc43d13cc56c4480ea5c"));
+        assert(consensus.hashGenesisBlock == uint256S("0x0000d94cc68e7e6af6d6dd1b7898090373c87b357408971427a9420318a7f9e6"));
+        assert(genesis.hashMerkleRoot == uint256S("0xd1aa59f1847a4036dcdbd3c1c4015add886ab2bb16564bdaf873013cc792214f"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
