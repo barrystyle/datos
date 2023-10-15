@@ -37,9 +37,9 @@ char* get_storagedir(bool net_type)
     char homedir[256];
     memset(homedir, 0, sizeof(homedir));
     if (net_type)
-        snprintf(homedir, 256, "%s/.datosstorage", getenv("HOME"));
+        snprintf(homedir, 256, "%s/.datosdata/mainnet", getenv("HOME"));
     else
-        snprintf(homedir, 256, "%s/.datosteststorage", getenv("HOME"));
+        snprintf(homedir, 256, "%s/.datosdata/testnet", getenv("HOME"));
     return strdup(homedir);
 #else
     return NULL;
@@ -52,12 +52,12 @@ void create_storagedir(char* extrapath, bool net_type)
     if (!path)
         return;
     if (!extrapath) {
-        mkdir(path, 0755);
+        fs::create_directories(path);
     } else {
         char fullpath[256];
         memset(fullpath, 0, sizeof(fullpath));
         sprintf(fullpath, "%s/%s", path, extrapath);
-        mkdir(fullpath, 0755);
+        fs::create_directories(fullpath);
     }
 }
 
