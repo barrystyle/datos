@@ -250,6 +250,7 @@ public:
         // datos consensus parameters
         consensus.nLastPoWBlock = 350;
         consensus.mnCollateral = 2500 * COIN;
+        consensus.proofPublicKey = "dRHpwnnd7kwNhhH9W7vvCX4x5FPDyfeNK7";
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;
@@ -453,6 +454,7 @@ public:
         // datos consensus parameters
         consensus.nLastPoWBlock = 250;
         consensus.mnCollateral = 500000 * COIN;
+        consensus.proofPublicKey = "dRHpwnnd7kwNhhH9W7vvCX4x5FPDyfeNK7";
         consensus.posLimit = uint256S("000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 28
         consensus.nPosTargetTimespan = consensus.nPowTargetTimespan;
         consensus.nPosTargetSpacing = consensus.nPowTargetSpacing;

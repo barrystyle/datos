@@ -120,6 +120,7 @@ struct Params {
     /** Datos consensus parameters */
     uint256 posLimit;
     CAmount mnCollateral{0};
+    std::string proofPublicKey;
     int nLastPoWBlock{0};
     int nTokenHeight{0};
     int64_t nPosTargetSpacing{0};

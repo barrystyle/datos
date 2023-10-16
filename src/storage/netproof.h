@@ -30,6 +30,13 @@ public:
         SetNull();
     }
 
+    bool Check()
+    {
+        int nodes = 0;
+        for (struct StorageNode& l : proof.nodes) ++nodes;
+        return nodes > 0;
+    }
+
     void CalculateHash()
     {
         uint256 h;

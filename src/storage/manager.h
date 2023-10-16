@@ -26,7 +26,6 @@ extern std::vector<CNetworkProof> proofs;
 static unsigned int MIN_PROOF_SZ = 0;
 static unsigned int MIN_NETWORKPROOF_SZ = 0;
 static const int MAX_NETWORKPROOF = 128;
-static const std::string PROOF_PUBLICKEY = "PShFdahhnu4UhCSfkY6yLFG1AHbkepZX9X";
 
 class CProofManager {
 public:

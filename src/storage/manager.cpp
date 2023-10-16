@@ -122,7 +122,8 @@ bool CProofManager::CheckSig(uint256& hash, std::vector<unsigned char>& vchProof
         return false;
     }
 
-    CTxDestination dest = DecodeDestination(PROOF_PUBLICKEY);
+    const Consensus::Params& params = Params().GetConsensus();
+    CTxDestination dest = DecodeDestination(params.proofPublicKey);
     const CKeyID* keyID = boost::get<CKeyID>(&dest);
     if (!keyID) {
         strError = "internal-pubkey-error";
