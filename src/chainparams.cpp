@@ -170,7 +170,7 @@ public:
         consensus.BIP65Height = 0;
         consensus.BIP66Height = 0;
         consensus.DIP0001Height = 0;
-        consensus.DIP0003Height = 350;
+        consensus.DIP0003Height = 250;
         consensus.DIP0003EnforcementHeight = 750;
         consensus.DIP0003EnforcementHash = uint256();
         consensus.DIP0008Height = std::numeric_limits<int>::max();
@@ -248,7 +248,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_DIP0024].nFalloffCoeff = 5;      // this corresponds to 10 periods
 
         // datos consensus parameters
-        consensus.nLastPoWBlock = 350;
+        consensus.nLastPoWBlock = 450;
         consensus.mnCollateral = 2500 * COIN;
         consensus.proofPublicKey = "dRHpwnnd7kwNhhH9W7vvCX4x5FPDyfeNK7";
         consensus.posLimit = uint256S("00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 32
