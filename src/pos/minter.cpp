@@ -285,7 +285,7 @@ void ThreadStakeMiner(size_t nThreadID, CWallet* pwallet)
             const int nHeight = nBestHeight + 1;
             CBlock *pblock = &pblocktemplate->block;
 
-            if (proofManager.IsProofRequired(nBestHeight, params.GetConsensus())) {
+            if (proofManager.IsProofRequired(nHeight, params.GetConsensus())) {
                 CNetworkProof netproof;
                 if (!proofManager.GetProofByHeight(nHeight, netproof)) {
                     LogPrint(BCLog::POS, "%s: proof not found for new block\n", __func__);
