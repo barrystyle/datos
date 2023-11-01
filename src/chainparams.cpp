@@ -271,18 +271,18 @@ public:
          * The characters are rarely used upper ASCII, not valid as UTF-8, and produce
          * a large 32-bit integer with any alignment.
          */
-        pchMessageStart[0] = 0x47;
-        pchMessageStart[1] = 0xa2;
-        pchMessageStart[2] = 0xfa;
-        pchMessageStart[3] = 0xe4;
+        pchMessageStart[0] = 0x42;
+        pchMessageStart[1] = 0xa7;
+        pchMessageStart[2] = 0xca;
+        pchMessageStart[3] = 0xe9;
         nDefaultPort = 8880;
         nPruneAfterHeight = 100000;
         m_assumed_blockchain_size = 45;
         m_assumed_chain_state_size = 1;
 
-        genesis = CreateGenesisBlock(1697246000, 104464, 0x1f00ffff, 1, 0 * COIN);
+        genesis = CreateGenesisBlock(1698810000, 61882, 0x1f00ffff, 1, 0 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x00005f2023f0c8d90e28c3f8c693f1f66d40c80854bb421fea9cd3325e6ca285"));
+        assert(consensus.hashGenesisBlock == uint256S("0x00007fcceb238c788dee2a0fd753b904f3ab983ebc2b5f5f5a7e115ad276448e"));
         assert(genesis.hashMerkleRoot == uint256S("0xd1aa59f1847a4036dcdbd3c1c4015add886ab2bb16564bdaf873013cc792214f"));
 
         // Note that of those which support the service bits prefix, most only support a subset of
