@@ -14,10 +14,9 @@ CAmount CalculateNodeReward(CAmount& base_reward, int space_mode, int score)
     int percentile;
     CAmount calcReward;
 
-    // return zero if params are out of range
+    // assume 25gig if setting not specified
     if (space_mode < 1 || space_mode > 10) {
-        LogPrint(BCLog::STORAGE, "%s: returning 0 because space_mode out of range\n", __func__);
-        return 0 * COIN;
+        space_mode = 1;
     }
 
     // debug out
